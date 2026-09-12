@@ -151,6 +151,52 @@ npm ci
 npm run build
 ```
 
+## Fast installation with an AI assistant
+
+If your AI client has permission to use the local terminal, copy the prompt
+below. It asks the AI to check the environment, clone or update LemonMCP, build
+it, and create the MCP configuration for the client it detects.
+
+```text
+Install and configure LemonMCP on this computer.
+
+Repository: https://github.com/lemonXGroup/lemon-mcp.git
+Default install directory: ~/lemon-mcp
+
+Follow these requirements exactly:
+1. Check git and Node.js first. Node.js must be version 20 or newer. If it is
+   not, tell me which version is needed; do not use sudo or modify the system
+   Node.js installation.
+2. Clone the repository if ~/lemon-mcp does not exist. If it already exists,
+   check for uncommitted changes. Never overwrite, reset, or force-update a
+   dirty worktree; report it and wait. Only use git pull --ff-only on a clean
+   worktree.
+3. Run npm ci and npm run build in the project directory. Then run npm test and
+   report the result.
+4. Identify the MCP client I use and its configuration file. Only edit the
+   clearly matching MCP configuration, make a local backup first, and preserve
+   every other configured server.
+5. Add a stdio server named LemonMCP. Use command node and the absolute entry
+   point <absolute-project-path>/build/index.js.
+6. Do not ask me to send a WebControl token in chat. Never print, upload, or
+   commit it. If a token is required, put a placeholder in the local config and
+   tell me to replace it locally:
+   LEMON_WEB_CONTROL_TOKEN=fill-this-in-locally
+7. If Bonjour is unavailable, show optional local settings for
+   LEMON_TARGET_HOST and LEMON_TARGET_PORT. Do not guess or change the device
+   address by default.
+8. Do not start a long-running LemonMCP process. Do not invoke traffic/log
+   clearing, DNS writes, Replay, Rewrite, Module, or any other consequential
+   MCP operation. Tell me which client must be restarted or reloaded.
+9. Report the install directory, build result, test result, edited config file,
+   backup location, and any token or restart steps I must complete locally.
+```
+
+An AI assistant cannot grant itself local permissions. If it cannot edit client
+files, let it run the install and build commands, then copy the generated JSON
+snippet into the client configuration manually. This flow does not require
+GitHub Actions, Docker, or a global npm installation.
+
 Run the server directly with:
 
 ```sh

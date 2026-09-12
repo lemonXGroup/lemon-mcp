@@ -141,6 +141,46 @@ LEMON_TARGET_HOST 和 LEMON_TARGET_PORT。Bonjour 发现结果优先于 fallback
     npm ci
     npm run build
 
+## 使用 AI 快速安装
+
+如果你的 AI 客户端拥有本机终端权限，可以直接复制下面的提示词。它会让 AI
+检查本机环境、安装或更新 LemonMCP、构建项目，并生成当前客户端需要的 MCP
+配置。
+
+```text
+请帮我在本机安装并配置 LemonMCP。
+
+项目地址：https://github.com/lemonXGroup/lemon-mcp.git
+默认安装目录：~/lemon-mcp
+
+请严格执行以下要求：
+1. 先检查 git 和 Node.js 版本。Node.js 必须是 20 或更高版本；如果不满足，
+   先告诉我需要安装或切换的版本，不要使用 sudo，不要修改系统 Node.js。
+2. 如果 ~/lemon-mcp 不存在，克隆项目；如果已经存在，先检查工作区是否有
+   未提交修改。工作区有修改时不要覆盖或强制 reset，先报告并等待处理；干净
+   时使用 git pull --ff-only 更新。
+3. 在项目目录执行 npm ci 和 npm run build。安装完成后执行 npm test，并报告
+   测试结果。
+4. 找出我正在使用的 MCP 客户端及其配置文件。只修改明确属于该 MCP 客户端
+   的配置，修改前保留一个本地备份，不要覆盖其他服务器配置。
+5. 添加名为 LemonMCP 的 stdio server，使用构建产物的绝对路径：
+   command 为 node，args 为 <项目绝对路径>/build/index.js。
+6. 不要让我在聊天中发送 WebControl token，也不要打印、上传或写入仓库。
+   如果客户端需要 token，在本地配置中留下占位符，并告诉我只在本机替换：
+   LEMON_WEB_CONTROL_TOKEN=请在本机填写
+7. 如果 Bonjour 不可用，为 LEMON_TARGET_HOST 和 LEMON_TARGET_PORT 提供可选
+   的本机配置示例；默认不要猜测或修改设备地址。
+8. 不要启动长期运行的 LemonMCP 进程，不要执行清理抓包、写 DNS、Replay、
+   Rewrite、Module 或其他有副作用的 MCP 操作。安装结束后告诉我需要重启或
+   刷新哪个 MCP 客户端。
+9. 最后报告：安装目录、构建结果、测试结果、修改的配置文件、备份位置，以及
+   仍需我在本机完成的 token 或客户端重启步骤。
+```
+
+AI 不能替代本机授权。若当前客户端不能修改本机文件，请让它执行安装和构建
+命令后输出配置片段，再手动粘贴到对应的 MCP 配置文件。整个安装过程不需要
+GitHub Actions、Docker 或全局 npm 安装。
+
 直接启动服务：
 
     export LEMON_WEB_CONTROL_TOKEN='TOKEN_FROM_LEMON_REMOTE_CONTROLLER'
