@@ -11,7 +11,7 @@ LemonMCP 运行在开发者的 Mac 上，通过 stdio 与 AI 客户端通信。�
 Mac 上开启公网 HTTP 服务，而是通过 Bonjour/mDNS 发现 Lemon 设备，再向
 iPhone 上的 WebControl 服务发送经过认证的 HTTP 请求。
 
-## 第一章：使用 AI 快速安装
+## 使用 AI 快速安装
 
 如果你的 AI 客户端拥有本机终端权限，可以直接复制下面的提示词。它会让 AI
 检查本机环境、安装或更新 LemonMCP、构建项目，并生成当前客户端需要的 MCP

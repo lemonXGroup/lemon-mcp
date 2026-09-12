@@ -13,7 +13,7 @@ client. It does not open a public HTTP server on the Mac. It discovers the
 Lemon device over Bonjour/mDNS and sends authenticated HTTP requests to the
 device's WebControl service.
 
-## Chapter 1: Fast installation with an AI assistant
+## Fast installation with an AI assistant
 
 If your AI client has permission to use the local terminal, copy the prompt
 below. It asks the AI to check the environment, clone or update LemonMCP, build
