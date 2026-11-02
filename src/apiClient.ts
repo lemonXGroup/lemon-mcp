@@ -109,6 +109,7 @@ export class ApiClient {
 
   public async post<T>(url: string, data?: any, params?: any): Promise<T> {
     const response = await this.client.post<T>(url, data, {
+      ...(url.startsWith('/api/rewrite/scripts/remote') ? { timeout: 75000 } : {}),
       params,
       headers: this.authHeaders(),
     });

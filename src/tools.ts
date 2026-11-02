@@ -9,6 +9,7 @@ import {
   buildRewriteScriptPackage,
   rewriteScriptManifestSchema,
   rewriteScriptModuleSchema,
+  rewriteScriptPermissionsSchema,
 } from "./rewriteScripts";
 import { normalizeCapturedRequest } from "./capturedRequest";
 import { exactHostForKeyword, filterTrafficItems } from "./trafficSearch";
@@ -66,6 +67,57 @@ function buildScheduledScriptPayload(input: {
 }
 
 export function registerTools(server: McpServer) {
+  const remoteDescriptor = z.object({
+    url: z.string().url().describe("Public HTTPS source URL. The iPhone downloads and preflights it."),
+    format: z.enum(["javascript", "esm_package"]).default("javascript"),
+    autoUpdate: z.boolean().default(false),
+    intervalSeconds: z.union([z.literal(3600), z.literal(21600), z.literal(86400)]).default(86400),
+    permissionCeiling: rewriteScriptPermissionsSchema.default({ log: true, store: false, http: false, notify: false, utils: true }),
+    expectedSHA256: z.string().regex(/^[0-9a-fA-F]{64}$/).optional(),
+    isPrivate: z.boolean().default(false).describe("Omit this source URL from sharing and cloud backups; the complete installed snapshot is still retained."),
+  });
+  server.registerTool("prepare_remote_rewrite_script", {
+    description: "Downloads and preflights native Lemon ESM on the iPhone without persisting a script. Returns a caller-bound token valid for 10 minutes. Use it in a parent rule's remote_scripts or explicitly create a standalone resource.",
+    inputSchema: { descriptor: remoteDescriptor, required_handlers: z.array(z.enum(["onRequest", "onResponse"])).default([]) },
+  }, async (input) => {
+    try { return { content: [{ type: "text", text: JSON.stringify(assertApiSuccess(await lemonApi.post('/api/rewrite/scripts/remote/prepare', input)), null, 2) }] }; }
+    catch (error) { return { content: [{ type: "text", text: apiErrorMessage(error) }], isError: true }; }
+  });
+  server.registerTool("create_remote_rewrite_script", {
+    description: "Explicitly installs a standalone remote script using a prepared token. For an unsaved rule, pass the token through remote_scripts to save the resource and rule atomically.",
+    inputSchema: { token: z.string().uuid(), name: z.string().trim().min(1) },
+  }, async (input) => {
+    try { return { content: [{ type: "text", text: JSON.stringify(assertApiSuccess(await lemonApi.post('/api/rewrite/scripts/remote', input)), null, 2) }] }; }
+    catch (error) { return { content: [{ type: "text", text: apiErrorMessage(error) }], isError: true }; }
+  });
+  server.registerTool("get_remote_rewrite_script", {
+    description: "Reads a remote source's generation, validators, schedule, and controlled failure state. Source URLs may contain private query credentials; do not publish them.",
+    inputSchema: { id: z.number().int().positive() },
+  }, async (input) => {
+    try { return { content: [{ type: "text", text: JSON.stringify(assertApiSuccess(await lemonApi.get('/api/rewrite/scripts/remote', input)), null, 2) }] }; }
+    catch (error) { return { content: [{ type: "text", text: apiErrorMessage(error) }], isError: true }; }
+  });
+  server.registerTool("configure_remote_rewrite_script", {
+    description: "Changes source URL, permission ceiling, pin, or foreground auto-update settings using a generation CAS. It invalidates validators and does not replace the installed package; explicitly refresh to validate and install new content.",
+    inputSchema: { id: z.number().int().positive(), generation: z.number().int().positive(), descriptor: remoteDescriptor },
+  }, async (input) => {
+    try { return { content: [{ type: "text", text: JSON.stringify(assertApiSuccess(await lemonApi.put('/api/rewrite/scripts/remote', input)), null, 2) }] }; }
+    catch (error) { return { content: [{ type: "text", text: apiErrorMessage(error) }], isError: true }; }
+  });
+  server.registerTool("refresh_remote_rewrite_script", {
+    description: "Manually checks a normal remote script on the iPhone, bypassing its schedule. Conditional GET, integrity checks, preflight, atomic publish and runtime apply are shared with native UI. DRM content continues to use the existing licensed refresh channel.",
+    inputSchema: { id: z.number().int().positive() },
+  }, async (input) => {
+    try { return { content: [{ type: "text", text: JSON.stringify(assertApiSuccess(await lemonApi.post('/api/rewrite/scripts/remote/refresh', input)), null, 2) }] }; }
+    catch (error) { return { content: [{ type: "text", text: apiErrorMessage(error) }], isError: true }; }
+  });
+  server.registerTool("copy_remote_rewrite_script", {
+    description: "Copies an installed normal script snapshot to a new independent local script. No source URL or automatic subscription is copied.",
+    inputSchema: { id: z.number().int().positive(), name: z.string().trim().min(1) },
+  }, async (input) => {
+    try { return { content: [{ type: "text", text: JSON.stringify(assertApiSuccess(await lemonApi.post('/api/rewrite/scripts/remote/copy', input)), null, 2) }] }; }
+    catch (error) { return { content: [{ type: "text", text: apiErrorMessage(error) }], isError: true }; }
+  });
   // 1. toggle_vpn
   server.registerTool("toggle_vpn", {
     description: "Starts or stops the Lemon iOS VPN. Wait for success or error response.",
@@ -958,18 +1010,20 @@ export function registerTools(server: McpServer) {
     description: "Add or update a rewrite policy with ordered MatchGroups. To update, ensure the rule object has an 'id'.",
     inputSchema: {
       rule_json: z.string().describe("JSON string specifying Policy metadata. Example: {\"name\":\"Mock API\",\"enabled\":true,\"priority\":100}"),
-      groups_json: z.string().describe("JSON string array of MatchGroup objects. Each group has group_key, order, conditions (AND) and actions. Multiple groups are evaluated in order without short-circuiting.")
+      groups_json: z.string().describe("JSON string array of MatchGroup objects. Each group has group_key, order, conditions (AND) and actions. Multiple groups are evaluated in order without short-circuiting."),
+      remote_scripts_json: z.string().optional().describe("Optional JSON array from prepare_remote_rewrite_script. New resources: {temporary_id:string,name,token}, IDs 9000000000000000..9007199254740991 referenced by actions. Shared source edits: {temporary_id:string,script_id,source_generation,active_revision,name,token}, using current metadata. The iPhone commits resources and the parent rule atomically.")
     }
-  }, async ({ rule_json, groups_json }) => {
+  }, async ({ rule_json, groups_json, remote_scripts_json }) => {
     try {
       const rule = JSON.parse(rule_json);
       const groups = JSON.parse(groups_json);
+      const remote = remote_scripts_json === undefined ? {} : { remote_scripts: JSON.parse(remote_scripts_json) };
       // iOS takes POST /api/rewrite with json: { rule: { ... }, groups: [ ... ] }
       let res: any;
       if (rule.id) {
-        res = await lemonApi.put('/api/rewrite', { rule, groups });
+        res = await lemonApi.put('/api/rewrite', { rule, groups, ...remote });
       } else {
-        res = await lemonApi.post('/api/rewrite', { rule, groups });
+        res = await lemonApi.post('/api/rewrite', { rule, groups, ...remote });
       }
       if (res && res.success === false) {
         throw new Error(res.err_msg || "Unknown iOS backend error");
