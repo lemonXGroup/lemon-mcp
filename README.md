@@ -71,6 +71,44 @@ For online AI reading, provide
 The current server does not automatically load these documents into a client.
 The public copy still has capability gaps documented in the compatibility reference.
 
+## Use a Skill without installing MCP
+
+The repository also includes a [Lemon Skill](skills/lemon/SKILL.md) for AI clients
+that cannot install MCP. It covers capture, HTTP/WebSocket queries, Rewrite
+rules and JavaScript, scheduled tasks, Replay/Workspace, DNS Hosts, modules,
+files, logs and database diagnostics, and routes other App settings to the
+complete manual.
+
+Install the **entire skills/lemon folder** in the skill directory supported by
+your AI client, keeping SKILL.md, references/, scripts/ and agents/ together.
+No npm build is required for the Skill. Its optional direct HTTP helper needs
+Python 3.10+ with only the standard library. No global installation is performed
+by cloning this repository.
+
+For a client without Skill installation, ask it to read the
+[public SKILL.md](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/skills/lemon/SKILL.md)
+and follow its linked references. Clients with only online reading can explain
+and generate steps; direct control needs a local execution environment that can
+reach the iPhone's LAN.
+
+Suggested first prompt after installation:
+
+~~~text
+Use the lemon Skill to help me with Lemon. First guide me to put the computer
+and iPhone on a reachable LAN, enable Lemon's Remote Controller and wait for
+Listening. Use the actual address shown on my phone. Let me provide the current
+token through local secure input, not chat. Check authenticated device status,
+then carry out my specific task using the documented API and verify the result.
+~~~
+
+The [connection reference](skills/lemon/references/connection.md) explains protected
+environment injection, an existing private token file, and --prompt-token for
+hidden input in a user-operated terminal. A client must actually support secure
+input to show a password dialog; the Skill does not add a universal GUI dialog.
+See the [direct HTTP contract](skills/lemon/references/http-api.md) for exact
+payloads: MCP tool arguments and raw HTTP JSON are not interchangeable.
+New public Skill URLs work after these files are pushed to main.
+
 ## What it provides
 
 The server currently registers 67 tools and 2 resources. Tool schemas exposed
@@ -293,3 +331,5 @@ device, a private test backend, and repository-specific cleanup tooling.
 This is the independent [lemonXGroup/lemon-mcp](https://github.com/lemonXGroup/lemon-mcp) repository. It has its own Git history and origin, including when checked out inside the Lemon workspace at public_projects/lemonMCP. Commit and push changes from this repository's root.
 
 The iOS WebControl contract remains owned by the Lemon app. When that contract changes, update MCP tool schemas and documentation together, run this project's unit tests, and perform the relevant real-device compatibility checks in the main Lemon repository. The internal implementation and this public project have separate histories; source synchronization requires a reviewed change here.
+
+

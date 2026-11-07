@@ -61,6 +61,36 @@ GitHub Actions、Docker 或全局 npm 安装。
 交给 AI 在线读取。当前服务不会自动把这些文件载入客户端；公开副本的待同步能力
 已在兼容性文档中明确列出。
 
+## 不安装 MCP，也可以使用 Skill
+
+仓库新增 [Lemon Skill](skills/lemon/SKILL.md)，供不方便安装 MCP 的 AI 工具使用。
+它覆盖抓包、HTTP/WebSocket 查询、重写规则与 JavaScript、定时任务、Replay/Workspace、
+DNS Hosts、模块、文件、日志与数据库诊断，并将其他 App 设置关联到完整手册。
+
+将 **skills/lemon 整个目录**安装到当前 AI 工具支持的技能目录，保留 SKILL.md、
+references/、scripts/、agents/ 的相对位置。Skill 不需要 npm 构建；可选的直接 HTTP
+助手只依赖 Python 3.10+ 标准库。克隆仓库不会自动安装全局技能。
+
+如果工具不支持安装 Skill，可以让 AI 在线读取
+[公开 SKILL.md](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/skills/lemon/SKILL.md)，
+再按链接查阅参考。只能浏览网页的 AI 可以提供指导、生成操作步骤；直接控制手机需要
+能访问 iPhone 局域网的本地执行环境。
+
+安装后的首次提示词示例：
+
+~~~text
+请使用 lemon Skill 帮我操作 Lemon。先引导我让执行工具的电脑和手机处于可互通
+的局域网，在 Lemon 中开启远程控制并等待 Listening，使用手机页面显示的实际地址。
+让我通过本机安全输入提供当前口令，不要要求发到聊天中。先验证认证后的设备状态，
+然后按文档接口完成我的具体任务，并核实结果。
+~~~
+
+[连接参考](skills/lemon/references/connection.md)包含受保护的环境注入、已有私密口令
+文件，以及供用户在自己的交互式终端使用的 --prompt-token 隐藏输入。不支持秘密输入
+的客户端无法凭空弹出密码框；Skill 没有增加通用 GUI 口令弹窗。
+[直接 HTTP 契约](skills/lemon/references/http-api.md)列出了准确参数，避免把 MCP
+工具参数当作 HTTP 请求体。新增 Skill 的公开链接需要这些文件推送到 main 后才可访问。
+
 ## 能力概览
 
 当前服务注册 67 个工具和 2 个资源。MCP 客户端实际获得的工具 schema

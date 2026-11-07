@@ -13,6 +13,14 @@ This collection ships in the independent public repository: 16 chapters in Chine
 5. [脚本 API（中文）](reference/script-api.zh-CN.md) / [Script API](reference/script-api.md)
 6. [远程脚本的准备、发布、更新与回滚](reference/remote-scripts.md)
 
+## 不安装 MCP 的 AI / AI clients without MCP
+
+使用 [Lemon Skill](../skills/lemon/SKILL.md)，可以在支持技能的 AI 工具中安装整个 skills/lemon 目录，或让 AI 在线阅读入口并按需加载参考。内置 Python 标准库 HTTP 助手无需 MCP；直接操作仍需本地执行环境可访问手机局域网及当前口令。
+
+[连接与隐藏输入](../skills/lemon/references/connection.md) · [直接 HTTP 参数](../skills/lemon/references/http-api.md) · [操作流程](../skills/lemon/references/workflows.md) · [Workspace 定义](../skills/lemon/references/replay-workspace.md) · [全部手册路由](../skills/lemon/references/documentation.md)
+
+Install the whole skills/lemon folder in a compatible client, or read the public SKILL.md as task guidance. MCP and Node.js are optional for this path; Python 3.10+ is sufficient for direct HTTP. A browsing-only cloud AI can guide the user but cannot directly reach a private LAN. See the repository README for installation and first-use prompts.
+
 ## 完整用户手册 / All user manual chapters
 
 | 章节 / Topic | 中文 | English | AI 在线 Markdown / Raw |

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lemon"
+  short_description: "Control Lemon capture, rules, scripts, and replay"
+  default_prompt: "Use $lemon to connect to my iPhone and carry out my Lemon task."

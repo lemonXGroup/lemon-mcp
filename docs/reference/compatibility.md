@@ -43,3 +43,7 @@ A secure dialog is a proposed enhancement, not current behavior. MCP form elicit
 ## Evidence limits
 
 This audit built and ran 23 deterministic tests in a clean standalone copy on Node.js 24.1.0. It did not perform a new physical-device run, prove the Node.js 20 minimum in a runtime matrix, publish GitHub content, or deploy an App/backend change. These documents describe source-supported behavior and explicit MCP gaps.
+
+## Optional Skill without MCP
+
+The [Lemon Skill](../../skills/lemon/SKILL.md) provides source-checked direct HTTP routes and a Python standard-library helper. It can use current App HTTP capabilities that the public MCP has not exposed, including WS queries, scheduled run history and Replay Workspace. This does not synchronize the MCP tool surface. The local terminal helper supports hidden token input; the MCP server still uses its environment token and has no token dialog. A Skill cannot make a cloud-only client reach a private phone LAN.

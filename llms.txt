@@ -9,6 +9,17 @@
 - [AI 首次连接与操作指南](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/AI_GUIDE.zh-CN.md)
 - [Compatibility and current gaps](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/compatibility.md)
 
+## Use without MCP
+
+- [Lemon Skill entry](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/skills/lemon/SKILL.md)
+- [Direct HTTP connection and secure input](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/skills/lemon/references/connection.md)
+- [Direct HTTP routes and payloads](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/skills/lemon/references/http-api.md)
+- [Task workflows](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/skills/lemon/references/workflows.md)
+- [Replay Workspace definitions](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/skills/lemon/references/replay-workspace.md)
+- [All-capability manual routing](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/skills/lemon/references/documentation.md)
+
+The Skill can use direct WebControl HTTP with Python 3.10+ and no MCP installation. The execution environment must reach the iPhone LAN. It supports local hidden terminal input; it does not add a universal password dialog. Install the complete skill folder, or read its entry and linked references online.
+
 ## Exact references
 
 - [Current tools](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/tools.md)
@@ -39,6 +50,6 @@
 
 ## Operating principles
 
-Check the actual installed tools; the current public source registers 67 tools and 2 resources. The iPhone and local MCP host must be reachable on the LAN, Remote Controller must be Listening, and authenticated calls require the current phone token. Receive the token only through local configuration or a supported local secure input flow; do not ask for it in chat. This snapshot has no token dialog. Verify authenticated device state, not only a public status probe.
+Check the actual installed tools; the current public source registers 67 tools and 2 resources. The iPhone and local MCP host must be reachable on the LAN, Remote Controller must be Listening, and authenticated calls require the current phone token. Receive the token only through local configuration or a supported local secure input flow; do not ask for it in chat. The MCP snapshot has no token dialog; the optional Skill helper supports hidden input in a user-operated interactive terminal. Verify authenticated device state, not only a public status probe.
 
 Use authorized actions and verify persistence, runtime application, and new request evidence separately. Do not invent App-equivalent tools. Read the relevant rule/script contract before generating code. If online access is unavailable, read these same files in the local installation. Public URLs become available after this content is published to main.

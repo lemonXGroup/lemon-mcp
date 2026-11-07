@@ -12,7 +12,7 @@
   },
   "publicRepository": "https://github.com/lemonXGroup/lemon-mcp",
   "branch": "main",
-  "publication": "prepared-locally-not-pushed-in-this-task",
+  "publication": "versioned-repository-content; verify-origin-main-for-online-availability",
   "toolCount": 67,
   "resourceCount": 2,
   "internalToolCount": 69,
@@ -433,20 +433,93 @@
       "scope": "public-mcp",
       "path": "tsconfig.json",
       "sha256": "a114c3fa7737ae949cd226a83107082634770d6485b5e00027a4bd0a6864a50a"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/WebControl/WebRouters/SystemRouter.swift",
+      "sha256": "7f508c93a74772deab84ea5e23f4c0cde11e40db192729d1ec9cbc1f1c077198"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/WebControl/WebRouters/ReplayRouter.swift",
+      "sha256": "dac3690b8df562a8af14cb3aeb839b5d1ad28ff91df4a4ac317d3ebff6d9d9eb"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/WebControl/WebRouters/HostMappingRouter.swift",
+      "sha256": "74aff43067a19fa4936817a987a9cf59009d17160d092ab2680d4a104a72ea36"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/WebControl/WebRouters/ModuleRouter.swift",
+      "sha256": "36a571930ac5d9c5fb4ff82cdca65de70b230ab2b39746256f46e272e50dea0c"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/WebControl/WebRouters/FilesRouter.swift",
+      "sha256": "8d933d714f7b2173574bc23c89f02e793aa1cd6b9eb15f04c86aa77fea792506"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/WebControl/WebRouters/WebBrowserRouter.swift",
+      "sha256": "4a55b83da8e483f38f156dc4bee2f33b19acefb395ef7e0b0ef2637fb3897450"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/InternalModules/Persistence/Service/ReplayWorkspace/ReplaySuite.swift",
+      "sha256": "5fd91b607af21231ddf34b2ef6f4d3adcde07d544417964b9539e849eefac46a"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/InternalModules/Persistence/Service/ReplayWorkspace/ReplayResultSummary.swift",
+      "sha256": "c702bc0170000db4e2a695a3c9ec5d7f9bef0acaae191b0d50df366da0fa378f"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/InternalModules/Persistence/Service/Replay/Models/ReplayItem.swift",
+      "sha256": "bed3903905af3b95fb758222fcc1b1fc366ed7b3478d9f76b5b0170dfb8021df"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/Script/Models/Script.swift",
+      "sha256": "a0a01c4e97656c010c1c188f193a83a03a59ad4da4ae78c817b6254b12c54ede"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/Script/CronScriptStore.swift",
+      "sha256": "ad5e610d5d26d631e3759b2953b3c20e88cc47ae8fb748b834fa009adfbff430"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/Module/ModuleModels.swift",
+      "sha256": "6095496a49035751cc01a64699fa6a7ca98ed0adb577cbf3394c91d8d27629c8"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/Files/FileUploadService.swift",
+      "sha256": "bc76a7f3feebd61b22ba586d6a7bd7a1e426b1d0cd55e719d4e2c02b19926d25"
     }
   ],
   "documentFiles": [
     {
+      "path": "README.md",
+      "sha256": "7a86c4789c0d7c241365ed9a772d25b03e0fa41edbf2b10c261bc66e9b698c6e"
+    },
+    {
+      "path": "README.zh-CN.md",
+      "sha256": "a8f94ad38d69a51383f2c865d2b2d8368b49ecdfa2deb954581a930e322a9d1e"
+    },
+    {
       "path": "docs/AI_GUIDE.md",
-      "sha256": "b76b4ef691a12e4ffa23f35bc3eba462fd141de0018baa9b374bf2960405f4c8"
+      "sha256": "8eb135000c4bc2f1e21f1f3a378692cc3d0703cb1a35a3b1012caa5e72eb6c7a"
     },
     {
       "path": "docs/AI_GUIDE.zh-CN.md",
-      "sha256": "96b899ff74072f833c277a080e04102b140f8c6e43f0dd31ae204db97d83f3ef"
+      "sha256": "589cbca2114c1575e79f0a36152fa9bee721cc2f866d3260db7241313ebb7464"
     },
     {
       "path": "docs/README.md",
-      "sha256": "0033a83f389b8857536a4b7a5fd335ab5bdcfb16efd427884da33b4e3c54d696"
+      "sha256": "857c90a61a568e658f318d1697f93ccd283521e38030ef373f5f46de79bbc8c5"
     },
     {
       "path": "docs/manual/ai-helper.en-US.md",
@@ -578,7 +651,7 @@
     },
     {
       "path": "docs/reference/compatibility.md",
-      "sha256": "1d52ce01cca8dd5cdcdb3b9533481dd6a55be0d8075c3f26562a0dd690748b10"
+      "sha256": "8b18f6f01b91cb82134d7b6bb72cf2061561d2cda918da61a5a3829e2fbfefd2"
     },
     {
       "path": "docs/reference/remote-scripts.md",
@@ -606,19 +679,47 @@
     },
     {
       "path": "docs/verification.md",
-      "sha256": "6967e8804c419b95fb25d837e9810ebd50346a3b39ac0c94f8c1fa1347bf0dc6"
-    },
-    {
-      "path": "README.md",
-      "sha256": "4870d9c0d12c06dba978529877c2cc8dd46f612328e62c0cc023b8dd06d48da1"
-    },
-    {
-      "path": "README.zh-CN.md",
-      "sha256": "a752cd5799db9fec7af8aafa208dab87331380a05be732ea50b4538b2d5b42cd"
+      "sha256": "6082b712e3a46979301b0e41a34cfad2921a01de98efd425b48e409a2c999d69"
     },
     {
       "path": "llms.txt",
-      "sha256": "56f6887791fbd80a5aee544717bea6cb4d06d862d3b7cd4ab1238db368a09228"
+      "sha256": "57925892e849fa8b73d99d9e944ad8171e55c12cbc38b0b84a64c145ada55cbf"
+    },
+    {
+      "path": "skills/lemon/SKILL.md",
+      "sha256": "daab63e54bec87586b071166249cf5eb8255450b93edf4c71c78d54e5e50e405"
+    },
+    {
+      "path": "skills/lemon/agents/openai.yaml",
+      "sha256": "67126b2f505b2de53f3036e7471dc613bb23cca80f783ebb3f9382c6ad601f58"
+    },
+    {
+      "path": "skills/lemon/references/connection.md",
+      "sha256": "efbdfbb7b1e22dab561b6519c2e0c708c77ed4903fd5b09ddbee25e9aaa95fd7"
+    },
+    {
+      "path": "skills/lemon/references/documentation.md",
+      "sha256": "273a255c2af4228bca9813498df0fdcc9fa0fa5f1d64f271aa4ed2984dea4fc9"
+    },
+    {
+      "path": "skills/lemon/references/http-api.md",
+      "sha256": "2053c87bcd14974adecde9ea320a2fa5b8265fb255034d5fb7c205235c0d70de"
+    },
+    {
+      "path": "skills/lemon/references/replay-workspace.md",
+      "sha256": "9ca91a8bca3150e90e9739c42d325f68b007fc4f7fc857ab3ba6182f75229a83"
+    },
+    {
+      "path": "skills/lemon/references/workflows.md",
+      "sha256": "2130c5c447e46b725f563ceb99e3dca7c39fd4790884724c136766054a81c972"
+    },
+    {
+      "path": "skills/lemon/scripts/lemon_http.py",
+      "sha256": "1f4cf60ece20a7ecb2c3a194ef91753b1bd881aea7f5b1ac987f07a41553fd5c"
+    },
+    {
+      "path": "skills/lemon/tests/test_lemon_http.py",
+      "sha256": "b9a4de94565510db7c8138abf22ded99fa66e236208d92304cc5e6872fcaae0d"
     }
   ],
   "validation": {
@@ -631,7 +732,19 @@
     "toolSchemaMatchesRegisteredPublicTools": true,
     "deviceRun": false,
     "node20Matrix": false,
-    "published": false
+    "skill": {
+      "format": "passed",
+      "httpUnitTests": {
+        "passed": 13,
+        "failed": 0,
+        "pythonVersion": "3.13"
+      },
+      "relativeAndRawDocumentLinks": true,
+      "jsonExamples": 3,
+      "deviceRun": false,
+      "globallyInstalled": false
+    },
+    "publicationVerifiedByLocalChecks": false
   },
   "officialReferences": [
     {
@@ -645,5 +758,33 @@
     "origin": "git@github.com:lemonXGroup/lemon-mcp.git",
     "branch": "main",
     "parentTracking": "ignored"
+  },
+  "skill": {
+    "name": "lemon",
+    "entry": "skills/lemon/SKILL.md",
+    "runtime": "Python 3.10+ standard library; MCP optional",
+    "checkedAt": "2026-11-07",
+    "sourceReviewedFiles": [
+      "lemon_ios/Lemon/Service/WebControl/WebRouters/SystemRouter.swift",
+      "lemon_ios/Lemon/Service/WebControl/WebRouters/RequestsRouter.swift",
+      "lemon_ios/Lemon/Service/WebControl/WebRouters/RewriteRouter.swift",
+      "lemon_ios/Lemon/Service/WebControl/WebRouters/RewriteRemoteRouter.swift",
+      "lemon_ios/Lemon/Service/WebControl/WebRouters/CronScriptRouter.swift",
+      "lemon_ios/Lemon/Service/WebControl/WebRouters/ReplayRouter.swift",
+      "lemon_ios/Lemon/Service/WebControl/WebRouters/ReplayWorkspaceRouter.swift",
+      "lemon_ios/Lemon/Service/WebControl/WebRouters/HostMappingRouter.swift",
+      "lemon_ios/Lemon/Service/WebControl/WebRouters/ModuleRouter.swift",
+      "lemon_ios/Lemon/Service/WebControl/WebRouters/FilesRouter.swift",
+      "lemon_ios/Lemon/Service/WebControl/WebRouters/WebBrowserRouter.swift",
+      "lemon_ios/Lemon/Service/WebControl/WebControlCapabilityGate.swift",
+      "lemon_ios/InternalModules/Persistence/Service/ReplayWorkspace/ReplaySuite.swift",
+      "lemon_ios/InternalModules/Persistence/Service/ReplayWorkspace/ReplayResultSummary.swift",
+      "lemon_ios/InternalModules/Persistence/Service/Replay/Models/ReplayItem.swift",
+      "lemon_ios/Lemon/Service/Script/Models/Script.swift",
+      "lemon_ios/Lemon/Service/Script/CronScriptStore.swift",
+      "lemon_ios/Lemon/Service/Module/ModuleModels.swift",
+      "lemon_ios/Lemon/Service/Files/FileUploadService.swift"
+    ],
+    "publication": "versioned-repository-content; verify-origin-main-for-online-availability"
   }
 }

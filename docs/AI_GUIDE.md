@@ -4,6 +4,8 @@
 
 Discover the actual tools and resources exposed by the installed server, then read the relevant chapter before acting. A tool listing, local schema response, or target URL is not proof of a connection to the iPhone.
 
+Without MCP: use the [Lemon Skill](../skills/lemon/SKILL.md) and its direct HTTP helper. It supports hidden token input in a user-operated local terminal; it does not add a dialog or inject credentials into an existing MCP session.
+
 ## Connect for the first time
 
 1. The computer running the MCP process and the iPhone need a reachable local network, usually the same Wi-Fi. Guest networks and access point isolation can prevent communication. A cloud AI client needs a local MCP process with access to that network.
