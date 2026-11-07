@@ -59,9 +59,21 @@ files, let it run the install and build commands, then copy the generated JSON
 snippet into the client configuration manually. This flow does not require
 GitHub Actions, Docker, or a global npm installation.
 
+## User manual and AI usage
+
+Start with the [complete bilingual manual collection](docs/README.md), then the
+[AI first-use guide](docs/AI_GUIDE.md) and [compatibility reference](docs/reference/compatibility.md).
+The collection contains 16 chapters in both languages, complete tool schemas,
+Rewrite CRUD/action details, and a source-checked script API.
+
+For online AI reading, provide
+[llms.txt](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/llms.txt).
+The current server does not automatically load these documents into a client.
+The public copy still has capability gaps documented in the compatibility reference.
+
 ## What it provides
 
-The server currently registers 61 tools and 2 resources. Tool schemas exposed
+The server currently registers 67 tools and 2 resources. Tool schemas exposed
 to the MCP client are the runtime source of truth; the following list is a
 capability map for humans and AI agents.
 
@@ -139,6 +151,14 @@ converted to a restricted `main.js` package. Use
 `validate_rewrite_script_package` before publishing and verify both persistence
 and runtime status afterwards.
 
+### Remote Rewrite sources
+
+- `prepare_remote_rewrite_script`, `create_remote_rewrite_script`: preflight and install.
+- `get_remote_rewrite_script`, `configure_remote_rewrite_script`: inspect and edit source configuration.
+- `refresh_remote_rewrite_script`, `copy_remote_rewrite_script`: update or create an independent local snapshot.
+
+Read the [remote script lifecycle](docs/reference/remote-scripts.md) before using these tools.
+
 ### Rewrite rules
 
 - `list_rewrite_rules`: list policies, MatchGroups, and actions.
@@ -184,7 +204,7 @@ the detailed response from a tool call.
 - Lemon for iOS running on a real iPhone with WebControl enabled.
 - The Mac and iPhone on a reachable local network, or a connection that
   supports the advertised Bonjour service.
-- A current WebControl token when the iOS app requires authentication.
+- The current WebControl access token for authenticated device operations.
 
 Lemon advertises `_lemon._tcp` through Bonjour. The default fallback target is
 `stack.local:9999`. Set `LEMON_TARGET_HOST` and `LEMON_TARGET_PORT` when a
@@ -270,8 +290,6 @@ device, a private test backend, and repository-specific cleanup tooling.
 
 ## Relationship to the Lemon repository
 
-This directory is maintained as a standalone-ready copy of the MCP server.
-The iOS WebControl contract remains owned by the Lemon app. When that contract
-changes, update the MCP tool schemas and this README together, then run the
-public project's unit tests and a real-device compatibility check from the
-main repository.
+This is the independent [lemonXGroup/lemon-mcp](https://github.com/lemonXGroup/lemon-mcp) repository. It has its own Git history and origin, including when checked out inside the Lemon workspace at public_projects/lemonMCP. Commit and push changes from this repository's root.
+
+The iOS WebControl contract remains owned by the Lemon app. When that contract changes, update MCP tool schemas and documentation together, run this project's unit tests, and perform the relevant real-device compatibility checks in the main Lemon repository. The internal implementation and this public project have separate histories; source synchronization requires a reviewed change here.

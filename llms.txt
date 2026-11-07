@@ -1,0 +1,44 @@
+# LemonMCP
+
+> Public, local stdio MCP server for Lemon on a real iPhone. Read this index before attempting a connection, traffic inspection, Rewrite, scripting, Replay, DNS, or Module operation.
+
+## Read first
+
+- [Complete manual collection](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/README.md)
+- [AI first-use and operating guide](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/AI_GUIDE.md)
+- [AI 首次连接与操作指南](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/AI_GUIDE.zh-CN.md)
+- [Compatibility and current gaps](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/compatibility.md)
+
+## Exact references
+
+- [Current tools](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/tools.md)
+- [Full tool input schemas](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/tools.schema.json)
+- [Rewrite rules and action configs](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/rewrite-rules.md)
+- [Script API](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/script-api.md)
+- [脚本 API](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/script-api.zh-CN.md)
+- [Remote script lifecycle](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/remote-scripts.md)
+
+## All user manual chapters
+
+- [Overview / 产品概览](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/overview.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/overview.zh-CN.md))
+- [LemonMCP / LemonMCP](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/lemon-mcp.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/lemon-mcp.zh-CN.md))
+- [Scripts and scheduled tasks / 脚本与定时任务](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/scripts.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/scripts.zh-CN.md))
+- [Rewrite / 重写](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/rewrite.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/rewrite.zh-CN.md))
+- [Modules / 模块](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/modules.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/modules.zh-CN.md))
+- [Requests / 请求记录](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/requests.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/requests.zh-CN.md))
+- [HTTPS MITM / HTTPS 检查](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/mitm.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/mitm.zh-CN.md))
+- [Replay / 重放](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/replay.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/replay.zh-CN.md))
+- [DNS / DNS](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/dns.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/dns.zh-CN.md))
+- [TUN and capture / TUN / 抓包](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/tun.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/tun.zh-CN.md))
+- [Regular expressions / 正则表达式](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/regex.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/regex.zh-CN.md))
+- [Files / 文件](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/files.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/files.zh-CN.md))
+- [Database / 数据库](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/database.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/database.zh-CN.md))
+- [LAN proxy / 局域网代理](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/lan-proxy.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/lan-proxy.zh-CN.md))
+- [Remote Control / 远程控制](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/remote-control.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/remote-control.zh-CN.md))
+- [AI helper / AI 助手](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/ai-helper.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/ai-helper.zh-CN.md))
+
+## Operating principles
+
+Check the actual installed tools; the current public source registers 67 tools and 2 resources. The iPhone and local MCP host must be reachable on the LAN, Remote Controller must be Listening, and authenticated calls require the current phone token. Receive the token only through local configuration or a supported local secure input flow; do not ask for it in chat. This snapshot has no token dialog. Verify authenticated device state, not only a public status probe.
+
+Use authorized actions and verify persistence, runtime application, and new request evidence separately. Do not invent App-equivalent tools. Read the relevant rule/script contract before generating code. If online access is unavailable, read these same files in the local installation. Public URLs become available after this content is published to main.

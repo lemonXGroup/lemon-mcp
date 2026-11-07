@@ -51,9 +51,19 @@ AI 不能替代本机授权。若当前客户端不能修改本机文件，请�
 命令后输出配置片段，再手动粘贴到对应的 MCP 配置文件。整个安装过程不需要
 GitHub Actions、Docker 或全局 npm 安装。
 
+## 用户手册与 AI 使用
+
+安装后先读 [完整双语手册合集](docs/README.md)、[AI 首次连接指南](docs/AI_GUIDE.zh-CN.md)
+和 [能力兼容性](docs/reference/compatibility.md)。合集包含 16 章中英文用户手册、
+全部工具输入 schema、重写 CRUD/动作参数，以及按当前源码核对的脚本 API。
+
+可将 [公开 AI 入口 llms.txt](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/llms.txt)
+交给 AI 在线读取。当前服务不会自动把这些文件载入客户端；公开副本的待同步能力
+已在兼容性文档中明确列出。
+
 ## 能力概览
 
-当前服务注册 61 个工具和 2 个资源。MCP 客户端实际获得的工具 schema
+当前服务注册 67 个工具和 2 个资源。MCP 客户端实际获得的工具 schema
 是运行时的最终事实来源，下面的内容用于帮助人类用户和 AI Agent 快速理解
 能力范围。
 
@@ -128,6 +138,14 @@ upsert_rewrite_script 也支持单文件 content shorthand，该 shorthand 会�
 转换为受限的 main.js 脚本包。发布前建议调用
 validate_rewrite_script_package，发布后分别检查持久化结果和 runtime 状态。
 
+### 远程 Rewrite 来源
+
+- prepare_remote_rewrite_script、create_remote_rewrite_script：预检与安装。
+- get_remote_rewrite_script、configure_remote_rewrite_script：读取与修改来源配置。
+- refresh_remote_rewrite_script、copy_remote_rewrite_script：更新或复制为独立本地快照。
+
+使用前请读 [远程脚本生命周期](docs/reference/remote-scripts.md)。
+
 ### Rewrite 规则
 
 - list_rewrite_rules：列出 policy、MatchGroup 和 action。
@@ -169,7 +187,7 @@ Resources 是只读上下文，不会替代后续的状态检查，也不会替�
 - macOS 和 Node.js 20 或更高版本。
 - 在真实 iPhone 上运行并开启 WebControl 的 Lemon for iOS。
 - Mac 和 iPhone 位于可互相访问的局域网，或使用支持 Bonjour 服务转发的连接。
-- 如果 iOS App 开启了鉴权，需要一个当前有效的 WebControl token。
+- 调用需认证的设备接口，需要当前有效的 WebControl 访问口令。
 
 Lemon 通过 Bonjour 发布 _lemon._tcp 服务。默认 fallback 地址为
 stack.local:9999。如果需要使用其他 fallback 地址，可以设置
@@ -258,11 +276,6 @@ Rewrite 规则、Replay、日志或 Markdown 示例。
 
 ## 与 Lemon 主仓库的关系
 
-此目录维护的是一份可以作为独立仓库发布的 MCP 服务副本。iOS WebControl
-协议仍由 Lemon App 负责维护。当该协议发生变化时，应同步更新 MCP tools
-schema 和本文档，并在主仓库中完成公开项目单元测试和真实设备兼容性检查。
+本项目已独立为 [lemonXGroup/lemon-mcp](https://github.com/lemonXGroup/lemon-mcp)，使用自己的 Git 历史和 origin。即使本机目录位于 Lemon 工作区的 public_projects/lemonMCP 下，也应在本项目根目录单独提交和推送；主仓库已忽略该目录。
 
-该目录不包含嵌套 .git。准备发布时，可以从 Lemon 主仓库拆分为独立仓库：
-
-    git subtree split --prefix=public_projects/lemonMCP -b public-lemonmcp
-    git push <public-repository> public-lemonmcp:main
+iOS WebControl 协议仍由 Lemon App 维护。协议变化时，应同步更新 MCP 工具 schema 与文档，运行本项目单元测试，并在主仓库完成对应的真机兼容性检查。内部实现与公开项目分别维护 Git 历史，源码同步需要在本项目中审阅后提交。

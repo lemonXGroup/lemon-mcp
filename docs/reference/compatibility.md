@@ -1,0 +1,45 @@
+# Capability and compatibility boundaries
+
+Checked against the source tree on 2026-11-07. [Manual](../README.md) · [AI guide](../AI_GUIDE.md)
+
+## App support and the public MCP surface
+
+| Capability | Current App / WebControl | This public MCP snapshot |
+| --- | --- | --- |
+| VPN start/stop, traffic summaries and exact detail, bodies, logs | Implemented | Tools available |
+| DNS Hosts, one-request Replay, scheduled task CRUD | Implemented | Tools available |
+| Local ESM revisions and remote script lifecycle | Implemented | Tools available |
+| UI Module package and lifecycle management | Implemented | Tools available; this does not expose every Module host capability as a standalone MCP tool |
+| URL expression matching | Implemented | groups_json can forward the fields, but get_rewrite_schema does not document them yet |
+| JSON Path body edits | Implemented | groups_json can forward them; consult the rule reference |
+| multipart request fields | Implemented; advertises multipart_request_body | Payload can be forwarded; the newer preflight check in the internal MCP is absent here |
+| WebSocket message/frame query | GET /api/websocket/records and /detail | list_websocket_records and get_websocket_record are not yet registered here |
+| WebSocket rewrite scope and onWebSocketMessage | Implemented | Generic rule/package payloads can carry compatible content, but local schema guidance is incomplete and remote required_handlers rejects this handler |
+| Replay Workspace suites and run history/results | Implemented | No dedicated suite/run tools in either current MCP copy |
+| Scheduled task execution history | GET /api/scripts/scheduled/runs | No dedicated MCP tool |
+| Rewrite capability discovery | GET /api/rewrite/capabilities | No standalone MCP tool; public upsert lacks internal multipart preflight |
+| Global Rewrite, JS, MITM, or capture policy settings | App-managed | No general MCP settings write API |
+| First-use connection wizard and token dialog | Not part of current MCP implementation | Not implemented; environment token only |
+| Documentation resources, MCP prompts, server instructions | Not registered in current server | These files are available locally and through GitHub; clients must be directed to read them |
+
+This snapshot registers **67 tools and 2 resources**. The internal MCP registers 69 tools; the two extra tools are WebSocket reads. Count the installed runtime rather than inferring its surface from a README version string.
+
+## Protocol-specific boundaries
+
+Current source includes HTTP/1, HTTP/2, and an HTTP/3 path sharing Rewrite processing. This is not a promise that every request or body is eligible for modification. TLS trust, capture routing, MIME policy, buffering, size limits, and available runtime budgets still apply.
+
+WebSocket rewriting applies to completed messages after HTTP/1 Upgrade, with scopes websocket_client and websocket_server. The capability endpoint explicitly advertises h1_upgrade=true, extended_connect_h2=false, and extended_connect_h3=false. HTTP/3 support does not imply WebSocket over HTTP/3 support. Respect capture_state, capture_reason, and recorded gaps; saved content may be incomplete.
+
+For multipart, discover the device capability before use. A 404, missing field, or supported=false means this feature needs a device upgrade. Supported operations are set/replace/delete/append for ordinary request fields, with file parts preserved; compressed requests, multipart responses, nested multipart, file mutation, and large streaming edits are outside this feature.
+
+HTTP body scripts return body.text. body.base64, drop, injectBefore, and injectAfter belong to the WebSocket result contract and must not be used in an HTTP patch.
+
+## Authentication
+
+The access token is a six-digit caller credential, including possible leading zeroes. It is distinct from the device's product license. Authenticated endpoints require a valid token, and entitlement-gated operations additionally need the relevant device capability. A successful public status probe is not an authenticated preflight.
+
+A secure dialog is a proposed enhancement, not current behavior. MCP form elicitation must not request access tokens; a future implementation must use an appropriate local secure input flow or URL mode, with capability checks and local configuration fallback. See the [official elicitation specification](https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation).
+
+## Evidence limits
+
+This audit built and ran 23 deterministic tests in a clean standalone copy on Node.js 24.1.0. It did not perform a new physical-device run, prove the Node.js 20 minimum in a runtime matrix, publish GitHub content, or deploy an App/backend change. These documents describe source-supported behavior and explicit MCP gaps.

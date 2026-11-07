@@ -1,0 +1,649 @@
+{
+  "manifestVersion": 1,
+  "checkedAt": "2026-11-07",
+  "package": {
+    "name": "lemonmcp",
+    "version": "1.0.0"
+  },
+  "sourceBaseline": {
+    "kind": "local-source-with-doc-working-tree-changes",
+    "gitHead": "beb68db220b7f7f6646678d8fad0370ef261dd39",
+    "note": "App paths identify provenance only and are not required by public readers; source hashes take precedence over the baseline commit."
+  },
+  "publicRepository": "https://github.com/lemonXGroup/lemon-mcp",
+  "branch": "main",
+  "publication": "prepared-locally-not-pushed-in-this-task",
+  "toolCount": 67,
+  "resourceCount": 2,
+  "internalToolCount": 69,
+  "manualChapters": 16,
+  "languages": [
+    "zh-CN",
+    "en-US"
+  ],
+  "evidenceGuide": "docs/verification.md",
+  "manualOrigins": [
+    {
+      "document": "docs/manual/ai-helper.en-US.md",
+      "origin": "lemon_web/src/manual/ai-helper.en-US.md",
+      "originSha256": "3b155a8389e6362cc59276e80177c5feb7168cbe0b306dea9da624cf8ac47773",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/ai-helper.zh-CN.md",
+      "origin": "lemon_web/src/manual/ai-helper.zh-CN.md",
+      "originSha256": "6d0e5585fa56cd88259d062781e8bf287db730f48295b60af86fea324e246be1",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/database.en-US.md",
+      "origin": "lemon_web/src/manual/database.en-US.md",
+      "originSha256": "52bece42c1b608bb986802c39b20c87c9ace78e4f6cccaff0a74e45fb8e696ae",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/database.zh-CN.md",
+      "origin": "lemon_web/src/manual/database.zh-CN.md",
+      "originSha256": "423c2db83c74ff83ac7a822579dc0884f31bb1ee54f378ba027e90120b30a7c8",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/dns.en-US.md",
+      "origin": "lemon_web/src/manual/dns.en-US.md",
+      "originSha256": "5c76e76414f140319a10e4022f6160b410c4a21cd221b3caf6e08b7614a00467",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/dns.zh-CN.md",
+      "origin": "lemon_web/src/manual/dns.zh-CN.md",
+      "originSha256": "585cd93eaa1e110833c89b3b8842da253d2822c8f079b826c2698fce4a8ffb76",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/files.en-US.md",
+      "origin": "lemon_web/src/manual/files.en-US.md",
+      "originSha256": "bad772800743045584ace58aaaedbb71d4035b2b3dac290bf37e416b81bfbf27",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/files.zh-CN.md",
+      "origin": "lemon_web/src/manual/files.zh-CN.md",
+      "originSha256": "fa4e783260e0ad448fbea71958d5fc9fb6d08c08d8d51c6b51c5a315867addb0",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/lan-proxy.en-US.md",
+      "origin": "lemon_web/src/manual/lan-proxy.en-US.md",
+      "originSha256": "b8492184c5ca9c5fb4b086c810330586f5c3c9dce0871e1664cadf98313bc9f0",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/lan-proxy.zh-CN.md",
+      "origin": "lemon_web/src/manual/lan-proxy.zh-CN.md",
+      "originSha256": "d39f70535c77f129a6a67f22f8ee4e8db0aff873ba7f7e1cd02a229611b0a050",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/lemon-mcp.en-US.md",
+      "origin": "lemon_web/src/manual/lemon-mcp.en-US.md",
+      "originSha256": "d2dfccd734f221f8ba8740a7ca29e2627708b19b0fc126cc47066bd0bf201cd3",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/lemon-mcp.zh-CN.md",
+      "origin": "lemon_web/src/manual/lemon-mcp.zh-CN.md",
+      "originSha256": "cedd819c51816e43a043048e03d93d7594d203cd7f8d023e12034517a4a8faa3",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/mitm.en-US.md",
+      "origin": "lemon_web/src/manual/mitm.en-US.md",
+      "originSha256": "2e08a85a9b26d7706e2e6653e9af637f5ceaaebab6c9ce9488970e4dfd6cacb8",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/mitm.zh-CN.md",
+      "origin": "lemon_web/src/manual/mitm.zh-CN.md",
+      "originSha256": "e3dae61b10e31e008d634b0840b57ab5dd327b771d8db60c5268f708968817cf",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/modules.en-US.md",
+      "origin": "lemon_web/src/manual/modules.en-US.md",
+      "originSha256": "d6eb49a5f2ba84bf95900e1fabc5a39055f27be4bbe40dfd61402b1af0908091",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/modules.zh-CN.md",
+      "origin": "lemon_web/src/manual/modules.zh-CN.md",
+      "originSha256": "5864ea99df8164007fc1294abebedb190bf1ad5f9c6a99215bfdeb10e3d2a0a5",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/overview.en-US.md",
+      "origin": "lemon_web/src/manual/overview.en-US.md",
+      "originSha256": "7de44d7c113cf834058292205e1f66545fb0965f6988507be2ed060f3677adbc",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/overview.zh-CN.md",
+      "origin": "lemon_web/src/manual/overview.zh-CN.md",
+      "originSha256": "937890a5a7839e5ec7e1aff7aef884be0a802fffe5e02af2dfd57b583b20dd18",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/regex.en-US.md",
+      "origin": "lemon_web/src/manual/regex.en-US.md",
+      "originSha256": "dd3bc323f437368a191a0ad4172e63c727e4b12ae60212962749bc16ff989e51",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/regex.zh-CN.md",
+      "origin": "lemon_web/src/manual/regex.zh-CN.md",
+      "originSha256": "d2a24f9fdbcb747196c862fe2ee26c93ac4747f8d46d6322b00bc0cc53dc38eb",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/remote-control.en-US.md",
+      "origin": "lemon_web/src/manual/remote-control.en-US.md",
+      "originSha256": "0af579667ebd8aaadc158a158eeab8dd31be44cb435e909dd05bc3fab8317b97",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/remote-control.zh-CN.md",
+      "origin": "lemon_web/src/manual/remote-control.zh-CN.md",
+      "originSha256": "a871eb238ec1d9381ac8f079d2e293a8c633d5b73242147a1e8309a4cd81344f",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/replay.en-US.md",
+      "origin": "lemon_web/src/manual/replay.en-US.md",
+      "originSha256": "4d78b7a68a38483a04c349fbadfc1b574eb0e96147f7355dffa767824571df15",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/replay.zh-CN.md",
+      "origin": "lemon_web/src/manual/replay.zh-CN.md",
+      "originSha256": "4ab535ad99db0c7fb31efd52bbf6838ea171569b0f103d85fdd03bd81be4ef69",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/requests.en-US.md",
+      "origin": "lemon_web/src/manual/requests.en-US.md",
+      "originSha256": "39c6e10eb4c4a1619e731daf61028a795bbc7ce4d7d8cdef5457c08b48cf5c6e",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/requests.zh-CN.md",
+      "origin": "lemon_web/src/manual/requests.zh-CN.md",
+      "originSha256": "5eafa985cb6b1693cbdb33496e1ef54c45b306354063220a9bccd6cab7d9180d",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/rewrite.en-US.md",
+      "origin": "lemon_web/src/manual/rewrite.en-US.md",
+      "originSha256": "b51dd88366a34e1b8c713c1645a455fc14a119a9e5c026b66e301e57f6244548",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/rewrite.zh-CN.md",
+      "origin": "lemon_web/src/manual/rewrite.zh-CN.md",
+      "originSha256": "78ddc7ea58e839497f2c501477d379d17108cf55b2daf3dd5581c4dfdfa8686a",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/scripts.en-US.md",
+      "origin": "lemon_web/src/manual/scripts.en-US.md",
+      "originSha256": "421426433ae4686603f22dfc27cfe45cd357d97f3798ab68a3b1cd01ca10fdd4",
+      "review": "rewritten-from-current-template-and-runtime",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/scripts.zh-CN.md",
+      "origin": "lemon_web/src/manual/scripts.zh-CN.md",
+      "originSha256": "b2772d4e0dcce6799644c9b8f1c935cc04f761e1be47e7d26fc6c7cf018b2a65",
+      "review": "rewritten-from-current-template-and-runtime",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/tun.en-US.md",
+      "origin": "lemon_web/src/manual/tun.en-US.md",
+      "originSha256": "e3bd93dc816f90ca07e69decf3a76a798ecb9ff6c35c971c433759971c68f956",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    },
+    {
+      "document": "docs/manual/tun.zh-CN.md",
+      "origin": "lemon_web/src/manual/tun.zh-CN.md",
+      "originSha256": "2fe4d41924cedd332240d3a8231af5e2c0d04d7a2599f8a48856e4ef4b9d15c7",
+      "review": "adapted-manual-with-identified-corrections",
+      "deviceAcceptance": false
+    }
+  ],
+  "reviewedSourceFiles": [
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "contracts/script_editor_api_catalog.v1.json",
+      "sha256": "b42f9d32afd24b76c2b73695065998e76c7f3c4dc2cf68b94e7b1eeafc82e455"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Views/Script/ScriptDetailView.swift",
+      "sha256": "c23edfd069e81d8d9edf3e428b408bf9a0400f27cace24020efb72276aae103c"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Views/Rewrite/RewriteRuleEditView.swift",
+      "sha256": "b81d673929b772e515db4d38aedfa099dc6be1f69a8f595dfa31e9f71a372644"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/WebControl/WebRouters/RewriteRouter.swift",
+      "sha256": "32ffcc004c8f6bc75b61f708fd88e4feeb52e1979f443329b897f174cfe264f4"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/WebControl/WebRouters/RewriteRemoteRouter.swift",
+      "sha256": "5cf80dabe2304b811baff550dbb9ceb701000f40d6e433c233ab21e750e4b7a4"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/WebControl/WebRouters/CronScriptRouter.swift",
+      "sha256": "ba7f4a0e3a184067a79a19325d5c403afc6021aaf1842314e68f47e574dfb4cf"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/WebControl/WebRouters/ReplayWorkspaceRouter.swift",
+      "sha256": "a9cc76fcadd36374b46df3a3be6820f6b0b2b742a5ee568bb773a1496a28b587"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/WebControl/WebRouters/RequestsRouter.swift",
+      "sha256": "d79e7802396512735b19c82ab96da1d25679ddeb547c6de26826567f7708a64f"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/WebControl/WebControlCapabilityGate.swift",
+      "sha256": "f984227ae67d75ab14fe46c63c15c34e17ef6ad4d0de1f475ac7b621b2cf6995"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/InternalModules/Shared/Config/LemonCoreRuntimeConfig.swift",
+      "sha256": "01cda229ee6da7e486076b324e22bb280c2849926bbed47fb6321c30fce851fa"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/core/src/rewrite/js_engine.rs",
+      "sha256": "ff3d3ecd43b2fb5ef38b127f22d568355dadc6806d4dc9a11c9255ce3a2fc795"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/core/src/rewrite/json_engine.rs",
+      "sha256": "890b7e53f537722d2fa4c815f4e88e69ece672fbf43599508a44a1abfa92d14f"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/core/src/rewrite/mod.rs",
+      "sha256": "171fe52f2288c3921329f4f39abb3d63b11cf09ec5817025cd1f9af7e9727f8d"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/core/src/rewrite/body_replacement.rs",
+      "sha256": "c0b05071a32aa67fa46fa44fe1fea0d29656f28e0d95143501872f84a67ff091"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/core/src/rewrite/json_path.rs",
+      "sha256": "8c428f7a621f1a6a802004b1f4916ad0332fa5808e2882a50129883179f37dd5"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/core/src/rewrite/multipart.rs",
+      "sha256": "c4014f406d545d60774fd0ba49e8aa7ce1f16eefb636d7d42554211ac3f1d495"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/ffi/src/settings.rs",
+      "sha256": "5e27dcfa796d0362ba01441f14ecbe6c84257226fc069c36a820f14b9c350d44"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/ffi/src/lifecycle/rewrite.rs",
+      "sha256": "bb90f432c99c8d7eafa8fcd08968ab23f4dbb69e357fe5e58a171fd1989c1d5f"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/ffi/src/lifecycle/scheduler.rs",
+      "sha256": "ab323d6790a6e2721c9296c0675d16f461e9830689da0505152a5ed1124bf90b"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/middlewares/src/response_body.rs",
+      "sha256": "b19df55503ad445227aee886cc14422c8ddcd60ae73419a8acafe57f9a9d9c34"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/middlewares/src/http_codec/response_body.rs",
+      "sha256": "e08e16839d1440ce977a9b138e71681fcad7aca562f4907d8f000f0e1dce8d45"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/middlewares/src/http3/semantics.rs",
+      "sha256": "37f8c0e748b5def3fa8da887a9c58d44daacd8f762fc1bc694845eaaa4356d33"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/middlewares/src/ws_codec/session.rs",
+      "sha256": "3f41832368798a1804584b25b99cae2ebade6af79e852c07847566417e5e0b92"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "LemonMCP/src/tools.ts",
+      "sha256": "7e4a87d6e85e7c5f9ce19c2286891ef54b197650be02e57c67410c6afc62a34e"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "src/index.ts",
+      "sha256": "56155544af45ad8aa5d956d359a193a8e1f50d8887777aaf3b483af711ac3f1a"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "src/apiClient.ts",
+      "sha256": "6f79f33250fef4a7f1b2ba192bbebf28578979aaf1feccce83d57c2e952c6413"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "src/discovery.ts",
+      "sha256": "8030555fb0b5d56c02e2cda7588aed4d40e88faf30e63b66a2983fa215450aec"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "src/resources.ts",
+      "sha256": "40f9fe2771ef38a4c599b0c5f1d177a735308f7ddaf9300b042b8be892468124"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "src/tools.ts",
+      "sha256": "326c98ae5c864e8dae61b42a603816a73b8c95759f1d7da46c8563a83285a158"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "src/rewriteScripts.ts",
+      "sha256": "934277b4fcd7f21ee39d01499056fd96421826fecc019db39960a5f90c120bbe"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "src/capturedRequest.ts",
+      "sha256": "d40054bead5209df0884ecebad3ce3b4622690127e1c7117a9cb08be41089586"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "src/trafficSearch.ts",
+      "sha256": "25eb515c050356c417b05962e95e3cf19de863aed0f2e2255b7456880828f151"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "src/fileContent.ts",
+      "sha256": "21683713a1548d843a9ed0f61224fc0bb9324840922e8d6193d9308d12cda66f"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "src/byteContent.ts",
+      "sha256": "4478654b893abf76132b987585172acb4cca749dee90bb9bbe5c6f6d2797092d"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "package.json",
+      "sha256": "e5bbe0072161c98deef2c7d422e5c46dbef75265e5765c9871d6697b56102412"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "package-lock.json",
+      "sha256": "bdc2eee2e6b41d15b1cf3294284cad40861e81086d88f149649bf3b57a630bf3"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "tsconfig.json",
+      "sha256": "a114c3fa7737ae949cd226a83107082634770d6485b5e00027a4bd0a6864a50a"
+    }
+  ],
+  "documentFiles": [
+    {
+      "path": "docs/AI_GUIDE.md",
+      "sha256": "b76b4ef691a12e4ffa23f35bc3eba462fd141de0018baa9b374bf2960405f4c8"
+    },
+    {
+      "path": "docs/AI_GUIDE.zh-CN.md",
+      "sha256": "96b899ff74072f833c277a080e04102b140f8c6e43f0dd31ae204db97d83f3ef"
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "0033a83f389b8857536a4b7a5fd335ab5bdcfb16efd427884da33b4e3c54d696"
+    },
+    {
+      "path": "docs/manual/ai-helper.en-US.md",
+      "sha256": "e200b31477570bb067ee7ea8b11d95fcecb818f8379838c85d5da569c262f006"
+    },
+    {
+      "path": "docs/manual/ai-helper.zh-CN.md",
+      "sha256": "1413b3e9a4771d14a4a629882f2a47c7c7b5834e6b86796f910200b15cd6d945"
+    },
+    {
+      "path": "docs/manual/database.en-US.md",
+      "sha256": "b37768d960ea4aaa0f48b51555ccc3a4fa317f352fbe3515dc09037392c53db4"
+    },
+    {
+      "path": "docs/manual/database.zh-CN.md",
+      "sha256": "99d260a40f6cdb0254f4b32000bd0ee54233bd35e6e9fa6ad3cffb2594b2814c"
+    },
+    {
+      "path": "docs/manual/dns.en-US.md",
+      "sha256": "32f9d5773a7898154fd0b36a47c4424e1347afd5920722419e6d4162767ee5d5"
+    },
+    {
+      "path": "docs/manual/dns.zh-CN.md",
+      "sha256": "25d217be1d50ff328c9f9dcb862f3816d29714ff770abcc33d95d7d0da579e7b"
+    },
+    {
+      "path": "docs/manual/files.en-US.md",
+      "sha256": "bd37286251d0ff741fd6792fc6a635f1c5310136b85791609916f22164dd36cd"
+    },
+    {
+      "path": "docs/manual/files.zh-CN.md",
+      "sha256": "54f42a3ac3c92fd44fa329712d358e63a1abc40c2f85c1f41b5099a75b6e328d"
+    },
+    {
+      "path": "docs/manual/lan-proxy.en-US.md",
+      "sha256": "581c48bc0d51123811fcd036454054f133f1b07421afcb1d5040720e6b698183"
+    },
+    {
+      "path": "docs/manual/lan-proxy.zh-CN.md",
+      "sha256": "519752142492642292e8dcbe7631c0082c7485b185cddab569c7c8367739ab83"
+    },
+    {
+      "path": "docs/manual/lemon-mcp.en-US.md",
+      "sha256": "ffef750441e1e8dd43ba65f057f23954542b3a2ae92757def28f0db850d46005"
+    },
+    {
+      "path": "docs/manual/lemon-mcp.zh-CN.md",
+      "sha256": "beb9d377ebfe69fae34eb28cc2402fd6cc8325c31de156270d69cac34848c6df"
+    },
+    {
+      "path": "docs/manual/mitm.en-US.md",
+      "sha256": "550bb8fa4a4fac9eb8e12d997fe0c3b39d4c727e5f3f195fb4fb522aae71dbd5"
+    },
+    {
+      "path": "docs/manual/mitm.zh-CN.md",
+      "sha256": "266ae78b3c05dddc748cf07960d87c2787c596bd44b0e025f7494564236ece59"
+    },
+    {
+      "path": "docs/manual/modules.en-US.md",
+      "sha256": "94ba13fdc80eaa6962c1b64ca38e629aef50dbdef158b7bc25d5a0efe29a5acc"
+    },
+    {
+      "path": "docs/manual/modules.zh-CN.md",
+      "sha256": "9bf4dcb80ef996c4bf292a7de6ab79df37dcb087e7fef77ca45d2b7d501d5abf"
+    },
+    {
+      "path": "docs/manual/overview.en-US.md",
+      "sha256": "6ccfb88e5c017913c098815f61ad17603b278e3222b8a1d026417ee21cd76d29"
+    },
+    {
+      "path": "docs/manual/overview.zh-CN.md",
+      "sha256": "c19856e8852ec7605c15952e5ef53c4fc02efe469d42738b89b553a8c4729829"
+    },
+    {
+      "path": "docs/manual/regex.en-US.md",
+      "sha256": "9d4420b1b665474a1f74a691384a7ffe00304b3a56ca64096a1d2841ff34d065"
+    },
+    {
+      "path": "docs/manual/regex.zh-CN.md",
+      "sha256": "5963c187cea11380113794804d65a7c410db9095697fa849a937f804e8102314"
+    },
+    {
+      "path": "docs/manual/remote-control.en-US.md",
+      "sha256": "471c4555f810365832bde5429daf97ac97cd1a815941e901e76a4ba4f81de75a"
+    },
+    {
+      "path": "docs/manual/remote-control.zh-CN.md",
+      "sha256": "da2c95fb90b2206f3fea4dbc85e13b40f3c8fde1bfbc42cd637bfe707daa9b3f"
+    },
+    {
+      "path": "docs/manual/replay.en-US.md",
+      "sha256": "2a79b4f451e224c79ad3c26b2f5a72be9558ccd0eaedc0181b630c97cf65d242"
+    },
+    {
+      "path": "docs/manual/replay.zh-CN.md",
+      "sha256": "3daec2ceb7ce152770cd25e5f6e6ef2132905d0db9aa8e65dccfc7c04f14fbf4"
+    },
+    {
+      "path": "docs/manual/requests.en-US.md",
+      "sha256": "f3da81773bee2dd4a7b62984105376122540ef13dcaf7077ac33baae28dda5b3"
+    },
+    {
+      "path": "docs/manual/requests.zh-CN.md",
+      "sha256": "cb4708c5c7e4467f878f84048cc284b69afb68ecbe90832aa8f78bac6e2b4852"
+    },
+    {
+      "path": "docs/manual/rewrite.en-US.md",
+      "sha256": "73c036a8e6d929a412a94904a16f4450a87b9dbbac11b3a8beb37ef33dba4de1"
+    },
+    {
+      "path": "docs/manual/rewrite.zh-CN.md",
+      "sha256": "6e5b5058f8f08437193bd9ae8ae8da9d808a3da761c25d5bb7adcb0c0a4bfc3e"
+    },
+    {
+      "path": "docs/manual/scripts.en-US.md",
+      "sha256": "add6d986be6b686fa885868f3cc4808bef55914ee77c9965abfe3234e8d968df"
+    },
+    {
+      "path": "docs/manual/scripts.zh-CN.md",
+      "sha256": "16c0204c2151691c2e4079496bc001dba0aff0aa4dec4321884f2621240d01ed"
+    },
+    {
+      "path": "docs/manual/tun.en-US.md",
+      "sha256": "ada202b57ce8a6379151ddcef183f03417c88e1f9119b5aa671989724ff08320"
+    },
+    {
+      "path": "docs/manual/tun.zh-CN.md",
+      "sha256": "28f063b426acfd3243a15b95696040a557c0f09c1751a68e59f4f0a51a0bc9a2"
+    },
+    {
+      "path": "docs/reference/compatibility.md",
+      "sha256": "1d52ce01cca8dd5cdcdb3b9533481dd6a55be0d8075c3f26562a0dd690748b10"
+    },
+    {
+      "path": "docs/reference/remote-scripts.md",
+      "sha256": "9d45ad7e9fda7e6154ce86683dc3e03a0fc12d317acdfb7dba0d33dbad6af1d0"
+    },
+    {
+      "path": "docs/reference/rewrite-rules.md",
+      "sha256": "7e0db3c934be8d74c9bea1a7c384713588a9431e2eadf1620f301650f58eca56"
+    },
+    {
+      "path": "docs/reference/script-api.md",
+      "sha256": "6ee6b0d70d0216a60d89e7103d94ca43f7baf5897bdd63167318da63febe5fc7"
+    },
+    {
+      "path": "docs/reference/script-api.zh-CN.md",
+      "sha256": "a57774fbafb460f7c0a40b444df7583d6c2cca9c7ad4b291d3c00f1ec5af6684"
+    },
+    {
+      "path": "docs/reference/tools.md",
+      "sha256": "157de3f7579a69ca176167f7b1f054cb77e5c5663301dd1ddccfa10eced57cf0"
+    },
+    {
+      "path": "docs/reference/tools.schema.json",
+      "sha256": "092a83922ece331210889ca94942bf44354b560914b7ce6362cdf2fd8a0e79d8"
+    },
+    {
+      "path": "docs/verification.md",
+      "sha256": "6967e8804c419b95fb25d837e9810ebd50346a3b39ac0c94f8c1fa1347bf0dc6"
+    },
+    {
+      "path": "README.md",
+      "sha256": "4870d9c0d12c06dba978529877c2cc8dd46f612328e62c0cc023b8dd06d48da1"
+    },
+    {
+      "path": "README.zh-CN.md",
+      "sha256": "a752cd5799db9fec7af8aafa208dab87331380a05be732ea50b4538b2d5b42cd"
+    },
+    {
+      "path": "llms.txt",
+      "sha256": "56f6887791fbd80a5aee544717bea6cb4d06d862d3b7cd4ab1238db368a09228"
+    }
+  ],
+  "validation": {
+    "standaloneTypeScriptBuild": "passed",
+    "deterministicUnitTests": {
+      "passed": 23,
+      "failed": 0,
+      "nodeVersion": "24.1.0"
+    },
+    "toolSchemaMatchesRegisteredPublicTools": true,
+    "deviceRun": false,
+    "node20Matrix": false,
+    "published": false
+  },
+  "officialReferences": [
+    {
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation",
+      "checkedAt": "2026-11-07",
+      "note": "Form mode must not request access tokens; use URL mode for sensitive elicitation."
+    }
+  ],
+  "repositoryLayout": {
+    "kind": "independent-git-checkout",
+    "origin": "git@github.com:lemonXGroup/lemon-mcp.git",
+    "branch": "main",
+    "parentTracking": "ignored"
+  }
+}

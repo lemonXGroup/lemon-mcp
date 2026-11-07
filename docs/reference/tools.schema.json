@@ -1,0 +1,2039 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-11-07",
+  "scope": "current-public-mcp",
+  "toolCount": 67,
+  "resourceCount": 2,
+  "tools": [
+    {
+      "name": "prepare_remote_rewrite_script",
+      "description": "Downloads and preflights native Lemon ESM on the iPhone without persisting a script. Returns a caller-bound token valid for 10 minutes. Use it in a parent rule's remote_scripts or explicitly create a standalone resource.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "descriptor": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "description": "Public HTTPS source URL. The iPhone downloads and preflights it."
+              },
+              "format": {
+                "default": "javascript",
+                "type": "string",
+                "enum": [
+                  "javascript",
+                  "esm_package"
+                ]
+              },
+              "autoUpdate": {
+                "default": false,
+                "type": "boolean"
+              },
+              "intervalSeconds": {
+                "default": 86400,
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "const": 3600
+                  },
+                  {
+                    "type": "number",
+                    "const": 21600
+                  },
+                  {
+                    "type": "number",
+                    "const": 86400
+                  }
+                ]
+              },
+              "permissionCeiling": {
+                "default": {
+                  "log": true,
+                  "store": false,
+                  "http": false,
+                  "notify": false,
+                  "utils": true
+                },
+                "type": "object",
+                "properties": {
+                  "log": {
+                    "type": "boolean"
+                  },
+                  "store": {
+                    "type": "boolean"
+                  },
+                  "http": {
+                    "type": "boolean"
+                  },
+                  "notify": {
+                    "type": "boolean"
+                  },
+                  "utils": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "log",
+                  "store",
+                  "http",
+                  "notify",
+                  "utils"
+                ],
+                "additionalProperties": false
+              },
+              "expectedSHA256": {
+                "type": "string",
+                "pattern": "^[0-9a-fA-F]{64}$"
+              },
+              "isPrivate": {
+                "default": false,
+                "description": "Omit this source URL from sharing and cloud backups; the complete installed snapshot is still retained.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "url",
+              "format",
+              "autoUpdate",
+              "intervalSeconds",
+              "permissionCeiling",
+              "isPrivate"
+            ],
+            "additionalProperties": false
+          },
+          "required_handlers": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "onRequest",
+                "onResponse"
+              ]
+            }
+          }
+        },
+        "required": [
+          "descriptor",
+          "required_handlers"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "create_remote_rewrite_script",
+      "description": "Explicitly installs a standalone remote script using a prepared token. For an unsaved rule, pass the token through remote_scripts to save the resource and rule atomically.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "token",
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_remote_rewrite_script",
+      "description": "Reads a remote source's generation, validators, schedule, and controlled failure state. Source URLs may contain private query credentials; do not publish them.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "configure_remote_rewrite_script",
+      "description": "Changes source URL, permission ceiling, pin, or foreground auto-update settings using a generation CAS. It invalidates validators and does not replace the installed package; explicitly refresh to validate and install new content.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "generation": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "descriptor": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "description": "Public HTTPS source URL. The iPhone downloads and preflights it."
+              },
+              "format": {
+                "default": "javascript",
+                "type": "string",
+                "enum": [
+                  "javascript",
+                  "esm_package"
+                ]
+              },
+              "autoUpdate": {
+                "default": false,
+                "type": "boolean"
+              },
+              "intervalSeconds": {
+                "default": 86400,
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "const": 3600
+                  },
+                  {
+                    "type": "number",
+                    "const": 21600
+                  },
+                  {
+                    "type": "number",
+                    "const": 86400
+                  }
+                ]
+              },
+              "permissionCeiling": {
+                "default": {
+                  "log": true,
+                  "store": false,
+                  "http": false,
+                  "notify": false,
+                  "utils": true
+                },
+                "type": "object",
+                "properties": {
+                  "log": {
+                    "type": "boolean"
+                  },
+                  "store": {
+                    "type": "boolean"
+                  },
+                  "http": {
+                    "type": "boolean"
+                  },
+                  "notify": {
+                    "type": "boolean"
+                  },
+                  "utils": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "log",
+                  "store",
+                  "http",
+                  "notify",
+                  "utils"
+                ],
+                "additionalProperties": false
+              },
+              "expectedSHA256": {
+                "type": "string",
+                "pattern": "^[0-9a-fA-F]{64}$"
+              },
+              "isPrivate": {
+                "default": false,
+                "description": "Omit this source URL from sharing and cloud backups; the complete installed snapshot is still retained.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "url",
+              "format",
+              "autoUpdate",
+              "intervalSeconds",
+              "permissionCeiling",
+              "isPrivate"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "generation",
+          "descriptor"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "refresh_remote_rewrite_script",
+      "description": "Manually checks a normal remote script on the iPhone, bypassing its schedule. Conditional GET, integrity checks, preflight, atomic publish and runtime apply are shared with native UI. DRM content continues to use the existing licensed refresh channel.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "copy_remote_rewrite_script",
+      "description": "Copies an installed normal script snapshot to a new independent local script. No source URL or automatic subscription is copied.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "toggle_vpn",
+      "description": "Starts or stops the Lemon iOS VPN. Wait for success or error response.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "start",
+              "stop"
+            ],
+            "description": "Whether to start or stop the VPN capture"
+          }
+        },
+        "required": [
+          "action"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "open_web_page",
+      "description": "Opens an HTTP or HTTPS URL inside the Lemon iOS app's embedded WKWebView.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 4096,
+            "description": "HTTP or HTTPS URL to open inside Lemon"
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "close_web_page",
+      "description": "Closes the Lemon iOS embedded WKWebView.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "refresh_web_page",
+      "description": "Reloads the current page in the Lemon iOS embedded WKWebView.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "go_back_web_page",
+      "description": "Navigates back in the Lemon iOS embedded WKWebView history.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "go_forward_web_page",
+      "description": "Navigates forward in the Lemon iOS embedded WKWebView history.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "list_scheduled_tasks",
+      "description": "Lists locally stored Cron or millisecond-interval JavaScript tasks, including runtime state and next run time.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_scheduled_task",
+      "description": "Fetches one locally stored Cron or interval JavaScript task by id.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991,
+            "description": "Scheduled task id"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_scheduled_task_runtime_status",
+      "description": "Returns the current PacketTunnel scheduled-task runtime state without exposing script source.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "create_scheduled_task",
+      "description": "Creates a locally stored Cron or millisecond-interval JavaScript task. Use script_type=single with script for one file, or script_type=package with script_package for a validated ESM package. Packages must export onSchedule(input) from their manifest entry. Interval values must be 250..86400000 ms. It is enabled by default unless enabled=false is provided.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Task name"
+          },
+          "schedule_type": {
+            "default": "cron",
+            "description": "Cron or fixed interval scheduling",
+            "type": "string",
+            "enum": [
+              "cron",
+              "interval"
+            ]
+          },
+          "cron_expr": {
+            "description": "Five-field Cron expression; required for schedule_type=cron",
+            "type": "string",
+            "minLength": 1
+          },
+          "interval_ms": {
+            "description": "Fixed interval in milliseconds; required for schedule_type=interval",
+            "type": "integer",
+            "minimum": 250,
+            "maximum": 86400000
+          },
+          "script_type": {
+            "default": "single",
+            "description": "Whether the task uses one script file or an ESM script package",
+            "type": "string",
+            "enum": [
+              "single",
+              "package"
+            ]
+          },
+          "script": {
+            "type": "string",
+            "description": "JavaScript source for a single task, or the entry source compatibility field for a package"
+          },
+          "script_package": {
+            "description": "Complete ESM package used when script_type=package",
+            "type": "object",
+            "properties": {
+              "manifest": {
+                "type": "object",
+                "properties": {
+                  "packageVersion": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991,
+                    "description": "Supported package format version. Current value is 1."
+                  },
+                  "format": {
+                    "type": "string",
+                    "const": "esm"
+                  },
+                  "entry": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Relative entry module path, for example ./main.js."
+                  },
+                  "modules": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "description": "Relative module allowlist."
+                  },
+                  "permissions": {
+                    "type": "object",
+                    "properties": {
+                      "log": {
+                        "type": "boolean"
+                      },
+                      "store": {
+                        "type": "boolean"
+                      },
+                      "http": {
+                        "type": "boolean"
+                      },
+                      "notify": {
+                        "type": "boolean"
+                      },
+                      "utils": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "log",
+                      "store",
+                      "http",
+                      "notify",
+                      "utils"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "packageVersion",
+                  "format",
+                  "entry",
+                  "modules",
+                  "permissions"
+                ],
+                "additionalProperties": false
+              },
+              "modules": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "module_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Normalized relative module path, for example main.js."
+                    },
+                    "source": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "module_id",
+                    "source"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "manifest",
+              "modules"
+            ],
+            "additionalProperties": false
+          },
+          "enabled": {
+            "description": "Whether the task starts enabled; defaults to true",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "schedule_type",
+          "script_type",
+          "script"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "update_scheduled_task",
+      "description": "Updates a locally stored Cron or millisecond-interval JavaScript task. Use script_type=single with script for one file, or script_type=package with script_package for a validated ESM package. Packages must export onSchedule(input) from their manifest entry.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991,
+            "description": "Scheduled task id"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Task name"
+          },
+          "schedule_type": {
+            "default": "cron",
+            "description": "Cron or fixed interval scheduling",
+            "type": "string",
+            "enum": [
+              "cron",
+              "interval"
+            ]
+          },
+          "cron_expr": {
+            "description": "Five-field Cron expression; required for schedule_type=cron",
+            "type": "string",
+            "minLength": 1
+          },
+          "interval_ms": {
+            "description": "Fixed interval in milliseconds; required for schedule_type=interval",
+            "type": "integer",
+            "minimum": 250,
+            "maximum": 86400000
+          },
+          "script_type": {
+            "default": "single",
+            "description": "Whether the task uses one script file or an ESM script package",
+            "type": "string",
+            "enum": [
+              "single",
+              "package"
+            ]
+          },
+          "script": {
+            "type": "string",
+            "description": "JavaScript source for a single task, or the entry source compatibility field for a package"
+          },
+          "script_package": {
+            "description": "Complete ESM package used when script_type=package",
+            "type": "object",
+            "properties": {
+              "manifest": {
+                "type": "object",
+                "properties": {
+                  "packageVersion": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991,
+                    "description": "Supported package format version. Current value is 1."
+                  },
+                  "format": {
+                    "type": "string",
+                    "const": "esm"
+                  },
+                  "entry": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Relative entry module path, for example ./main.js."
+                  },
+                  "modules": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "description": "Relative module allowlist."
+                  },
+                  "permissions": {
+                    "type": "object",
+                    "properties": {
+                      "log": {
+                        "type": "boolean"
+                      },
+                      "store": {
+                        "type": "boolean"
+                      },
+                      "http": {
+                        "type": "boolean"
+                      },
+                      "notify": {
+                        "type": "boolean"
+                      },
+                      "utils": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "log",
+                      "store",
+                      "http",
+                      "notify",
+                      "utils"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "packageVersion",
+                  "format",
+                  "entry",
+                  "modules",
+                  "permissions"
+                ],
+                "additionalProperties": false
+              },
+              "modules": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "module_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Normalized relative module path, for example main.js."
+                    },
+                    "source": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "module_id",
+                    "source"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "manifest",
+              "modules"
+            ],
+            "additionalProperties": false
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the task is enabled"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "schedule_type",
+          "script_type",
+          "script",
+          "enabled"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "set_scheduled_task_enabled",
+      "description": "Enables or disables one scheduled task. Enabling scheduled execution requires the configured schedule entitlement.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991,
+            "description": "Scheduled task id"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the task should be enabled"
+          }
+        },
+        "required": [
+          "id",
+          "enabled"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "delete_scheduled_task",
+      "description": "Deletes one locally stored scheduled task by id.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991,
+            "description": "Scheduled task id"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "clear_captured_traffic",
+      "description": "Clears all captured HTTP traffics and body binaries from the device.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "fetch_system_logs",
+      "description": "Safely reads the tail (end) of the Lemon core engine (lemoncore.log) to analyze system or runtime network errors. Suitable for large log files.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "bytes": {
+            "description": "Number of bytes to read from the end. Default is 102400 (100KB, ~1500 lines). Increase only if deeply debugging.",
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "clear_system_logs",
+      "description": "Empties the Lemon core engine root logs (lemoncore.log). Useful to clean up logs before starting a fresh capture to isolate issues.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "list_host_mappings",
+      "description": "Lists the native DNS custom Host mappings currently applied by Lemon.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "upsert_host_mapping",
+      "description": "Creates a native DNS Host mapping, or updates one when an existing mapping id is provided. Writes are applied immediately and do not require a second confirmation.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Existing Host mapping UUID; omit to create a new mapping",
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "enabled": {
+            "description": "Whether the mapping is active (default true)",
+            "type": "boolean"
+          },
+          "domain": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 253,
+            "description": "ASCII domain name to match, for example api.example.com"
+          },
+          "target": {
+            "description": "IPv4 or IPv6 target; omit for a block mapping",
+            "type": "string",
+            "maxLength": 45
+          },
+          "action": {
+            "description": "Map the domain to target, or block it (default map)",
+            "type": "string",
+            "enum": [
+              "map",
+              "block"
+            ]
+          },
+          "comment": {
+            "description": "Optional operator comment; use an empty string to clear it",
+            "type": "string",
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "domain"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "delete_host_mapping",
+      "description": "Deletes a native DNS custom Host mapping by UUID. The change is applied immediately without a second confirmation.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "description": "Host mapping UUID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "search_traffic_previews",
+      "description": "Find HTTP traffic targeting specific keywords or hosts across recent logs.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "Search term, URL substring, or Hostname"
+          },
+          "limit": {
+            "description": "Number of items to retrieve (default 50)",
+            "type": "number"
+          }
+        },
+        "required": [
+          "keyword"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_captured_request",
+      "description": "Reads one complete captured request/response by transaction_id, trace_id, or the legacy database id returned by search_traffic_previews. Body metadata distinguishes missing, empty, text, and binary-file payloads.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "trace_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "description": "Stable request identifier returned as trace_id by search_traffic_previews."
+          }
+        },
+        "required": [
+          "trace_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "list_replay_items",
+      "description": "Lists saved HTTP replay items stored in Lemon's local runtime database.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_replay_item",
+      "description": "Reads one saved HTTP replay item by UUID, including its request headers and body.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "description": "Saved replay item UUID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "create_replay_item",
+      "description": "Saves a new HTTP replay item in Lemon's local runtime database. The item can later be executed with execute_replay_item.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "description": "Replay item name"
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 4096,
+            "format": "uri",
+            "description": "HTTP or HTTPS request URL"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE",
+              "HEAD",
+              "OPTIONS",
+              "CONNECT",
+              "TRACE"
+            ],
+            "description": "HTTP method"
+          },
+          "headers": {
+            "default": {},
+            "description": "Request headers as a string map",
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "body": {
+            "description": "Optional UTF-8 request body",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "url",
+          "method",
+          "headers"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "update_replay_item",
+      "description": "Updates a saved HTTP replay item without changing its execution history.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "description": "Saved replay item UUID"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "description": "Replay item name"
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 4096,
+            "format": "uri",
+            "description": "HTTP or HTTPS request URL"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE",
+              "HEAD",
+              "OPTIONS",
+              "CONNECT",
+              "TRACE"
+            ],
+            "description": "HTTP method"
+          },
+          "headers": {
+            "default": {},
+            "description": "Request headers as a string map",
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "body": {
+            "description": "Optional UTF-8 request body",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "url",
+          "method",
+          "headers"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "delete_replay_item",
+      "description": "Deletes one saved HTTP replay item by UUID.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "description": "Saved replay item UUID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "execute_replay_item",
+      "description": "Executes one saved HTTP replay item through Lemon's native URLSession/runtime path and returns the response preview. Saved execution status is updated.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "description": "Saved replay item UUID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "execute_replay_request",
+      "description": "Executes a one-shot HTTP replay without saving it. Use this for a captured request after inspecting it with get_captured_request, or for an ad-hoc request.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 4096,
+            "format": "uri",
+            "description": "HTTP or HTTPS request URL"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE",
+              "HEAD",
+              "OPTIONS",
+              "CONNECT",
+              "TRACE"
+            ],
+            "description": "HTTP method"
+          },
+          "headers": {
+            "default": {},
+            "description": "Request headers as a string map",
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "body": {
+            "description": "Optional UTF-8 request body",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "url",
+          "method",
+          "headers"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "fetch_binary_payload",
+      "description": "Deep-dives into a specific HTTP payload by fetching its full request/response bodies.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "The physical `.bin` path (e.g. `1234_req.bin`) discovered from previews."
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "execute_raw_sql",
+      "description": "Executes a raw SQL diagnostic query on the Lemon SQLite database (Read-Only queries advised).",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Standard SQLite SQL string to execute on the database"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "set_lemon_target_ip",
+      "description": "Manually override the target IP address of the iOS Lemon device. Use this if mDNS/Bonjour discovery fails or if the device relies on a different network IP.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "ip": {
+            "type": "string",
+            "description": "The physical IP address of the iOS device running Lemon (e.g. 192.168.1.10)"
+          },
+          "port": {
+            "description": "The port (default 9999)",
+            "type": "number"
+          }
+        },
+        "required": [
+          "ip"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_lemon_target_ip",
+      "description": "Retrieves the current network URL/IP that the MCP is using to communicate with the iOS device.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "fetch_device_file",
+      "description": "Fetches a specific non-database file from the iOS device's AppGroup container. ESM rewrite script packages are stored in runtime.sqlite; use get_rewrite_script_package instead of looking for RewriteScripts/*.js files.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "The relative path inside the AppGroup container (for example Logs/lemoncore.log or Bodies/response.bin)"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "list_rewrite_scripts",
+      "description": "Lists ESM rewrite script packages with their ids, active revisions, and enabled state. Use get_rewrite_script_package to read source modules.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_rewrite_script_package",
+      "description": "Fetches the complete manifest and source modules for an active or historical ESM rewrite script revision.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991,
+            "description": "Script package id"
+          },
+          "revision": {
+            "description": "Optional historical revision. Omit to read the active revision.",
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "list_rewrite_script_revisions",
+      "description": "Lists immutable revisions for a rewrite script package, including content hashes, byte sizes, and the active revision.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991,
+            "description": "Script package id"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "validate_rewrite_script_package",
+      "description": "Validates an ESM rewrite package with the same iOS-side manifest, module-path, and size rules used before persistence. It does not write anything.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "manifest": {
+            "type": "object",
+            "properties": {
+              "packageVersion": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991,
+                "description": "Supported package format version. Current value is 1."
+              },
+              "format": {
+                "type": "string",
+                "const": "esm"
+              },
+              "entry": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Relative entry module path, for example ./main.js."
+              },
+              "modules": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "description": "Relative module allowlist."
+              },
+              "permissions": {
+                "type": "object",
+                "properties": {
+                  "log": {
+                    "type": "boolean"
+                  },
+                  "store": {
+                    "type": "boolean"
+                  },
+                  "http": {
+                    "type": "boolean"
+                  },
+                  "notify": {
+                    "type": "boolean"
+                  },
+                  "utils": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "log",
+                  "store",
+                  "http",
+                  "notify",
+                  "utils"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "packageVersion",
+              "format",
+              "entry",
+              "modules",
+              "permissions"
+            ],
+            "additionalProperties": false
+          },
+          "modules": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "module_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Normalized relative module path, for example main.js."
+                },
+                "source": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "module_id",
+                "source"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "manifest",
+          "modules"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "upsert_rewrite_script",
+      "description": "Creates a new ESM rewrite script package or publishes a new immutable revision. Provide manifest/modules for multi-file packages, or content as a one-file shorthand. Set reload=true to request an immediate runtime snapshot reload after persistence.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Existing script package id. Omit to create a package.",
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "name": {
+            "description": "Script name. Required when creating; optional when updating.",
+            "type": "string",
+            "minLength": 1
+          },
+          "manifest": {
+            "description": "Complete ESM package manifest.",
+            "type": "object",
+            "properties": {
+              "packageVersion": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991,
+                "description": "Supported package format version. Current value is 1."
+              },
+              "format": {
+                "type": "string",
+                "const": "esm"
+              },
+              "entry": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Relative entry module path, for example ./main.js."
+              },
+              "modules": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "description": "Relative module allowlist."
+              },
+              "permissions": {
+                "type": "object",
+                "properties": {
+                  "log": {
+                    "type": "boolean"
+                  },
+                  "store": {
+                    "type": "boolean"
+                  },
+                  "http": {
+                    "type": "boolean"
+                  },
+                  "notify": {
+                    "type": "boolean"
+                  },
+                  "utils": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "log",
+                  "store",
+                  "http",
+                  "notify",
+                  "utils"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "packageVersion",
+              "format",
+              "entry",
+              "modules",
+              "permissions"
+            ],
+            "additionalProperties": false
+          },
+          "modules": {
+            "description": "Complete module source list matching manifest.modules.",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "module_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Normalized relative module path, for example main.js."
+                },
+                "source": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "module_id",
+                "source"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "content": {
+            "description": "One-file shorthand. Converted to main.js with the default restricted permissions.",
+            "type": "string"
+          },
+          "reload": {
+            "description": "Request an immediate rewrite snapshot reload after the package is stored.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "rollback_rewrite_script",
+      "description": "Makes an existing immutable revision the active revision for a rewrite script package. Historical revisions are retained.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991,
+            "description": "Script package id"
+          },
+          "revision": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991,
+            "description": "Revision to activate"
+          },
+          "reload": {
+            "description": "Request an immediate rewrite snapshot reload after switching the active revision.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "revision"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_rewrite_runtime_status",
+      "description": "Reports whether rewrite and JavaScript execution are enabled, runtime resource limits, sync state, and script counts.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_rewrite_debug_events",
+      "description": "Reads the independent structured rewrite-debug event projection. Filter by trace, rewrite phase, or severity instead of scanning generic trace events.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "trace_id": {
+            "description": "Optional HTTP trace id to inspect.",
+            "type": "string"
+          },
+          "event_type": {
+            "description": "Optional event type, for example rule_matched, mutation_applied, script_failed, or rewrite_skipped.",
+            "type": "string"
+          },
+          "level": {
+            "description": "Optional severity filter, for example info or warn.",
+            "type": "string"
+          },
+          "limit": {
+            "description": "Maximum number of events to return (default 200, maximum 1000).",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000
+          },
+          "offset": {
+            "description": "Number of newest matching events to skip.",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "clear_rewrite_debug_events",
+      "description": "Clears structured rewrite-debug events. Provide trace_id to clear only one request; omit it only when intentionally clearing the whole debug projection.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "trace_id": {
+            "description": "Optional HTTP trace id. When omitted, all rewrite-debug events are cleared.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "reload_rewrite_runtime",
+      "description": "Requests the active rewrite snapshot to reload from runtime.sqlite. This may fail when the VPN runtime is not running; persisted scripts are unaffected.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "delete_rewrite_script",
+      "description": "Delete a rewrite script by its numeric ID.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "list_rewrite_rules",
+      "description": "Fetches all existing rewrite policies and their MatchGroups.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "upsert_rewrite_rule",
+      "description": "Add or update a rewrite policy with ordered MatchGroups. To update, ensure the rule object has an 'id'.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "rule_json": {
+            "type": "string",
+            "description": "JSON string specifying Policy metadata. Example: {\"name\":\"Mock API\",\"enabled\":true,\"priority\":100}"
+          },
+          "groups_json": {
+            "type": "string",
+            "description": "JSON string array of MatchGroup objects. Each group has group_key, order, conditions (AND) and actions. Multiple groups are evaluated in order without short-circuiting."
+          },
+          "remote_scripts_json": {
+            "description": "Optional JSON array from prepare_remote_rewrite_script. New resources: {temporary_id:string,name,token}, IDs 9000000000000000..9007199254740991 referenced by actions. Shared source edits: {temporary_id:string,script_id,source_generation,active_revision,name,token}, using current metadata. The iPhone commits resources and the parent rule atomically.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "rule_json",
+          "groups_json"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "delete_rewrite_rule",
+      "description": "Delete a rewrite rule by its numeric ID.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_rewrite_schema",
+      "description": "Returns the exact JSON schema and accepted enum values for creating or updating Rewrite Rules and Actions.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "list_modules",
+      "description": "Lists installed host-side UI Modules, active revisions, and enabled state.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_module_package",
+      "description": "Fetches the complete manifest and ESM sources for an active or historical Module revision.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "description": "Reverse-domain Module id"
+          },
+          "revision": {
+            "description": "Optional historical revision",
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "module_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "list_module_revisions",
+      "description": "Lists immutable Module revisions, hashes, and the active revision.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "description": "Reverse-domain Module id"
+          }
+        },
+        "required": [
+          "module_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "validate_module_package",
+      "description": "Validates a Module package using the iOS validator without persisting it.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "package_json": {
+            "type": "string",
+            "description": "Complete JSON package with manifest and sources"
+          }
+        },
+        "required": [
+          "package_json"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "upsert_module",
+      "description": "Installs a new Module or publishes a new immutable revision. Optionally reloads the host runtime.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "package_json": {
+            "type": "string",
+            "description": "Complete JSON package with manifest and sources"
+          },
+          "reload": {
+            "description": "Reload all active Module workers after persistence",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "package_json"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "rollback_module",
+      "description": "Switches a Module to an immutable historical revision; history is retained.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "description": "Reverse-domain Module id"
+          },
+          "revision": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991,
+            "description": "Revision to activate"
+          },
+          "reload": {
+            "description": "Reload this Module worker after rollback",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "module_id",
+          "revision"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "toggle_module",
+      "description": "Enables or disables one installed UI Module.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "description": "Reverse-domain Module id"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the Module can be opened"
+          }
+        },
+        "required": [
+          "module_id",
+          "enabled"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "delete_module",
+      "description": "Deletes an installed UI Module and all of its immutable revisions.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "description": "Reverse-domain Module id"
+          }
+        },
+        "required": [
+          "module_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_module_runtime_status",
+      "description": "Reports active Module workers, leases, and runtime limits.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "reload_module_runtime",
+      "description": "Releases one Module worker or all workers so the next activation loads the active revision.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "module_id": {
+            "description": "Optional Module id; omit to reload all",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "inspect_module",
+      "description": "Fetches the active manifest, UI schema, and ESM sources of one installed Module.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "description": "Reverse-domain Module id"
+          }
+        },
+        "required": [
+          "module_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "install_module",
+      "description": "Compatibility alias for installing or publishing a Module package.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "package_json": {
+            "type": "string",
+            "description": "Complete JSON package with manifest and sources"
+          }
+        },
+        "required": [
+          "package_json"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "set_module_enabled",
+      "description": "Compatibility alias for enabling or disabling one UI Module.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "description": "Reverse-domain Module id"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the Module can be opened"
+          }
+        },
+        "required": [
+          "module_id",
+          "enabled"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}
