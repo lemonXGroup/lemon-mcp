@@ -209,6 +209,16 @@ Conditions inside one MatchGroup use AND. Matching groups use OR. The exact
 accepted fields and action values are returned by `get_rewrite_schema` and
 should be read before generating a rule.
 
+Default conditions support `host`, `path`, `query`, and `method`. Query matches
+the raw query string without `?`, preserving encoding, case, and parameter order.
+The four non-regex Host operators accept `*` and `?`; `eq *.example.com`
+includes the root domain and every subdomain. Prefix/suffix/contains retain
+their string-position semantics. The tool checks device Host wildcard support
+before saving; disabling an existing policy remains available on older devices.
+Wildcard shares use portable schema 5 and backups use version 6. See the
+[matching reference](docs/reference/rewrite-rules.md#matching) for examples,
+capability requirements, and compatibility details.
+
 ### UI Modules
 
 - `list_modules`, `get_module_package`: inspect installed modules and package

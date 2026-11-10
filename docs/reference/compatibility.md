@@ -1,6 +1,6 @@
 # Capability and compatibility boundaries
 
-Checked against the source tree on 2026-11-07. [Manual](../README.md) · [AI guide](../AI_GUIDE.md)
+Rewrite matching updated against the source tree on 2026-11-10; other capability rows retain their 2026-11-07 review. [Manual](../README.md) · [AI guide](../AI_GUIDE.md)
 
 ## App support and the public MCP surface
 
@@ -10,19 +10,23 @@ Checked against the source tree on 2026-11-07. [Manual](../README.md) · [AI gui
 | DNS Hosts, one-request Replay, scheduled task CRUD | Implemented | Tools available |
 | Local ESM revisions and remote script lifecycle | Implemented | Tools available |
 | UI Module package and lifecycle management | Implemented | Tools available; this does not expose every Module host capability as a standalone MCP tool |
-| URL expression matching | Implemented | groups_json can forward the fields, but get_rewrite_schema does not document them yet |
+| Query conditions | Raw query field with five existing operators; AND with host/path/method | Forwarded unchanged; documented by get_rewrite_schema; no portable version bump, older clients reject query |
+| Host wildcards | Four non-regex operators, leading *. includes root and all subdomains; portable 5 / backup 6 | get_rewrite_schema documents the semantics; upsert checks the complete host_wildcards capability before saving, except disabling an existing policy |
+| URL expression matching | Implemented; inactive host/path/query/method conditions are retained | groups_json forwards the fields and get_rewrite_schema documents them |
 | JSON Path body edits | Implemented | groups_json can forward them; consult the rule reference |
 | multipart request fields | Implemented; advertises multipart_request_body | Payload can be forwarded; the newer preflight check in the internal MCP is absent here |
 | WebSocket message/frame query | GET /api/websocket/records and /detail | list_websocket_records and get_websocket_record are not yet registered here |
-| WebSocket rewrite scope and onWebSocketMessage | Implemented | Generic rule/package payloads can carry compatible content, but local schema guidance is incomplete and remote required_handlers rejects this handler |
+| WebSocket rewrite scope and onWebSocketMessage | Implemented | Generic rule/package payloads and local schema guidance support WS phases; remote required_handlers still rejects this handler |
 | Replay Workspace suites and run history/results | Implemented | No dedicated suite/run tools in either current MCP copy |
 | Scheduled task execution history | GET /api/scripts/scheduled/runs | No dedicated MCP tool |
-| Rewrite capability discovery | GET /api/rewrite/capabilities | No standalone MCP tool; public upsert lacks internal multipart preflight |
+| Rewrite capability discovery | GET /api/rewrite/capabilities | No standalone MCP tool; upsert automatically checks host wildcards, but lacks internal multipart preflight |
 | Global Rewrite, JS, MITM, or capture policy settings | App-managed | No general MCP settings write API |
 | First-use connection wizard and token dialog | Not part of current MCP implementation | Not implemented; environment token only |
 | Documentation resources, MCP prompts, server instructions | Not registered in current server | These files are available locally and through GitHub; clients must be directed to read them |
 
 This snapshot registers **67 tools and 2 resources**. The internal MCP registers 69 tools; the two extra tools are WebSocket reads. Count the installed runtime rather than inferring its surface from a README version string.
+
+Host wildcard support requires host_wildcards.supported=true, version>=1, root_domain=true and all four operators from GET /api/rewrite/capabilities. A missing flag, partial declaration or failed capability read blocks the public MCP write; an existing policy can still be disabled with its actual id and enabled=false. A successful JSON parse on an old device does not establish wildcard semantics.
 
 ## Protocol-specific boundaries
 
@@ -42,7 +46,7 @@ A secure dialog is a proposed enhancement, not current behavior. MCP form elicit
 
 ## Evidence limits
 
-This audit built and ran 23 deterministic tests in a clean standalone copy on Node.js 24.1.0. It did not perform a new physical-device run, prove the Node.js 20 minimum in a runtime matrix, publish GitHub content, or deploy an App/backend change. These documents describe source-supported behavior and explicit MCP gaps.
+The 2026-11-10 matching sync built and ran 34 deterministic tests (including five subtests) in a clean standalone copy on Node.js 24.1.0; the Skill's 13 loopback HTTP tests and format validation also passed. These checks did not perform a new physical-device run, prove the Node.js 20 minimum in a runtime matrix, publish GitHub content, or deploy an App/backend change. Other capability rows retain their earlier source review. See the [evidence record](../verification.md) for the two App commits and exact scope.
 
 ## Optional Skill without MCP
 

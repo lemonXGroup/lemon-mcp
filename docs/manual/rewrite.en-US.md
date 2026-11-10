@@ -1,4 +1,4 @@
-> Evidence (2026-11-07): Adapted from the existing user manual with identified differences corrected; not every UI step or runtime path has been verified. See [provenance and limits](../verification.md).
+> Evidence (rewrite matching updated 2026-11-10; other sections reviewed 2026-11-07): Adapted from the existing user manual with identified differences corrected; not every UI step or runtime path has been verified. See [provenance and limits](../verification.md).
 
 > This manual ships with LemonMCP. Start with the [AI guide](../AI_GUIDE.md); use the [rule reference](../reference/rewrite-rules.md), [script API](../reference/script-api.md), and [compatibility notes](../reference/compatibility.md) for exact contracts.
 
@@ -38,12 +38,23 @@ Configure the rule's scope in the Match section. Common fields include:
 
 - **Host**: match a domain such as `api.example.com`.
 - **Path**: match a URL path such as `/api/v1/profile`.
+- **Query**: match the raw query string, for example `packageId=1`.
 - **Method**: restrict the rule to methods such as `GET` or `POST`.
 - **Match operator**: choose an exact, contains, prefix, suffix, or regular-expression style operation when available for the field.
 
-Default-mode conditions within a group use AND. Enabled groups are evaluated in order without first-match short-circuiting, so several matching groups may execute. Start with Host and Path, then add Method or another field as needed. This keeps a rule from affecting every request under a domain.
+Default-mode conditions within a group use AND. Enabled groups are evaluated in order without first-match short-circuiting, so several matching groups may execute. Start with Host and Path, then add Query and Method as needed. This keeps a rule from affecting every request under a domain.
 
 Use multiple **Match Groups** when you need to express more than one group of conditions. Conditions inside one group describe a complete match; groups let you represent a broader set of alternatives. Before saving, compare the fields with a real request that you expect to match.
+
+### Query and Host wildcard matching
+
+Query matches the raw query string without its leading `?`, preserving encoding, case and parameter order and excluding the fragment. It supports eq, prefix, suffix, contains and regex and uses AND with Host, Path and Method. For a complete parameter value, use query regex `(^|&)packageId=1(&|$)`; contains `packageId=1` also matches `packageId=10`. Regex `^$` matches no query or an empty query. Full-URL expression mode retains but ignores these default conditions.
+
+Host eq, prefix, suffix and contains support `*` for any length and `?` for one character. A single leading `*.` includes the root domain and all subdomains; no new mode is required. For example, `eq *.example.com` matches `example.com`, `a.example.com` and `a.b.example.com`, while rejecting `badexample.com` and `example.com.evil.test`. `eq api?.example.com` requires exactly one character at the question mark. Only the first leading `*.` has the root-domain exception; internal `*.` keeps a required dot.
+
+Prefix, suffix and contains retain their position semantics: `suffix *.example.com` also matches `badexample.com`. Use `eq *.example.com` for a domain and its subdomains only. Wildcards cannot consume ports, userinfo, paths or queries; regex and other fields keep their own syntax. A star-only Host uses the existing match-all confirmation.
+
+Use an updated device with host_wildcards version 1, root_domain=true and all four operators in /api/rewrite/capabilities. The public MCP checks this before saving; disabling an existing policy remains possible. Existing local wildcard conditions adopt these semantics after upgrading. Shares with host wildcard conditions, including inactive conditions, use version 5; cloud/local backups use version 6. Query conditions keep the existing format and are rejected by older clients that do not recognize the field.
 
 ### 3. Choose an action
 

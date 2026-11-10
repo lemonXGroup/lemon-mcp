@@ -1,6 +1,6 @@
 # Direct WebControl HTTP API
 
-Source-checked 2026-11-07 against the App routers and models. These are **HTTP payloads**, not MCP tool arguments. All operations below use the current token header; feature/licensing gates still apply. Older phones may lack routes. See [connection](connection.md) for the Python helper, errors and binary output.
+Rewrite matching updated 2026-11-10 against the App query/host commits; other routes retain their 2026-11-07 source check. These are **HTTP payloads**, not MCP tool arguments. All operations below use the current token header; feature/licensing gates still apply. Older phones may lack routes. See [connection](connection.md) for the Python helper, errors and binary output.
 
 The helper prints an envelope; device JSON is under body. Some routes return a bare array or {total,items}, others {success,...}; do not assume one common device wrapper. An HTTP 200 may contain success:false. GET reads do not require starting capture.
 
@@ -50,7 +50,7 @@ Read the complete [rules/action reference](https://raw.githubusercontent.com/lem
 | Method / path | Input |
 | --- | --- |
 | GET /api/rewrite | Bare array of policies with portable groups, except protected content |
-| GET /api/rewrite/capabilities | Read live capability flags, including multipart request body support |
+| GET /api/rewrite/capabilities | Read live host_wildcards and multipart request body flags, and portable_schema_versions |
 | POST /api/rewrite | JSON {"rule":{name,enabled,priority},"groups":[...]} |
 | PUT /api/rewrite | Same complete payload, with existing rule.id |
 | DELETE /api/rewrite | Query id = policy's numeric ID |
@@ -63,6 +63,8 @@ Read the complete [rules/action reference](https://raw.githubusercontent.com/lem
 Rule metadata accepts name, enabled, priority, optional id. Submit groups as a JSON array, not groups_json. action.config remains a JSON string. Before updating, split a returned policy into allowed rule metadata and full portable groups: do not blindly echo stored timestamps, DRM fields or schema projections into rule. Do not include legacy top-level actions/matchHost fields.
 
 Each group has unique lowercase UUID group_key; order equals array position. Action order equals action position. Omit local group/action/condition IDs and foreign keys. Preserve unrelated actions and group_key on edits. To enable/disable a policy, PUT its complete groups with rule.enabled changed. No dedicated global Rewrite/JS switch setter exists here.
+
+Default conditions accept host/path/query/method and eq/prefix/suffix/contains/regex. Query targets the raw query string without leading ?, excluding fragments; preserve encoding, case and order. Use (^|&)packageId=1(&|$) for an exact query parameter. In expression mode, retained default conditions are inactive. Host non-regex * and ? need host_wildcards supported=true, version>=1, root_domain=true and all four operators; only the leading *. includes root and subdomains. Direct HTTP calls do not pass through the MCP preflight: read capabilities yourself before saving wildcard rules. Keep existing ids/groups when disabling an old rule. Host wildcard shares use version 5 and backups 6, including inactive conditions; query has no format version bump. Do not add portable schema_version to local rule metadata.
 
 Optional remote_scripts carries atomic remote drafts alongside a rule. Use the exact lifecycle from [remote sources](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/remote-scripts.md); the HTTP value is an array, unlike MCP remote_scripts_json.
 

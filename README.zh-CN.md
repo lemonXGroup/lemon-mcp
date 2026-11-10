@@ -186,6 +186,13 @@ validate_rewrite_script_package，发布后分别检查持久化结果和 runtim
 同一个 MatchGroup 内的条件使用 AND，多个匹配组使用 OR。生成规则前应先
 读取 get_rewrite_schema，确认当前实现接受的字段和 action 值。
 
+默认条件支持 `host`、`path`、`query`、`method`。Query 匹配不含开头 `?`
+的原始参数串，保留编码、大小写和参数顺序。Host 的四种非正则模式支持
+`*`、`?`，其中 `eq *.example.com` 包含根域和各级子域；前缀、后缀、包含
+仍保留字符串位置语义。工具保存通配规则前会检查设备能力，旧设备仍可停用
+已有规则。含 Host 通配条件的分享使用 schema 5，备份使用版本 6。
+示例、能力要求与兼容边界见[匹配参考](docs/reference/rewrite-rules.md#matching)。
+
 ### UI Modules
 
 - list_modules、get_module_package：查看已安装模块和脚本包 revision。

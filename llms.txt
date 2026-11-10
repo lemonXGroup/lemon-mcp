@@ -29,6 +29,8 @@ The Skill can use direct WebControl HTTP with Python 3.10+ and no MCP installati
 - [脚本 API](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/script-api.zh-CN.md)
 - [Remote script lifecycle](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/remote-scripts.md)
 
+For Rewrite matching, read the rule reference before generating conditions. Query matches the raw query without the leading ?. Host eq/prefix/suffix/contains support * and ?; eq *.example.com includes the root and all subdomains. The other operators retain string-position semantics. Public MCP upsert verifies device host_wildcards support before saving; direct HTTP callers must check capabilities themselves. Wildcard shares use schema 5 and backups use version 6; query adds no portable version and older clients reject the field.
+
 ## All user manual chapters
 
 - [Overview / 产品概览](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/overview.en-US.md) ([中文](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/manual/overview.zh-CN.md))

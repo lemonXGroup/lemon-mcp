@@ -13,6 +13,7 @@ import {
 } from "./rewriteScripts";
 import { normalizeCapturedRequest } from "./capturedRequest";
 import { exactHostForKeyword, filterTrafficItems } from "./trafficSearch";
+import { hasHostWildcardConditions, supportsHostWildcards } from "./rewriteMatching";
 
 const scheduledScriptPackageSchema = z.object({
   manifest: rewriteScriptManifestSchema,
@@ -1007,16 +1008,28 @@ export function registerTools(server: McpServer) {
 
   // 22. upsert_rewrite_rule
   server.registerTool("upsert_rewrite_rule", {
-    description: "Add or update a rewrite policy with ordered MatchGroups. To update, ensure the rule object has an 'id'.",
+    description: "Add or update a rewrite policy with ordered MatchGroups. Supports host/path/query/method conditions and URL expressions. Checks device host-wildcard support before saving; disabling an existing policy remains available. To update, ensure the rule object has an 'id'.",
     inputSchema: {
       rule_json: z.string().describe("JSON string specifying Policy metadata. Example: {\"name\":\"Mock API\",\"enabled\":true,\"priority\":100}"),
-      groups_json: z.string().describe("JSON string array of MatchGroup objects. Each group has group_key, order, conditions (AND) and actions. Multiple groups are evaluated in order without short-circuiting."),
+      groups_json: z.string().describe("JSON string array of MatchGroup objects. Each group has group_key, order, match_mode (default/expression), match_expression, host/path/query/method conditions (AND in default mode) and actions. Host eq/prefix/suffix/contains accept * and ? on supported devices; leading *. includes the root domain. Multiple groups are evaluated in order without short-circuiting."),
       remote_scripts_json: z.string().optional().describe("Optional JSON array from prepare_remote_rewrite_script. New resources: {temporary_id:string,name,token}, IDs 9000000000000000..9007199254740991 referenced by actions. Shared source edits: {temporary_id:string,script_id,source_generation,active_revision,name,token}, using current metadata. The iPhone commits resources and the parent rule atomically.")
     }
   }, async ({ rule_json, groups_json, remote_scripts_json }) => {
     try {
       const rule = JSON.parse(rule_json);
       const groups = JSON.parse(groups_json);
+      const disablingExistingPolicy = Number.isInteger(rule.id) && rule.id > 0 && rule.enabled === false;
+      if (!disablingExistingPolicy && hasHostWildcardConditions(groups)) {
+        let capabilities: unknown;
+        try {
+          capabilities = await lemonApi.get("/api/rewrite/capabilities");
+        } catch (error) {
+          throw new Error(`Cannot verify host wildcard support: ${apiErrorMessage(error)}. Update the device if the capability endpoint is unavailable.`);
+        }
+        if (!supportsHostWildcards(capabilities)) {
+          throw new Error("Host wildcards require device host_wildcards version 1, root_domain=true and all four operators; update the device before saving this rule.");
+        }
+      }
       const remote = remote_scripts_json === undefined ? {} : { remote_scripts: JSON.parse(remote_scripts_json) };
       // iOS takes POST /api/rewrite with json: { rule: { ... }, groups: [ ... ] }
       let res: any;
@@ -1075,19 +1088,29 @@ Policy metadata does not contain match conditions; all conditions belong to a Ma
     "enabled": true,
     "order": 0,
     "allows_match_all": false,
+    "match_mode": "default",
+    "match_expression": "",
     "conditions": [{ "field": "host", "op": "eq", "value": "api.example.com" }],
     "actions": [{ "enabled": true, "scope": "response", "action": "body_replace", "config": "{}", "order": 0 }]
   }
 ]
 \`\`\`
 Each MatchGroup contains a stable \`group_key\`, an \`order\`, optional \`conditions\` and an ordered \`actions\` array. Conditions inside one group use AND; matching groups use OR without short-circuiting.
-**Accepted scope (RewritePhase)**: "request", "response"
+Set \`match_mode\` to "expression" and \`match_expression\` to a Rust regex over the full URL (scheme, host, optional port, path and query). Host/path/query/method conditions are retained but ignored in expression mode; all HTTP methods are eligible. An enabled expression must be nonempty and valid; lookaround and backreferences are unsupported. Expression groups must set \`allows_match_all\` to false. Missing matcher fields mean default mode for historical groups. Portable sharing uses schema_version 3 when expression data is present; ordinary rules remain version 2. Non-regex host eq/prefix/suffix/contains support * (zero or more host characters) and ? (one host character). A single leading *. includes the root domain and all subdomains. Position semantics still apply: suffix *.example.com also matches badexample.com. Use eq *.example.com for a root domain and its subdomains only. These wildcards never consume ports, paths or queries; other fields and regex keep their syntax. Shares with wildcard host conditions, including inactive conditions, use schema_version 5; backups use version 6. GET /api/rewrite/capabilities reports host_wildcards version 1 with root_domain=true.
+
+Default-mode condition fields are "host", "path", "query" and "method"; operators are "eq", "prefix", "suffix", "contains" and "regex". Conditions use AND. Query matches the raw query string without the leading ?, excluding fragments; it preserves encoding, case and parameter order. Use query regex (^|&)packageId=1(&|$) for a complete parameter value and ^$ for no query or an empty query. Query does not add a portable version number; old clients reject this unknown field. Non-regex wildcards only extend host, and do not change path/query/method syntax. A star-only host uses the existing allows_match_all confirmation.
+
+**Accepted scope (RewritePhase)**: "request", "response", "websocket_client", "websocket_server". WebSocket scopes allow body_replace and js only. A WebSocket script exports onWebSocketMessage(ctx); ctx.message has direction, bodyText and bodyBase64. Return {body:{text:"replacement"}} or {body:{base64:"AAE="}}, {drop:true}, {injectBefore:"text"}, or {injectAfter:"text"}. Message actions execute after the HTTP Upgrade; HTTP header actions do not rewrite WebSocket messages.
 **Accepted action (RewriteActionType)**:
 - "header_mod": Modifies HTTP Headers.
-- "body_replace": Replaces the entire payload body.
+- "body_replace": Replaces text, regex matches, an exact JSON path, or ordinary multipart request fields.
 - "mock_file": Returns a local payload.
 - "redirect": HTTP Redirection.
 - "js": Invokes an ESM script package by id. Its config is a JSON string such as {"script_id":7,"phase":"body"}.
+
+Multipart request fields use config JSON strings with mode="multipart", scope="request", and portable schema_version=4. Example config: {"mode":"multipart","operation":"set","field":"role","occurrence":{"kind":"all"},"find":"","replace":"admin","regex":false}. Operations are set, replace, delete, append. Replace requires nonempty find and supports regex captures; delete requires empty find/replace and regex=false. Append omits occurrence. Other operations require occurrence {"kind":"all"} or {"kind":"index","index":0} (zero-based, 0..1023). Exact field names include whitespace, exclude _charset_, and cannot contain CR/LF/NUL. Files are preserved; multipart response/compressed/large streaming edits are unsupported. GET /api/rewrite/capabilities reports device support; 404 or a missing capability requires upgrading. Rules with host wildcards export schema 5; otherwise rules without multipart continue to export schema 2/3. Normal text/regex remains suitable for application/x-www-form-urlencoded; never use raw text replacement for a multipart upload.
+
+upsert_rewrite_rule checks GET /api/rewrite/capabilities before saving host wildcards, including inactive conditions. Missing support is an error; an existing policy can still be disabled with id and enabled=false. This gate does not add a portable schema_version to local rule metadata. Ordinary shares keep versions 2/3/4; host wildcard shares use 5 and their backups use 6.
 
 ## 3. ESM Script Package
 

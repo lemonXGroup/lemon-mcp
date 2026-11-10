@@ -42,7 +42,7 @@
 
 ## 创建、读取、修改、停用或删除重写
 
-1. 先读 [规则参考](reference/rewrite-rules.md)；涉及脚本再读 [脚本 API](reference/script-api.zh-CN.md)。当前公开版 `get_rewrite_schema` 的文本尚未追上表达式/multipart/WebSocket，不能单独作为完整能力说明。
+1. 先读 `get_rewrite_schema` 和[规则参考](reference/rewrite-rules.md)；涉及脚本再读[脚本 API](reference/script-api.zh-CN.md)。默认条件为 host/path/query/method，query 匹配不含 `?` 的原始参数串。Host 的 eq/prefix/suffix/contains 支持 `*`、`?`，`eq *.example.com` 包含根域和各级子域，其他模式保留字符串位置语义。公开工具保存前会检查 Host 通配能力，包括非活动条件；已有规则仍可停用。直接 HTTP 调用方须自行查能力接口，multipart、WebSocket 的剩余工具缺口见[兼容性](reference/compatibility.md)。
 2. 查询 `list_rewrite_rules` 和 `get_rewrite_runtime_status`，明确目标规则、匹配范围、动作阶段及全局开关。当前 MCP 没有设置全局 Rewrite/JS 开关的专用工具，必要时引导用户在 App 打开。
 3. 使用 `upsert_rewrite_rule`：创建时不带 rule.id；修改时带真实 rule.id，并提交完整的 groups。更新之前保留原规则内容和 group_key，避免丢失其他匹配组或动作。
 4. 脚本包先 validate，再发布 revision，随后将 script_id 绑定至 action。普通远程脚本的 prepare/create/configure/refresh/copy 是另一条生命周期，见 [远程脚本](reference/remote-scripts.md)。

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-07",
+  "checkedAt": "2026-11-10",
   "scope": "current-public-mcp",
   "toolCount": 67,
   "resourceCount": 2,
@@ -1737,7 +1737,7 @@
     },
     {
       "name": "upsert_rewrite_rule",
-      "description": "Add or update a rewrite policy with ordered MatchGroups. To update, ensure the rule object has an 'id'.",
+      "description": "Add or update a rewrite policy with ordered MatchGroups. Supports host/path/query/method conditions and URL expressions. Checks device host-wildcard support before saving; disabling an existing policy remains available. To update, ensure the rule object has an 'id'.",
       "inputSchema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "type": "object",
@@ -1748,7 +1748,7 @@
           },
           "groups_json": {
             "type": "string",
-            "description": "JSON string array of MatchGroup objects. Each group has group_key, order, conditions (AND) and actions. Multiple groups are evaluated in order without short-circuiting."
+            "description": "JSON string array of MatchGroup objects. Each group has group_key, order, match_mode (default/expression), match_expression, host/path/query/method conditions (AND in default mode) and actions. Host eq/prefix/suffix/contains accept * and ? on supported devices; leading *. includes the root domain. Multiple groups are evaluated in order without short-circuiting."
           },
           "remote_scripts_json": {
             "description": "Optional JSON array from prepare_remote_rewrite_script. New resources: {temporary_id:string,name,token}, IDs 9000000000000000..9007199254740991 referenced by actions. Shared source edits: {temporary_id:string,script_id,source_generation,active_revision,name,token}, using current metadata. The iPhone commits resources and the parent rule atomically.",

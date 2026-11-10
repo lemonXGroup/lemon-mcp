@@ -38,7 +38,7 @@ Use `search_traffic_previews` to find records, then `get_captured_request` for a
 
 ## Maintain Rewrite rules and scripts
 
-Read the [rule reference](reference/rewrite-rules.md) and, for scripts, the [script API](reference/script-api.md). The current public `get_rewrite_schema` text omits expression matching, multipart, and WebSocket additions; it is incomplete for those features.
+Read `get_rewrite_schema` and the [rule reference](reference/rewrite-rules.md); for scripts, read the [script API](reference/script-api.md). Default matching accepts host/path/query/method. Query uses the raw query string without `?`. Host eq/prefix/suffix/contains accept `*` and `?`; `eq *.example.com` includes the root and all subdomains, while the other operators retain string-position semantics. The public tool checks device Host wildcard capabilities before saving, including inactive conditions; an existing policy can still be disabled. Direct HTTP callers must check the capability route themselves. Read [compatibility](reference/compatibility.md) for the remaining multipart and WebSocket tool gaps.
 
 Read existing rules and runtime status first. Create with `upsert_rewrite_rule` without an id; update with the actual rule.id and a complete groups array. Preserve group_key and unrelated content. Disable by updating enabled=false; delete only when requested using `delete_rewrite_rule`. There is no dedicated MCP tool for changing the global Rewrite or JavaScript switch; guide the user to the App when needed.
 

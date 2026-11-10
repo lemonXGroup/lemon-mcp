@@ -2,7 +2,7 @@
 
 [Manual](../README.md) · [AI guide](../AI_GUIDE.md) · [Full input schemas](tools.schema.json) · [Compatibility](compatibility.md)
 
-Generated from the current public tool registration and Zod schemas on 2026-11-07. This snapshot registers **67 tools** and **2 resources**. These are the installed public interfaces; this list does not claim all App features have MCP tools. The newer internal MCP registers 69 tools. For known omissions and older local Rewrite schema text, read compatibility before generating newer payloads.
+Generated from the current public tool registration and Zod schemas on 2026-11-10. This snapshot registers **67 tools** and **2 resources**. These are the public interfaces; check device capabilities and compatibility before generating newer rules.
 
 | Tool | Input fields | Description |
 | --- | --- | --- |
@@ -57,7 +57,7 @@ Generated from the current public tool registration and Zod schemas on 2026-11-0
 | `reload_rewrite_runtime` |  | Requests the active rewrite snapshot to reload from runtime.sqlite. This may fail when the VPN runtime is not running; persisted scripts are unaffected. |
 | `delete_rewrite_script` | id | Delete a rewrite script by its numeric ID. |
 | `list_rewrite_rules` |  | Fetches all existing rewrite policies and their MatchGroups. |
-| `upsert_rewrite_rule` | rule_json, groups_json, remote_scripts_json? | Add or update a rewrite policy with ordered MatchGroups. To update, ensure the rule object has an 'id'. |
+| `upsert_rewrite_rule` | rule_json, groups_json, remote_scripts_json? | Add or update a rewrite policy with ordered MatchGroups. Supports host/path/query/method conditions and URL expressions. Checks device host-wildcard support before saving; disabling an existing policy remains available. To update, ensure the rule object has an 'id'. |
 | `delete_rewrite_rule` | id | Delete a rewrite rule by its numeric ID. |
 | `get_rewrite_schema` |  | Returns the exact JSON schema and accepted enum values for creating or updating Rewrite Rules and Actions. |
 | `list_modules` |  | Lists installed host-side UI Modules, active revisions, and enabled state. |

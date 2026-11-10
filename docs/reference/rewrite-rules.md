@@ -2,7 +2,7 @@
 
 [Manual](../README.md) · [AI guide](../AI_GUIDE.md) · [Script API](script-api.md) · [Compatibility](compatibility.md)
 
-This reference describes the current App/WebControl contract and how the public MCP tools carry it. The current public `get_rewrite_schema` text is older than several features described here. Confirm the installed tools and device support before generating newer rules.
+This reference describes the current App/WebControl contract and how the public MCP tools carry it. The bundled get_rewrite_schema covers query conditions, host wildcards and URL expressions. Confirm the installed MCP version and device capabilities before generating newer rules.
 
 ## Rule lifecycle through MCP
 
@@ -55,6 +55,11 @@ Example groups:
         "field": "path",
         "op": "prefix",
         "value": "/v1/"
+      },
+      {
+        "field": "query",
+        "op": "regex",
+        "value": "(^|&)packageId=1(&|$)"
       }
     ],
     "actions": [
@@ -75,7 +80,7 @@ The actual MCP arguments are JSON **strings**:
 ~~~json
 {
   "rule_json": "{\"name\":\"Local debug header\",\"enabled\":false,\"priority\":100}",
-  "groups_json": "[{\"group_key\":\"123e4567-e89b-42d3-a456-426614174000\",\"enabled\":true,\"order\":0,\"allows_match_all\":false,\"match_mode\":\"default\",\"match_expression\":\"\",\"conditions\":[{\"field\":\"host\",\"op\":\"eq\",\"value\":\"api.example.com\"},{\"field\":\"path\",\"op\":\"prefix\",\"value\":\"/v1/\"}],\"actions\":[{\"enabled\":true,\"scope\":\"request\",\"action\":\"header_mod\",\"config\":\"{\\\"operation\\\":\\\"set\\\",\\\"key\\\":\\\"X-Lemon-Debug\\\",\\\"value\\\":\\\"1\\\"}\",\"order\":0}]}]"
+  "groups_json": "[{\"group_key\":\"123e4567-e89b-42d3-a456-426614174000\",\"enabled\":true,\"order\":0,\"allows_match_all\":false,\"match_mode\":\"default\",\"match_expression\":\"\",\"conditions\":[{\"field\":\"host\",\"op\":\"eq\",\"value\":\"api.example.com\"},{\"field\":\"path\",\"op\":\"prefix\",\"value\":\"/v1/\"},{\"field\":\"query\",\"op\":\"regex\",\"value\":\"(^|&)packageId=1(&|$)\"}],\"actions\":[{\"enabled\":true,\"scope\":\"request\",\"action\":\"header_mod\",\"config\":\"{\\\"operation\\\":\\\"set\\\",\\\"key\\\":\\\"X-Lemon-Debug\\\",\\\"value\\\":\\\"1\\\"}\",\"order\":0}]}]"
 }
 ~~~
 
@@ -83,9 +88,49 @@ To update, add the existing numeric id to the rule metadata before encoding it. 
 
 ## Matching
 
-Default matching uses conditions with fields host, path, and method and operators eq, prefix, suffix, contains, or regex. Conditions in a group use AND; multiple enabled matching groups can run in order without first-match short-circuiting. Keep allows_match_all=false for a scoped rule. Empty conditions must not silently create a match-all rule.
+Default matching uses host, path, query and method conditions with eq, prefix, suffix, contains or regex. Conditions in a group use AND; multiple enabled matching groups run in order without first-match short-circuiting. Keep allows_match_all=false for a scoped rule. Empty conditions and a star-only host use the existing explicit match-all confirmation.
 
-Expression matching sets match_mode=expression and match_expression to a Rust regex over the complete URL: scheme, host, optional port, path, and query. Existing host/path/method conditions are retained but ignored in expression mode; all HTTP methods are eligible. An enabled expression must be nonempty and valid. Rust regex does not support lookaround or backreferences. Expression groups must keep allows_match_all=false.
+### Query conditions
+
+The query field matches the raw query string without its leading question mark and excludes the fragment. It preserves percent encoding, case and parameter order; it does not decode parameters or sort key/value pairs. For https://api.example.com/items?name=A%20B&packageId=1#detail, the target is name=A%20B&packageId=1.
+
+~~~json
+{"field":"query","op":"regex","value":"(^|&)packageId=1(&|$)"}
+~~~
+
+This selects a complete parameter value and avoids contains packageId=1 also matching packageId=10. Use regex ^$ for a missing query or an empty query. Blank editor input omits the condition. Query supports all five existing operators; literal query star/question-mark characters do not gain host wildcard syntax.
+
+Query conditions remain in groups.conditions through reads, updates, shares and backups. They do not require a new portable version number; older clients reject the unknown query field. Do not move query matching into path or invent a legacy flat matchQuery field.
+
+### Host wildcards
+
+The four existing non-regex host operators accept * for zero or more hostname characters, including dots, and ? for exactly one character, including a dot. Only one raw leading *. means zero or more complete subdomain labels. The other characters are literal; regex keeps Rust regular-expression syntax. No extra operator or enable-wildcards switch is added.
+
+| Condition | Matches | Does not match |
+| --- | --- | --- |
+| eq *.example.com | example.com, a.example.com, a.b.example.com | badexample.com, example.com.evil.test |
+| eq api?.example.com | api1.example.com | api.example.com, api12.example.com |
+| prefix api? | api12.example.com | xapi1.example.com |
+| suffix *.example.com | badexample.com, a.example.com | example.com.cn |
+| contains api?- | cdn-api1-east.example.com | cdn-api12-east.example.com |
+| eq **.example.com | a.example.com | example.com |
+| eq *.*.example.com | a.example.com | example.com |
+
+Use eq *.example.com to select only a root domain and its subdomains. Prefix, suffix and contains retain their string-position meaning and can intentionally match broader names. Internal *. is ordinary wildcard syntax and does not make its dot optional. Consecutive ordinary stars are equivalent to one star; they do not expand the special leading *. rule.
+
+Host matching is case-insensitive. Wildcards cannot consume userinfo, ports, paths, queries or fragments. A numeric literal port may be specified, such as *.example.com:8443; port wildcards are unsupported. Host eq example.com is bounded to the actual authority even with no path condition, so it rejects example.com.evil.test. Host wildcard syntax does not change path, query, method or full-URL expression syntax. Existing local non-regex host * and ? values acquire the new semantics after the device upgrade, including root-domain coverage for leading *.; no per-rule conversion switch exists.
+
+Before using wildcards, GET /api/rewrite/capabilities must report:
+
+~~~json
+{"host_wildcards":{"supported":true,"version":1,"root_domain":true,"operators":["eq","prefix","suffix","contains"]},"portable_schema_versions":[2,3,4,5]}
+~~~
+
+The public upsert_rewrite_rule checks the host_wildcards declaration before saving, including disabled groups and inactive conditions retained in expression mode. Missing, incomplete or unreachable support prevents the write. Disabling an existing policy with its actual id and enabled=false remains possible, preserving all groups. Direct HTTP clients must perform this capability check themselves. The public MCP has no standalone capability-read tool; the optional Skill HTTP helper can call the route.
+
+### URL expressions
+
+Expression matching sets match_mode=expression and match_expression to a Rust regex over the complete URL: scheme, host, optional port, path and query. Existing host/path/query/method conditions are retained but ignored in expression mode; all HTTP methods are eligible. An enabled expression must be nonempty and valid. Rust regex does not support lookaround or backreferences. Expression groups must keep allows_match_all=false.
 
 ~~~json
 {
@@ -99,7 +144,7 @@ This is only a matcher fragment; retain the other required group fields when sub
 
 ## Action types and phases
 
-Every action requires enabled, scope, action, config as a JSON string, and order. HTTP scopes are request and response. The current App additionally supports websocket_client and websocket_server for body_replace and js only. Check [compatibility](compatibility.md): the public MCP is missing the newer WS query tools and part of its schema guidance.
+Every action requires enabled, scope, action, config as a JSON string, and order. HTTP scopes are request and response. The current App additionally supports websocket_client and websocket_server for body_replace and js only. Check [compatibility](compatibility.md): the public MCP is missing the newer WS query tools and its remote required_handlers enum does not accept onWebSocketMessage.
 
 | Action | Decoded config | Meaning |
 | --- | --- | --- |
@@ -117,7 +162,7 @@ These JSON examples show **decoded configs**. Apply JSON.stringify before placin
 {"operation":"set","key":"X-Lemon-Debug","value":"1"}
 ~~~
 
-Operations are set, add, and remove. Keep value as a string, including an empty string for removal. This action modifies headers; matching a host/path/method does not itself change those URL fields.
+Operations are set, add, and remove. Keep value as a string, including an empty string for removal. This action modifies headers; matching a host/path/query/method does not itself change those URL fields.
 
 ### Literal and regex body replacement
 
@@ -197,7 +242,7 @@ Use the real script id returned by publication. Choose header or body explicitly
 
 ## Portable versions and local writes
 
-Portable ordinary rules use schema_version=2; expression data needs version 3; multipart needs version 4. Local backup version numbers are a different protocol. MCP upsert arguments are a local WebControl payload, not a portable export envelope: do not add schema_version to rule_json merely because an exported rule has one.
+Portable ordinary rules use schema_version=2; expression data needs version 3; multipart needs version 4; any non-regex host * or ? condition selects version 5, including inactive conditions. Host wildcard requirements take precedence when combined with multipart or expression data. Cloud backup and local recovery use a separate version sequence: host wildcards select version 6; ordinary/expression/multipart backups retain 3/4/5. New importers accept portable 2/3/4/5 and backup 3/4/5/6. MCP upsert arguments are a local WebControl payload, not a portable export envelope: do not add schema_version to rule_json merely because an exported rule has one.
 
 ## Verification and recovery
 
@@ -207,4 +252,4 @@ Protected packages may expose only metadata. A successful read does not imply pe
 
 ## Contract provenance
 
-Checked on 2026-11-07 against the App's RewriteRouter, RewriteMatchGroup, RewriteActionParametersCodec, runtime script result validation, and MCP tool definitions. The installed device validator remains authoritative for accepted payloads and limits.
+Matching and compatibility updated on 2026-11-10 against App commits 9ce70bd739139042a21fb8e9b64ffc31fa7b0126 (query conditions) and 5438ebdfed3b6ff30c6e6d726e1f1375c07b114c (host wildcards). Checked the current RewriteRouter, RewriteMatchGroup, query/host matchers, sharing/backup version selection and public MCP tool definitions. The remaining action reference retains its 2026-11-07 source review. The installed device validator remains authoritative for accepted payloads and limits.

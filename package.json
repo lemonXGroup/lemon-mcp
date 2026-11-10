@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc",
     "start": "node build/index.js",
-    "test": "npm run build && node --test test/*.test.cjs"
+    "test": "npm run build && node --test test/*.test.cjs && node scripts/generate-tool-reference.cjs --check",
+    "docs:generate": "npm run build && node scripts/generate-tool-reference.cjs",
+    "docs:check": "npm run build && node scripts/generate-tool-reference.cjs --check"
   },
   "engines": {
     "node": ">=20"
