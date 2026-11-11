@@ -1,6 +1,6 @@
 # 文档来源与验证范围 / Documentation evidence
 
-核对日期 / Checked: **2026-11-10（Rewrite 匹配增量）**；其余内容沿用 **2026-11-07** 核对范围。 [手册合集 / Manual collection](README.md) · [机器可读来源清单 / Manifest](manifest.json)
+核对日期 / Checked: **2026-11-12（手机模拟文件增量）**、**2026-11-10（Rewrite 匹配增量）**；其余内容沿用 **2026-11-07** 核对范围。 [手册合集 / Manual collection](README.md) · [机器可读来源清单 / Manifest](manifest.json)
 
 本合集以当前实现为准，但各部分的验证深度不同。不能把收录了全部用户手册理解为每个页面、按钮、平台和运行路径都已逐项验收。下表明确区分源码核对、迁移整理和运行证据。
 
@@ -8,7 +8,7 @@ This collection follows the implementation, with explicitly different evidence l
 
 | 内容 / Content | 来源与核对方式 / Evidence | 本次未覆盖 / Limits |
 | --- | --- | --- |
-| tools.md / tools.schema.json | 从当前公开 src/tools.ts 实际注册项生成，67 tools；逐项 JSON schema 与构建产物注册结果完全一致 | 不是所有工具的设备 E2E；schema 的存在不证明底层设备能力可用 |
+| tools.md / tools.schema.json | 从当前公开 src/tools.ts 实际注册项生成，70 tools；逐项 JSON schema 与构建产物注册结果完全一致 | 不是所有工具的设备 E2E；schema 的存在不证明底层设备能力可用 |
 | AI_GUIDE 中英文 | 核对 index.ts、discovery.ts、apiClient.ts、resources.ts 与 App 认证路由；明确局域网、Listening、口令、重启及失败判定 | 当前没有连接向导、安全弹窗、文档 resources/prompts；指南不会自动加载 |
 | reference/script-api 中英文 | 按 App 默认模板、公共 API catalog、QuickJS 引擎、FFI、scheduler 与协议处理源码重写；区分同步/异步、HTTP/WS/定时契约 | 示例通过 JavaScript 语法和 JSON 结构检查；未执行 QuickJS 或真机脚本 |
 | reference/rewrite-rules.md | 核对 App WebControl 输入约束、核心加载/动作模型、Query、Host 通配、表达式、JSON Path、multipart 与 WS 能力 | 保存、运行时接纳和实际流量改写仍需分别验证 |
@@ -19,6 +19,20 @@ This collection follows the implementation, with explicitly different evidence l
 | 其他 manual 章节 | 整理自已有双语用户手册，修正已发现的认证、旧脚本示例、重写动作、协议边界和独立链接问题 | 未逐页逐项审计所有 App UI、Module renderer、CLI 跨平台行为及全部文字；不能标为全量实现验收 |
 
 The machine-readable manifest records adapted chapter origins, source hashes, and review scope. Source paths identify private App implementation provenance; readers do not need those files to use this public manual.
+
+## 2026-11-12 手机模拟文件 / Phone Mock file tools
+
+公开与内部 MCP 同步新增 list_device_files、select_mock_file、create_mock_file，分别映射手机目录枚举、按手机 App Group 路径选择/复制导入及新建文本文件。公开当前 **70 tools / 2 resources**，内部 **72 tools / 2 resources**；没有新增电脑文件读取、局域网上传或系统 Files/iCloud picker 能力。完整工作流、2 MiB UTF-8 上限、config 字符串、编辑副本及未引用文件回收边界见[手机文件参考](reference/device-files.md)。
+
+两套当前工作区在 Node.js **24.1.0** 上 TypeScript 构建通过：公开 **53/53** 项测试（含原有 5 项子测试），内部 **42/42** 项测试，内部 Rewrite E2E **32 cases** 合同静态校验通过。文件操作测试 **12/12** 覆盖目录返回、手机路径与元信息约束、选择/新建到 upsert 的真实注册工具组合、空新建和精确 2 MiB UTF-8 边界、异常 DTO、capability 拒绝写入、GET/POST 认证及重定向拒绝。追加 **7/7** 项 ID 测试验证 Int64 十进制字符串原样更新/删除、安全数字保留原 wire 类型、拒绝不安全数字/空值/布尔/小数/溢出/尾换行、只读 id_text 防误新建、字符串 ID 的已有规则禁用例外与应用层删除失败。
+
+工具参考从实际 **70** 项公开注册与 Zod schema 生成并通过新鲜度检查。更新的 **13** 份 Markdown/txt 文档中，**139** 个相对链接和 **30** 个 JSON 示例静态校验通过（覆盖反引号及波浪线两类围栏）。
+
+Stack 签名测试 **47 passed / 0 failures**：Mock WebService 14、Mock Store 9、Asset Reference 19、Web Payload 5；App codesign 验证通过。fresh public MCP **70 tools / 2 resources** 与 Stack 的手机 API / 持久化验收完成：空文件创建与禁用模拟规则保存、完整 **2 MiB** JSON 新建和手机路径选用、下载字节 SHA-256 一致、动作 config 只保留 **103 bytes** 文件引用、字符串 id_text 无损更新/删除、非法路径/超限文本/不安全 ID 拒绝，以及旧文件引用回收。验收前后保留 **14 policies / 15 groups / 25 actions**，既有规则 73–76 的动作类型与配置字节数未变；本轮临时资源已清理。
+
+范围限定为手机文件准备、规则持久化、引用回收和精确 ID 合同；临时规则保持禁用，**没有执行 UI 点选或实际网络响应改写验收**，没有发布 GitHub 内容、上传 TestFlight、部署后端或执行 BOS 写入。原 2026-11-10 standalone-copy / Skill 结果保留为历史证据，没有在本轮重跑。
+
+App-side provenance (private monorepo paths; public readers do not need these files): docs/2.0/build-test/2026-11-12-mcp-phone-mock-files.md; docs/pending/evidence/rewrite_mcp_device_files_2026-11-12/stack-mcp-smoke.json and stack-tests-final.json. The manifest records their source hashes. Focused phone API/persistence acceptance does not establish physical-device execution of every public MCP tool.
 
 ## 2026-11-10 匹配同步 / Matching synchronization
 
@@ -44,11 +58,11 @@ This is a public MCP implementation/documentation sync with local mocked API evi
 - 受保护设备接口要求有效口令；环境变量缺失仍可启动进程不等于认证可选。产品权限与口令认证分别判断。
 - body_replace 包括文本、正则、精确 JSON Path 和 multipart 字段语义，不能统一描述为替换整个正文。
 
-## 检查结果 / Checks
+## 2026-11-10 历史检查结果 / Historical checks
 
 - 2026-11-10 在脱离主仓库依赖的独立副本中，Node.js **24.1.0** 的 TypeScript 构建和 **34/34** 确定性单元测试通过；未证明 Node.js 20 的最低运行版本矩阵。
 - 工具文档 JSON schema 与实际注册结果一致；所有文档相对文件链接、JSON 示例及 JavaScript 示例另作静态检查。
-- 没有在本次操作中启动设备抓包、修改设备规则、运行远程脚本、执行 Replay 或进行真机 UI 验收。
+- 在 **2026-11-10 历史轮次**中，没有启动设备抓包、修改设备规则、运行远程脚本、执行 Replay 或进行真机 UI 验收；这不描述上文 2026-11-12 的临时禁用规则 API / 持久化验收。
 - GitHub/raw 地址对应公开仓库 lemonXGroup/lemon-mcp 的 main 路径；在线内容以远端已推送的版本为准。本地构建、测试和格式检查不证明已发布；需要固定证据时使用发布 commit SHA。
 
 ## Skill 无 MCP 路径 / MCP-free Skill

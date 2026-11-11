@@ -4,6 +4,8 @@
 
 ## Read first
 
+- [Phone files and Mock action workflows](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/device-files.md)
+
 - [Complete manual collection](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/README.md)
 - [AI first-use and operating guide](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/AI_GUIDE.md)
 - [AI 首次连接与操作指南](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/AI_GUIDE.zh-CN.md)
@@ -52,6 +54,6 @@ For Rewrite matching, read the rule reference before generating conditions. Quer
 
 ## Operating principles
 
-Check the actual installed tools; the current public source registers 67 tools and 2 resources. The iPhone and local MCP host must be reachable on the LAN, Remote Controller must be Listening, and authenticated calls require the current phone token. Receive the token only through local configuration or a supported local secure input flow; do not ask for it in chat. The MCP snapshot has no token dialog; the optional Skill helper supports hidden input in a user-operated interactive terminal. Verify authenticated device state, not only a public status probe.
+Check the actual installed tools; the current public source registers 70 tools and 2 resources. The iPhone and local MCP host must be reachable on the LAN, Remote Controller must be Listening, and authenticated calls require the current phone token. Receive the token only through local configuration or a supported local secure input flow; do not ask for it in chat. The MCP snapshot has no token dialog; the optional Skill helper supports hidden input in a user-operated interactive terminal. Verify authenticated device state, not only a public status probe.
 
 Use authorized actions and verify persistence, runtime application, and new request evidence separately. Do not invent App-equivalent tools. Read the relevant rule/script contract before generating code. If online access is unavailable, read these same files in the local installation. Public URLs become available after this content is published to main.

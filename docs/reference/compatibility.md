@@ -1,6 +1,6 @@
 # Capability and compatibility boundaries
 
-Rewrite matching updated against the source tree on 2026-11-10; other capability rows retain their 2026-11-07 review. [Manual](../README.md) · [AI guide](../AI_GUIDE.md)
+Phone Mock file tools updated on 2026-11-12; Rewrite matching retains the 2026-11-10 review and other capability rows retain the 2026-11-07 review. [Manual](../README.md) · [AI guide](../AI_GUIDE.md)
 
 ## App support and the public MCP surface
 
@@ -19,12 +19,15 @@ Rewrite matching updated against the source tree on 2026-11-10; other capability
 | WebSocket rewrite scope and onWebSocketMessage | Implemented | Generic rule/package payloads and local schema guidance support WS phases; remote required_handlers still rejects this handler |
 | Replay Workspace suites and run history/results | Implemented | No dedicated suite/run tools in either current MCP copy |
 | Scheduled task execution history | GET /api/scripts/scheduled/runs | No dedicated MCP tool |
+| Phone directory listing | GET /api/files: one App Group directory | list_device_files: metadata only; offset/limit slice MCP output after device enumeration |
+| Select/create Mock files | POST /api/rewrite/mock-files/import and /api/rewrite/mock-files; mock_files capability version 1 | select_mock_file selects a phone App Group path; create_mock_file creates a new phone text file; UTF-8 maximum 2 MiB; no computer-file upload or system picker |
+| Exact policy identifiers | GET /api/rewrite adds id_text; updated parser accepts strict positive Int64 string rule.id; legacy numeric id remains | list documents id_text; upsert/delete accept exact decimal strings or safe positive integers, reject unsafe numbers; safe numeric updates retain numeric wire type for older phones |
 | Rewrite capability discovery | GET /api/rewrite/capabilities | No standalone MCP tool; upsert automatically checks host wildcards, but lacks internal multipart preflight |
 | Global Rewrite, JS, MITM, or capture policy settings | App-managed | No general MCP settings write API |
 | First-use connection wizard and token dialog | Not part of current MCP implementation | Not implemented; environment token only |
 | Documentation resources, MCP prompts, server instructions | Not registered in current server | These files are available locally and through GitHub; clients must be directed to read them |
 
-This snapshot registers **67 tools and 2 resources**. The internal MCP registers 69 tools; the two extra tools are WebSocket reads. Count the installed runtime rather than inferring its surface from a README version string.
+This snapshot registers **70 tools and 2 resources**. The internal MCP registers 72 tools; the two extra tools are WebSocket reads. Count the installed runtime rather than inferring its surface from a README version string.
 
 Host wildcard support requires host_wildcards.supported=true, version>=1, root_domain=true and all four operators from GET /api/rewrite/capabilities. A missing flag, partial declaration or failed capability read blocks the public MCP write; an existing policy can still be disabled with its actual id and enabled=false. A successful JSON parse on an old device does not establish wildcard semantics.
 
@@ -45,6 +48,8 @@ The access token is a six-digit caller credential, including possible leading ze
 A secure dialog is a proposed enhancement, not current behavior. MCP form elicitation must not request access tokens; a future implementation must use an appropriate local secure input flow or URL mode, with capability checks and local configuration fallback. See the [official elicitation specification](https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation).
 
 ## Evidence limits
+
+The 2026-11-12 phone-file/identifier sync passes 53 public MCP tests (12 phone-file and 7 identifier tests) and regenerates the 70-tool reference. Stack also passes 47 signed tests and focused fresh-MCP phone API/persistence checks for empty/2 MiB files, path selection, exact id_text updates/deletion, cleanup and unchanged existing data. These phone checks do not exercise UI selection or actual rewritten network traffic, and do not publish the repository. New Mock file writes fail closed when the phone does not advertise mock_files version 1 and the requested operation.
 
 The 2026-11-10 matching sync built and ran 34 deterministic tests (including five subtests) in a clean standalone copy on Node.js 24.1.0; the Skill's 13 loopback HTTP tests and format validation also passed. These checks did not perform a new physical-device run, prove the Node.js 20 minimum in a runtime matrix, publish GitHub content, or deploy an App/backend change. Other capability rows retain their earlier source review. See the [evidence record](../verification.md) for the two App commits and exact scope.
 

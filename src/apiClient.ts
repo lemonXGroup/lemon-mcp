@@ -78,8 +78,9 @@ export class ApiClient {
     this.client.defaults.baseURL = this.baseUrl;
   }
 
-  public async get<T>(url: string, params?: any): Promise<T> {
+  public async get<T>(url: string, params?: any, policy?: { maxRedirects: 0; maxContentLength: number; proxy?: false }): Promise<T> {
     const response = await this.client.get<T>(url, {
+      ...policy,
       params,
       headers: this.authHeaders(),
     });
@@ -107,8 +108,9 @@ export class ApiClient {
     return normalizeResponseBytes(response.data);
   }
 
-  public async post<T>(url: string, data?: any, params?: any): Promise<T> {
+  public async post<T>(url: string, data?: any, params?: any, policy?: { maxRedirects: 0; maxContentLength: number; maxBodyLength: number; proxy: false }): Promise<T> {
     const response = await this.client.post<T>(url, data, {
+      ...policy,
       ...(url.startsWith('/api/rewrite/scripts/remote') ? { timeout: 75000 } : {}),
       params,
       headers: this.authHeaders(),

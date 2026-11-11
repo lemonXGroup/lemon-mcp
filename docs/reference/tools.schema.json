@@ -1,10 +1,95 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-10",
+  "checkedAt": "2026-11-12",
   "scope": "current-public-mcp",
-  "toolCount": 67,
+  "toolCount": 70,
   "resourceCount": 2,
   "tools": [
+    {
+      "name": "list_device_files",
+      "description": "Lists existing files in one directory on the operated iPhone's App Group, without uploading or changing files. path is relative; empty means the root. offset/limit slice MCP output only; the current iOS endpoint still enumerates the complete directory. MockFiles candidates include a config JSON string and 2 MiB budget, but metadata does not prove UTF-8/content validity. Use select_mock_file to validate and import/reuse an existing phone file. Reuse fetch_device_file only when content inspection is needed. This is not the iOS Files/iCloud picker.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "path": {
+            "default": "",
+            "type": "string",
+            "maxLength": 4096
+          },
+          "offset": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "limit": {
+            "default": 200,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          }
+        },
+        "required": [
+          "path",
+          "offset",
+          "limit"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "select_mock_file",
+      "description": "Selects an existing UTF-8 text file by path on the operated iPhone's App Group (not a computer path). The iPhone validates it, reuses a safe direct MockFiles reference or copies it into managed MockFiles storage, and returns a mock_file config JSON string without its content. Source files are unchanged. Maximum file content is 2 MiB. No upload from the computer, Files/iCloud picker or automatic rule save occurs. Attach new copied files promptly with upsert_rewrite_rule; unreferenced files may be reclaimed on app restart. Requires mock_files.import_app_group capability version 1.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "content_type": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "create_mock_file",
+      "description": "Creates a new managed UTF-8 text Mock file on the operated iPhone, mirroring the app's New File action. content defaults to empty and is limited to 2 MiB of UTF-8; filename defaults to mock.json and is a suggestion, not an overwrite path. Returns a mock_file config JSON string and metadata, without the text. To edit, fetch_device_file then create a new copy and update the rule reference with upsert_rewrite_rule; existing files/rules are unchanged by this tool. Never reads or uploads a computer file. Attach new files promptly with upsert_rewrite_rule; unreferenced files may be reclaimed on app restart. Requires mock_files.create capability version 1.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "content": {
+            "default": "",
+            "type": "string",
+            "maxLength": 2097152
+          },
+          "filename": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "content_type": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "content"
+        ],
+        "additionalProperties": false
+      }
+    },
     {
       "name": "prepare_remote_rewrite_script",
       "description": "Downloads and preflights native Lemon ESM on the iPhone without persisting a script. Returns a caller-bound token valid for 10 minutes. Use it in a parent rule's remote_scripts or explicitly create a standalone resource.",
@@ -1260,7 +1345,7 @@
     },
     {
       "name": "execute_raw_sql",
-      "description": "Executes a raw SQL diagnostic query on the Lemon SQLite database (Read-Only queries advised).",
+      "description": "Executes a raw SQL diagnostic query on the Lemon SQLite database (Read-Only queries advised). For Int64 identifiers, SELECT CAST(id AS TEXT) AS id_text; bare large JSON numbers lose precision in JavaScript. Keep joins inside SQLite and project only necessary metadata.",
       "inputSchema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "type": "object",
@@ -1727,7 +1812,7 @@
     },
     {
       "name": "list_rewrite_rules",
-      "description": "Fetches all existing rewrite policies and their MatchGroups.",
+      "description": "Fetches all existing rewrite policies and their MatchGroups. Use each policy id_text decimal string as rule.id when updating, or as delete_rewrite_rule id. The legacy numeric id may exceed JavaScript safe integer precision. Construct policy metadata explicitly; do not pass id_text or other read-only fields back in rule_json. This response includes all rule bodies, so use narrow read-only SQL with CAST(id AS TEXT) for bounded checks.",
       "inputSchema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "type": "object",
@@ -1744,7 +1829,7 @@
         "properties": {
           "rule_json": {
             "type": "string",
-            "description": "JSON string specifying Policy metadata. Example: {\"name\":\"Mock API\",\"enabled\":true,\"priority\":100}"
+            "description": "JSON string specifying Policy metadata. For updates set id to the original id_text decimal string, or a safe positive integer. Omit id_text and read-only fields. Unsafe numeric ids are rejected. Example: {\"name\":\"Mock API\",\"enabled\":true,\"priority\":100}"
           },
           "groups_json": {
             "type": "string",
@@ -1764,13 +1849,24 @@
     },
     {
       "name": "delete_rewrite_rule",
-      "description": "Delete a rewrite rule by its numeric ID.",
+      "description": "Delete a rewrite rule by its exact id_text decimal string, or a safe positive integer. Large JavaScript numbers are rejected to prevent deleting the wrong policy. Use list_rewrite_rules id_text or SELECT CAST(id AS TEXT) to obtain the original identifier.",
       "inputSchema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "type": "object",
         "properties": {
           "id": {
-            "type": "number"
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,18}(?![\\s\\S])"
+              }
+            ],
+            "description": "Exact policy id: prefer the id_text decimal string returned by list_rewrite_rules (1..9223372036854775807, no leading zeros). Numeric input must be a safe positive JavaScript integer."
           }
         },
         "required": [

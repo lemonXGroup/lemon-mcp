@@ -1,6 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { lemonApi } from "./apiClient";
+import { registerDeviceFileTools } from "./deviceFiles";
+import { rewritePolicyID, rewritePolicyIDSchema, validateRewritePolicyID } from "./rewriteIdentifiers";
 import { formatByteContent } from "./byteContent";
 import { formatTextFileContent, isTextFilePath } from "./fileContent";
 import {
@@ -68,6 +70,7 @@ function buildScheduledScriptPayload(input: {
 }
 
 export function registerTools(server: McpServer) {
+  registerDeviceFileTools(server, lemonApi);
   const remoteDescriptor = z.object({
     url: z.string().url().describe("Public HTTPS source URL. The iPhone downloads and preflights it."),
     format: z.enum(["javascript", "esm_package"]).default("javascript"),
@@ -700,7 +703,7 @@ export function registerTools(server: McpServer) {
 
   // 5. execute_raw_sql
   server.registerTool("execute_raw_sql", {
-    description: "Executes a raw SQL diagnostic query on the Lemon SQLite database (Read-Only queries advised).",
+    description: "Executes a raw SQL diagnostic query on the Lemon SQLite database (Read-Only queries advised). For Int64 identifiers, SELECT CAST(id AS TEXT) AS id_text; bare large JSON numbers lose precision in JavaScript. Keep joins inside SQLite and project only necessary metadata.",
     inputSchema: {
       query: z.string().describe("Standard SQLite SQL string to execute on the database")
     }
@@ -996,7 +999,7 @@ export function registerTools(server: McpServer) {
 
   // 21. list_rewrite_rules
   server.registerTool("list_rewrite_rules", {
-    description: "Fetches all existing rewrite policies and their MatchGroups.",
+    description: "Fetches all existing rewrite policies and their MatchGroups. Use each policy id_text decimal string as rule.id when updating, or as delete_rewrite_rule id. The legacy numeric id may exceed JavaScript safe integer precision. Construct policy metadata explicitly; do not pass id_text or other read-only fields back in rule_json. This response includes all rule bodies, so use narrow read-only SQL with CAST(id AS TEXT) for bounded checks.",
   }, async () => {
     try {
       const result = await lemonApi.get<any>('/api/rewrite');
@@ -1010,15 +1013,16 @@ export function registerTools(server: McpServer) {
   server.registerTool("upsert_rewrite_rule", {
     description: "Add or update a rewrite policy with ordered MatchGroups. Supports host/path/query/method conditions and URL expressions. Checks device host-wildcard support before saving; disabling an existing policy remains available. To update, ensure the rule object has an 'id'.",
     inputSchema: {
-      rule_json: z.string().describe("JSON string specifying Policy metadata. Example: {\"name\":\"Mock API\",\"enabled\":true,\"priority\":100}"),
+      rule_json: z.string().describe("JSON string specifying Policy metadata. For updates set id to the original id_text decimal string, or a safe positive integer. Omit id_text and read-only fields. Unsafe numeric ids are rejected. Example: {\"name\":\"Mock API\",\"enabled\":true,\"priority\":100}"),
       groups_json: z.string().describe("JSON string array of MatchGroup objects. Each group has group_key, order, match_mode (default/expression), match_expression, host/path/query/method conditions (AND in default mode) and actions. Host eq/prefix/suffix/contains accept * and ? on supported devices; leading *. includes the root domain. Multiple groups are evaluated in order without short-circuiting."),
       remote_scripts_json: z.string().optional().describe("Optional JSON array from prepare_remote_rewrite_script. New resources: {temporary_id:string,name,token}, IDs 9000000000000000..9007199254740991 referenced by actions. Shared source edits: {temporary_id:string,script_id,source_generation,active_revision,name,token}, using current metadata. The iPhone commits resources and the parent rule atomically.")
     }
   }, async ({ rule_json, groups_json, remote_scripts_json }) => {
     try {
       const rule = JSON.parse(rule_json);
+      validateRewritePolicyID(rule);
       const groups = JSON.parse(groups_json);
-      const disablingExistingPolicy = Number.isInteger(rule.id) && rule.id > 0 && rule.enabled === false;
+      const disablingExistingPolicy = rule.id !== undefined && rule.enabled === false;
       if (!disablingExistingPolicy && hasHostWildcardConditions(groups)) {
         let capabilities: unknown;
         try {
@@ -1033,7 +1037,7 @@ export function registerTools(server: McpServer) {
       const remote = remote_scripts_json === undefined ? {} : { remote_scripts: JSON.parse(remote_scripts_json) };
       // iOS takes POST /api/rewrite with json: { rule: { ... }, groups: [ ... ] }
       let res: any;
-      if (rule.id) {
+      if (rule.id !== undefined) {
         res = await lemonApi.put('/api/rewrite', { rule, groups, ...remote });
       } else {
         res = await lemonApi.post('/api/rewrite', { rule, groups, ...remote });
@@ -1049,11 +1053,13 @@ export function registerTools(server: McpServer) {
 
   // 23. delete_rewrite_rule
   server.registerTool("delete_rewrite_rule", {
-    description: "Delete a rewrite rule by its numeric ID.",
-    inputSchema: { id: z.number() }
+    description: "Delete a rewrite rule by its exact id_text decimal string, or a safe positive integer. Large JavaScript numbers are rejected to prevent deleting the wrong policy. Use list_rewrite_rules id_text or SELECT CAST(id AS TEXT) to obtain the original identifier.",
+    inputSchema: { id: rewritePolicyIDSchema }
   }, async ({ id }) => {
     try {
-      await lemonApi.delete(`/api/rewrite?id=${id}`);
+      const exactID = rewritePolicyID(id);
+      const result = await lemonApi.delete<any>(`/api/rewrite?id=${exactID}`);
+      if (result && result.success === false) throw new Error(result.err_msg || "Unknown iOS backend error");
       return { content: [{ type: "text", text: "Successfully deleted rewrite rule." }] };
     } catch (error: any) {
       return { content: [{ type: "text", text: `Failed: ${error.message}` }], isError: true };
@@ -1072,7 +1078,7 @@ When calling \`upsert_rewrite_rule\`, you need to provide \`rule_json\` and \`gr
 ## 1. Rule Object (Rewrite Policy)
 \`\`\`json
 {
-  "id": 123, // Optional local policy id, only for updates
+  "id": "123", // Optional exact id_text string (or safe positive integer), only for updates
   "name": "My AI Interception Rule",
   "enabled": true,
   "priority": 100
@@ -1104,7 +1110,7 @@ Default-mode condition fields are "host", "path", "query" and "method"; operator
 **Accepted action (RewriteActionType)**:
 - "header_mod": Modifies HTTP Headers.
 - "body_replace": Replaces text, regex matches, an exact JSON path, or ordinary multipart request fields.
-- "mock_file": Returns a local payload.
+- "mock_file": Reads an existing UTF-8 text file on the operated iPhone, directly inside its App Group MockFiles directory (maximum 2 MiB). Use list_device_files to find a phone file and select_mock_file to validate/import/reuse it, or create_mock_file to create a new phone file. Use the returned action config JSON string containing content_type and file_path. The iPhone validates and reads that path; no computer file upload is involved.
 - "redirect": HTTP Redirection.
 - "js": Invokes an ESM script package by id. Its config is a JSON string such as {"script_id":7,"phase":"body"}.
 

@@ -49,3 +49,6 @@ debug/
 - 编辑后没有效果：检查实际引用路径，并重新加载使用该文件的脚本或模块。
 - 上传后无法使用：文件存在不代表内容通过脚本、模块或运行时校验。
 - 分享失败：先下载到系统可访问的位置，或检查文件类型和权限限制。
+
+
+公开 MCP 可用 list_device_files 枚举手机 App Group 目录，并通过 select_mock_file / create_mock_file 选择或新建模拟文件。它们不读取电脑文件，也不会调起系统 Files/iCloud 选择器。请按[手机文件工作流](../reference/device-files.md)完成 UTF-8 / 2 MiB 校验及保存规则引用；尚未被规则引用的新文件可能在 App 重启时回收。

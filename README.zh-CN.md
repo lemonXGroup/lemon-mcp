@@ -93,7 +93,7 @@ references/、scripts/、agents/ 的相对位置。Skill 不需要 npm 构建；
 
 ## 能力概览
 
-当前服务注册 67 个工具和 2 个资源。MCP 客户端实际获得的工具 schema
+当前服务注册 70 个工具和 2 个资源。MCP 客户端实际获得的工具 schema
 是运行时的最终事实来源，下面的内容用于帮助人类用户和 AI Agent 快速理解
 能力范围。
 
@@ -124,7 +124,12 @@ manifest entry 导出 onSchedule(input)。固定间隔由 MCP schema 限制在
 - search_traffic_previews：按关键词或 Host 搜索请求摘要。
 - get_captured_request：读取完整请求、响应和正文元数据。
 - fetch_binary_payload：读取请求或响应引用的完整 body。
+- list_device_files：枚举被操作手机的 App Group 单层目录。
+- select_mock_file：按手机 App Group 路径验证、选择或复制导入模拟文件。
+- create_mock_file：在手机中新建模拟文本文件，支持空文件。
 - fetch_device_file：读取非数据库的 App Group 文件。
+
+[手机文件与模拟文件工作流](docs/reference/device-files.md)说明 2 MiB 上限、设备能力检查、编辑副本和规则引用步骤。
 - execute_raw_sql：在 Lemon SQLite 数据库上执行诊断查询。
 
 建议使用 search_traffic_previews 定位请求，再使用 get_captured_request
@@ -180,7 +185,9 @@ validate_rewrite_script_package，发布后分别检查持久化结果和 runtim
 
 - list_rewrite_rules：列出 policy、MatchGroup 和 action。
 - upsert_rewrite_rule：使用 rule_json 和 groups_json 创建或更新规则。
-- delete_rewrite_rule：通过数字 id 删除规则。
+- delete_rewrite_rule：通过精确 id_text 字符串或安全正整数删除规则。
+
+更新时将 id_text 原始字符串放入 rule.id，并移除只读字段；不安全的 JavaScript 数字 id 会被拒绝。参见[精确规则标识符](docs/reference/rewrite-rules.md#exact-policy-identifiers)。
 - get_rewrite_schema：返回当前规则、action 和脚本包 schema。
 
 同一个 MatchGroup 内的条件使用 AND，多个匹配组使用 OR。生成规则前应先

@@ -1,6 +1,6 @@
 {
   "manifestVersion": 1,
-  "checkedAt": "2026-11-10",
+  "checkedAt": "2026-11-12",
   "package": {
     "name": "lemonmcp",
     "version": "1.0.0"
@@ -16,14 +16,18 @@
         "5438ebdfed3b6ff30c6e6d726e1f1375c07b114c"
       ],
       "note": "The baseline above is the original documentation audit. Only matching-related App provenance and changed public source hashes are refreshed by this additional review."
+    },
+    "additionalMockFileReview": {
+      "checkedAt": "2026-11-12",
+      "note": "Incremental phone App Group file listing, local selection/import, new Mock files, and exact policy identifiers. No computer filesystem upload or native picker. Current working-tree hashes take precedence; focused Stack API/persistence evidence is scoped separately from UI and traffic."
     }
   },
   "publicRepository": "https://github.com/lemonXGroup/lemon-mcp",
   "branch": "main",
   "publication": "versioned-repository-content; verify-origin-main-for-online-availability",
-  "toolCount": 67,
+  "toolCount": 70,
   "resourceCount": 2,
-  "internalToolCount": 69,
+  "internalToolCount": 72,
   "manualChapters": 16,
   "languages": [
     "zh-CN",
@@ -277,9 +281,9 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemon_ios/Lemon/Service/WebControl/WebRouters/RewriteRouter.swift",
-      "sha256": "47035acdb34cadc435dfd532613fcbbcc590c5ef182e019185a2625c9098fdd4",
-      "reviewedAt": "2026-11-10",
-      "reviewScope": "query-host-matching-and-tool-reference-sync"
+      "sha256": "985bfc1f34095165ff0cde3649d9ffe985206c5fbd29362165ff894fd5c460c9",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -304,7 +308,9 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemon_ios/Lemon/Service/WebControl/WebControlCapabilityGate.swift",
-      "sha256": "f984227ae67d75ab14fe46c63c15c34e17ef6ad4d0de1f475ac7b621b2cf6995"
+      "sha256": "5c83dd69c665ef11239f8696c0a8077cc71af840f939c39066d37de80b6507a4",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -385,9 +391,9 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "LemonMCP/src/tools.ts",
-      "sha256": "0443d39b68f33bccb093731c5b1d04ce4fd31c0ebd33910f86330c1a5821edd6",
-      "reviewedAt": "2026-11-10",
-      "reviewScope": "query-host-matching-and-tool-reference-sync"
+      "sha256": "2d5b2aea2cc7deafc06755ba03f972cd7901313aab9b409837af71a062cb638c",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
     },
     {
       "scope": "public-mcp",
@@ -397,7 +403,9 @@
     {
       "scope": "public-mcp",
       "path": "src/apiClient.ts",
-      "sha256": "6f79f33250fef4a7f1b2ba192bbebf28578979aaf1feccce83d57c2e952c6413"
+      "sha256": "c09037ade830343ebe522b3dece08cd30c5a727b931e8f9e1052b899c21f15ee",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
     },
     {
       "scope": "public-mcp",
@@ -412,9 +420,9 @@
     {
       "scope": "public-mcp",
       "path": "src/tools.ts",
-      "sha256": "efa1a46a25c12145eca5ec66bff22ee9872cce84605fc0755ffeb38b3d202b72",
-      "reviewedAt": "2026-11-10",
-      "reviewScope": "query-host-matching-and-tool-reference-sync"
+      "sha256": "8ca45bc0b417485fd5db6ea6f7f52ebb56d75349c63f0229580064d98349a29a",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
     },
     {
       "scope": "public-mcp",
@@ -592,16 +600,128 @@
       "sha256": "8c56bc95299f4eef856c31ff79694affe3a80df8ebd1db07b7672748e6c7871c",
       "reviewedAt": "2026-11-10",
       "reviewScope": "query-host-matching-and-tool-reference-sync"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "src/deviceFiles.ts",
+      "sha256": "e6a965e698aa4cc5d5fe5d4cbe0170590c7ee43226edb76978cc7be801f3796c",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "test/deviceFiles.test.cjs",
+      "sha256": "010a9e313df9578b629f4fe51854b8b1005891a24b54b0810c2d6455314272d1",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "LemonMCP/src/apiClient.ts",
+      "sha256": "c09037ade830343ebe522b3dece08cd30c5a727b931e8f9e1052b899c21f15ee",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "LemonMCP/src/deviceFiles.ts",
+      "sha256": "e6a965e698aa4cc5d5fe5d4cbe0170590c7ee43226edb76978cc7be801f3796c",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/Rewrite/RewriteMockFileStore.swift",
+      "sha256": "190f7fb45d77be8f5c8b7221a06e79fa6e4d74c1e8aff0d9a59855cd215e123e",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/WebControl/RewriteMockFileWebService.swift",
+      "sha256": "56bdbe53941f1b45b5e659d3fbae36aa7bf650b0b88f04f37753e49f00393f11",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/WebControl/WebRouters/RewriteMockFilesRouter.swift",
+      "sha256": "63e7714d923edb106f94baff3612b3dcae131a3a8d270d8c1d9f2b2ff53ad8a3",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "src/rewriteIdentifiers.ts",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers",
+      "sha256": "07b48a938a1b9b0bd60e0a3f72c5ee1ce5bd3382c94f97457bf7c545307d4149"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "test/rewriteIdentifiers.test.cjs",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers",
+      "sha256": "f4f3c273ec126fb34dcdb804b05fb01ddae0569654b891d95d69e3d601b20967"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "LemonMCP/src/rewriteIdentifiers.ts",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers",
+      "sha256": "07b48a938a1b9b0bd60e0a3f72c5ee1ce5bd3382c94f97457bf7c545307d4149"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/LemonTests/RewriteMockFileWebServiceTests.swift",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers",
+      "sha256": "bd7a3133acaf7ddcd0a205ee7752808a42186be74009ed56cf25bc5e893f479e"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/LemonTests/RewriteWebPayloadTests.swift",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers",
+      "sha256": "26978083f8c6b1587985155a9c2c4602c160a3f1b9c2dc301317e6ab5c8b79ba"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/2.0/rewrite/webcontrol-and-mcp-api.md",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers",
+      "sha256": "971d2cbaed27df84c9286285f367852ead60c28957a207e4f381f62bcf90374a"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/2.0/build-test/2026-11-12-mcp-phone-mock-files.md",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers",
+      "sha256": "31d106e3131fa59c8ce13eec7a4d57609a89748ed14b53704106a6b18c05de8f"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/pending/evidence/rewrite_mcp_device_files_2026-11-12/stack-mcp-smoke.json",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers",
+      "sha256": "63166878a635886767c2f90c6fe685b2ec3a196206729dc825176c8aee4d9bd5"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/pending/evidence/rewrite_mcp_device_files_2026-11-12/stack-tests-final.json",
+      "reviewedAt": "2026-11-12",
+      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers",
+      "sha256": "1cd2c8bf96974c1196224ddcf8652fcb84724c7202c0d6fde2540116cebaaad7"
     }
   ],
   "documentFiles": [
     {
       "path": "README.md",
-      "sha256": "9f6f29f65cdef7f63379fc281a5e3b940650c62b015a8e8f9a3ef48c487e15f2"
+      "sha256": "c2e65d42b8f4be2162b6836fd17664a25621572607080a5eea11822d26c11536"
     },
     {
       "path": "README.zh-CN.md",
-      "sha256": "c031d72244759ef2cae2e9affe71b3bbc27020cd05858f2596d5014dc826e612"
+      "sha256": "8918e151d91cc98419343d8a4cb40bff4539ba6f6c20e81c1d4a788d8a899308"
     },
     {
       "path": "docs/AI_GUIDE.md",
@@ -613,7 +733,7 @@
     },
     {
       "path": "docs/README.md",
-      "sha256": "7dc6fb0aad90b04c92ad0605264e2ae81b7ded57239ef36766b6edb206a44102"
+      "sha256": "041446081f380edb27590c3c3fbfcac69550c9b6fb43a45cb65eecb80b03cf79"
     },
     {
       "path": "docs/manual/ai-helper.en-US.md",
@@ -641,11 +761,11 @@
     },
     {
       "path": "docs/manual/files.en-US.md",
-      "sha256": "bd37286251d0ff741fd6792fc6a635f1c5310136b85791609916f22164dd36cd"
+      "sha256": "f46407c6f98dcca899acd3f3df0f529d9036e3afd2414301e8a410ecf1f34a07"
     },
     {
       "path": "docs/manual/files.zh-CN.md",
-      "sha256": "54f42a3ac3c92fd44fa329712d358e63a1abc40c2f85c1f41b5099a75b6e328d"
+      "sha256": "3bb32a3d86ec65d38f02deb78aa0fb6162071a5aff1ac1d9958bbebd50979400"
     },
     {
       "path": "docs/manual/lan-proxy.en-US.md",
@@ -657,11 +777,11 @@
     },
     {
       "path": "docs/manual/lemon-mcp.en-US.md",
-      "sha256": "ffef750441e1e8dd43ba65f057f23954542b3a2ae92757def28f0db850d46005"
+      "sha256": "81b57d5fb12e182f982fd64d8584040144fc0904c335994e867d17eb9a676fe7"
     },
     {
       "path": "docs/manual/lemon-mcp.zh-CN.md",
-      "sha256": "beb9d377ebfe69fae34eb28cc2402fd6cc8325c31de156270d69cac34848c6df"
+      "sha256": "b035a3f22e6677c02e65898ba9909e46fe05a1d2658e2624ca36b4cbb6118e8b"
     },
     {
       "path": "docs/manual/mitm.en-US.md",
@@ -745,7 +865,7 @@
     },
     {
       "path": "docs/reference/compatibility.md",
-      "sha256": "79cd7f309bf21c4bbf164c89fe091c218a1cab9d885d827ccd6393bd4ce29015"
+      "sha256": "1f2298846be9cbf7b5a82cc8418a62100cac37fd46769a163c0e5367718c6bcb"
     },
     {
       "path": "docs/reference/remote-scripts.md",
@@ -753,7 +873,7 @@
     },
     {
       "path": "docs/reference/rewrite-rules.md",
-      "sha256": "24af8058dd42e193543f36cc510dab19e73cc46b28cb21a30eb77d02bd590d74"
+      "sha256": "c1e2551d3cb6470e9915ddadd16df308f80482377f1148eda6ba9aecc653e213"
     },
     {
       "path": "docs/reference/script-api.md",
@@ -765,19 +885,19 @@
     },
     {
       "path": "docs/reference/tools.md",
-      "sha256": "32bc697a011d91f5cd9c4955981d923cc9caf0c7ddc4653c7f86a30d88c3fc95"
+      "sha256": "267daf512e3b484f1d710df355df4f02431a23cb881199cac0964a3a2a1843c6"
     },
     {
       "path": "docs/reference/tools.schema.json",
-      "sha256": "bb39285d470c80737a2a3a55c260416206c6ffa12cf34464520647841faf735d"
+      "sha256": "662ea1055ba99ef23649d01eb41d6540871f5798b496eca186b20af60db5c818"
     },
     {
       "path": "docs/verification.md",
-      "sha256": "0cb270a8fdd5b15c23660b714438b73a15fcd0366ba1d2a3fa501986a47d3731"
+      "sha256": "c88f2357fd6bf6a62b4caed24b8624fecc63c7e574f30f60696cc907296dce36"
     },
     {
       "path": "llms.txt",
-      "sha256": "a511d70250b293c18af9169629d2ff83acc51a745feb2cd12e14a68b01a33017"
+      "sha256": "c75c03fef82f332836f6511ca215634800de5562d31f24c1afe2da85d553897c"
     },
     {
       "path": "skills/lemon/SKILL.md",
@@ -814,15 +934,21 @@
     {
       "path": "skills/lemon/tests/test_lemon_http.py",
       "sha256": "b9a4de94565510db7c8138abf22ded99fa66e236208d92304cc5e6872fcaae0d"
+    },
+    {
+      "path": "docs/reference/device-files.md",
+      "sha256": "fc08d6517a5a57cdde55eb22bb9910c61bf6238fe0c2ad81fb9b4f1372e349da"
     }
   ],
   "validation": {
     "standaloneTypeScriptBuild": "passed",
     "deterministicUnitTests": {
-      "passed": 34,
+      "passed": 53,
       "failed": 0,
       "nodeVersion": "24.1.0",
-      "includesSubtests": 5
+      "includesSubtests": 5,
+      "checkedAt": "2026-11-12",
+      "environment": "current-public-checkout"
     },
     "toolSchemaMatchesRegisteredPublicTools": true,
     "deviceRun": false,
@@ -847,8 +973,62 @@
       "rawLinksResolvedLocally": 148,
       "jsonExamples": 46,
       "javascriptExamples": 22,
+      "deviceExecution": false,
+      "checkedAt": "2026-11-10"
+    },
+    "standaloneTypeScriptBuildCheckedAt": "2026-11-10",
+    "phoneMockFileTools": {
+      "checkedAt": "2026-11-12",
+      "newTestsPassed": 12,
+      "newTestsFailed": 0,
+      "identifierTestsPassed": 7,
+      "identifierTestsFailed": 0,
+      "internalTestsPassed": 42,
+      "internalRewriteContractCases": 32,
+      "physicalDeviceRun": true,
+      "physicalDeviceScope": [
+        "phone-file-preparation",
+        "disabled-rewrite-persistence",
+        "reference-cleanup",
+        "exact-policy-identifiers"
+      ],
+      "signedStackTests": {
+        "passed": 47,
+        "failed": 0
+      },
+      "freshPublicMcpTools": 70,
+      "full2MiBByteDigestVerified": true,
+      "beforeAndAfterCounts": {
+        "policies": 14,
+        "groups": 15,
+        "actions": 25
+      },
+      "existingPolicyIdsPreserved": [
+        73,
+        74,
+        75,
+        76
+      ],
+      "temporaryResourcesCleaned": true,
+      "uiAcceptance": false,
+      "actualRewrittenTraffic": false,
+      "computerFileUpload": false,
+      "nativeDocumentPicker": false,
+      "backendDeployed": false,
+      "bosWrites": false
+    },
+    "phoneFileDocumentationStaticChecks": {
+      "checkedAt": "2026-11-12",
+      "documents": 13,
+      "relativeLinks": 139,
+      "jsonExamples": 30,
+      "jsonFenceKinds": [
+        "backticks",
+        "tildes"
+      ],
       "deviceExecution": false
-    }
+    },
+    "deviceRunScopeNote": "The global deviceRun=false is not an all-tools acceptance claim; focused phone file/policy acceptance is recorded in phoneMockFileTools.physicalDeviceRun."
   },
   "officialReferences": [
     {
@@ -893,5 +1073,5 @@
     "matchingReviewedAt": "2026-11-10",
     "matchingReviewScope": "Query / Host semantics, capability preflight for direct HTTP, portable and backup versions; other HTTP contracts retain the original checkedAt."
   },
-  "reviewScope": "Incremental Query / Host wildcard matching sync; unrelated content retains its 2026-11-07 review."
+  "reviewScope": "Incremental phone App Group Mock file tools and exact policy identifier handling (2026-11-12), including focused Stack phone API/persistence acceptance. UI interaction and actual rewritten traffic remain outside this run. Matching retains the 2026-11-10 review; unrelated content retains the 2026-11-07 review. Publication is separate."
 }

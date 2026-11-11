@@ -12,7 +12,7 @@ This reference describes the current App/WebControl contract and how the public 
 | Create | `upsert_rewrite_rule` with rule_json and groups_json strings; omit rule.id |
 | Update | Read first, then upsert with the actual rule.id and complete replacement groups |
 | Enable or disable | Upsert the complete rule with enabled=true/false; retain all groups |
-| Delete | `delete_rewrite_rule({id})`, using the numeric policy id |
+| Delete | `delete_rewrite_rule({id})`, using the exact id_text string (or safe positive integer) |
 | Inspect runtime | `get_rewrite_runtime_status` and `get_rewrite_debug_events` |
 | Apply after a change | Check the mutation's application result; use `reload_rewrite_runtime` when required and verify the active runtime |
 
@@ -84,7 +84,21 @@ The actual MCP arguments are JSON **strings**:
 }
 ~~~
 
-To update, add the existing numeric id to the rule metadata before encoding it. Preserve the group's UUID. After saving a disabled draft, enable it only when the user requests activation and all runtime prerequisites are satisfied.
+To update, set rule.id to the original id_text decimal string (or a safe positive integer) before encoding it, and omit the read-only id_text field. Preserve the group's UUID. After saving a disabled draft, enable it only when the user requests activation and all runtime prerequisites are satisfied.
+
+## Exact policy identifiers
+
+SQLite policy identifiers are Int64 values and may exceed JavaScript's safe integer range. Updated iPhones add `id_text` to GET /api/rewrite while keeping the legacy numeric id. **Use the original id_text string for updates and deletion.** A large numeric id parsed as a JavaScript Number may already be rounded; converting that Number to a string cannot recover the original identifier.
+
+`upsert_rewrite_rule` accepts rule.id as a safe positive integer or a canonical positive decimal Int64 string (`1..9223372036854775807`, no sign, leading zero, whitespace, decimal point or exponent). Construct writable policy metadata explicitly: copy id_text into **id**, retain name/enabled/priority, and omit the read-only id_text field and database metadata. For a new rule omit both id and id_text. A present null, zero, boolean, fractional or unsafe numeric identifier is rejected before any device operation.
+
+```json
+{"id":"8448911919725463553","name":"Existing phone rule","enabled":false,"priority":0}
+```
+
+`delete_rewrite_rule` accepts the same string/number contract and sends the exact decimal value in the query string. An iOS application error is reported as a tool failure. Deleting an absent identifier remains the existing idempotent API behavior; verify the intended record is absent rather than relying only on a success message.
+
+Safe numeric updates retain their numeric wire type for older iPhones. String policy updates require the updated iPhone WebControl parser. If id_text is unavailable, read a bounded query with `CAST(id AS TEXT) AS id_text` rather than selecting a bare numeric id. Keep joins within SQLite, and project only the fields needed for the check; do not fetch large rule bodies just to validate one file reference. This change does not alter database keys, SQLite sequences, global JSON parsing, script identifiers or the cloud share schema.
 
 ## Matching
 
@@ -230,7 +244,7 @@ application/x-www-form-urlencoded uses its own text semantics; do not treat a mu
 {"target":"https://example.com/debug"}
 ~~~
 
-A mock file must already exist in permitted App Group storage. fetch_device_file is a read tool; it cannot upload the missing mock. The current MCP does not expose a general file-upload tool.
+Use list_device_files to enumerate a phone App Group directory, select_mock_file to validate and import/reuse a phone file, or create_mock_file to create a new file on the phone. Both return a config JSON **string** containing file_path and content_type for a mock_file action. Content is limited to 2 MiB of valid UTF-8 text. Attach new references promptly with upsert_rewrite_rule; unreferenced files may be reclaimed on app restart. Editing uses fetch_device_file → create_mock_file → update the rule reference so existing rules retain their content. These tools do not read/upload computer files or invoke the system Files/iCloud picker. See the [complete phone file workflow](device-files.md).
 
 ### ESM script binding
 

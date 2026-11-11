@@ -47,3 +47,6 @@ When an AI or remote client works with files, list the directory first, read the
 - Edit has no effect: check the reference path and reload the script or module using the file.
 - Uploaded file cannot be used: existence does not mean the content passes script, module, or runtime validation.
 - Share fails: download to a system-accessible location or check the file type and permission limits.
+
+
+The public MCP provides list_device_files for phone App Group directories and select_mock_file/create_mock_file for Mock action files. These do not read computer files or invoke the native Files/iCloud picker. Follow the [phone file workflow](../reference/device-files.md), including UTF-8/2 MiB limits and saving new references before an app restart.

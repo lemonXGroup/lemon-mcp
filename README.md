@@ -111,7 +111,7 @@ New public Skill URLs work after these files are pushed to main.
 
 ## What it provides
 
-The server currently registers 67 tools and 2 resources. Tool schemas exposed
+The server currently registers 70 tools and 2 resources. Tool schemas exposed
 to the MCP client are the runtime source of truth; the following list is a
 capability map for humans and AI agents.
 
@@ -143,7 +143,12 @@ limited to `250..86400000` milliseconds by the MCP schema.
 - `search_traffic_previews`: find request summaries by keyword or host.
 - `get_captured_request`: read a complete request/response and body metadata.
 - `fetch_binary_payload`: fetch a referenced request or response body.
+- `list_device_files`: enumerate an existing directory on the operated iPhone.
+- `select_mock_file`: validate and select/import a phone App Group file for a Mock action.
+- `create_mock_file`: create a new phone Mock text file, including an empty file.
 - `fetch_device_file`: read a non-database App Group file.
+
+See [phone files and Mock workflows](docs/reference/device-files.md) for the 2 MiB limit, capability gate, safe editing, and rule-reference steps.
 - `execute_raw_sql`: run a diagnostic query against Lemon's SQLite database.
 
 Use `search_traffic_previews` for discovery and `get_captured_request` for
@@ -202,7 +207,9 @@ Read the [remote script lifecycle](docs/reference/remote-scripts.md) before usin
 - `list_rewrite_rules`: list policies, MatchGroups, and actions.
 - `upsert_rewrite_rule`: create or update a rule using `rule_json` and
   `groups_json`.
-- `delete_rewrite_rule`: remove a rule by numeric id.
+- `delete_rewrite_rule`: remove a rule by its exact `id_text` string or safe positive integer.
+
+For updates, copy `id_text` into `rule.id` and omit read-only fields. Unsafe JavaScript numeric ids are rejected; see [exact policy identifiers](docs/reference/rewrite-rules.md#exact-policy-identifiers).
 - `get_rewrite_schema`: return the current rule, action, and package schema.
 
 Conditions inside one MatchGroup use AND. Matching groups use OR. The exact

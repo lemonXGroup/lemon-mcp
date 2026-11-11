@@ -138,6 +138,9 @@ After creating or updating a task, check that the schedule type matches its fiel
 | `search_traffic_previews` | `keyword`, `limit?` | Searches request summaries. Limit defaults to 50 and MCP clamps it to 0..1000. Domain, IPv4, or Host-with-port keywords use exact Host filtering. Results include `trace_id`, `database_id`, method, URL, status, time, body lengths, and previews up to 500 characters. |
 | `get_captured_request` | `trace_id`: non-empty string | Reads a complete request / response. The value may be a transaction id, trace id, or legacy database id returned by search. `requestBodyMeta` and `responseBodyMeta` distinguish `missing`, `empty`, `text`, `binary_ref`, and `structured`. |
 | `fetch_binary_payload` | `path`: relative body path | Reads a complete request or response body. Strict safe UTF-8 without unsafe control characters is returned as text; other bytes are returned as Base64 with byte length. Use a path obtained from request details. |
+| `list_device_files` | `path?`, `offset?`, `limit?` | Enumerates one phone App Group directory; metadata only, MCP output pagination. |
+| `select_mock_file` | `path`, `content_type?` | Validates and imports/reuses an existing phone file for Mock; no computer file or native picker. |
+| `create_mock_file` | `content?`, `filename?`, `content_type?` | Creates a new phone UTF-8 Mock file up to 2 MiB; empty content is supported. |
 | `fetch_device_file` | `path`: relative App Group path | Reads a non-database file. Known text extensions are read as text and JSON is pretty-printed; other content uses safe byte formatting. ESM packages in `runtime.sqlite` must be read with script-package tools instead. |
 | `execute_raw_sql` | `query`: SQLite SQL string | Runs a raw diagnostic query against the Lemon SQLite database. MCP does not enforce a complete read-only AST. Default to `SELECT` / `PRAGMA` and avoid `UPDATE`, `DELETE`, DDL, and long transactions. |
 
@@ -220,9 +223,9 @@ The rule API manages policies, MatchGroups, and ordered actions. Match condition
 
 | Tool | Input | Capability and notes |
 | --- | --- | --- |
-| `list_rewrite_rules` | None | Reads all Rewrite policies, MatchGroups, and actions. |
-| `upsert_rewrite_rule` | `rule_json`, `groups_json` | Creates or updates a rule. `rule_json` is a JSON string containing `id?`, `name`, `enabled`, and `priority`; `groups_json` is a MatchGroup array. Include an id in the rule object for updates. |
-| `delete_rewrite_rule` | `id`: number | Deletes one Rewrite rule. |
+| `list_rewrite_rules` | None | Reads all policies/groups/actions; use original id_text strings for updates and deletion. For bounded checks prefer narrow SQL with CAST(id AS TEXT). |
+| `upsert_rewrite_rule` | `rule_json`, `groups_json` | Creates or updates a rule. `rule_json` is a JSON string containing `id?`, `name`, `enabled`, and `priority`; `groups_json` is a MatchGroup array. For updates copy original id_text into rule.id as a string, omit id_text itself, or use a safe positive numeric id. Unsafe numbers are rejected. |
+| `delete_rewrite_rule` | `id`: exact decimal Int64 string or safe positive number | Deletes one policy without rounding its identifier; see [identifier contract](../reference/rewrite-rules.md#exact-policy-identifiers). |
 | `get_rewrite_schema` | None | Returns local schema guidance that omits newer App features. Read it alongside the rule reference and compatibility table. |
 
 Core MatchGroup shape:
@@ -252,7 +255,7 @@ HTTP action scopes are `request` and `response`. The App also supports `websocke
 
 - `header_mod`: modify HTTP headers.
 - `body_replace`: modify literal text, regex matches, exact JSON paths, or multipart ordinary fields. See the [rule reference](../reference/rewrite-rules.md) for exact parameters.
-- `mock_file`: return a local payload.
+- `mock_file`: return a local phone payload; use [phone Mock workflows](../reference/device-files.md) to list/select/create, then save the returned config string.
 - `redirect`: perform an HTTP redirect.
 - `js`: invoke an ESM script package; its config may be a JSON string such as `{"script_id":7,"phase":"body"}`.
 
@@ -350,4 +353,4 @@ These capabilities let an AI participate in the full loop from reproduction to e
 
 ## Independent public snapshot additions
 
-This snapshot registers 67 tools and 2 resources. The six remote-source tools are documented in [remote scripts](../reference/remote-scripts.md). Read the [rule reference](../reference/rewrite-rules.md), [script API](../reference/script-api.md), and [compatibility](../reference/compatibility.md) for expression, JSON Path, multipart, and WebSocket support; the old get_rewrite_schema text is incomplete. Use the [AI guide](../AI_GUIDE.md) for initial connection. Authenticated endpoints require the current token, independently of device entitlements.
+This snapshot registers 70 tools and 2 resources. The six remote-source tools are documented in [remote scripts](../reference/remote-scripts.md). Read the [rule reference](../reference/rewrite-rules.md), [script API](../reference/script-api.md), and [compatibility](../reference/compatibility.md) for expression, JSON Path, multipart, and WebSocket support; the old get_rewrite_schema text is incomplete. Use the [AI guide](../AI_GUIDE.md) for initial connection. Authenticated endpoints require the current token, independently of device entitlements.

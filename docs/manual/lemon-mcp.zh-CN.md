@@ -138,6 +138,9 @@ MCP 完成 stdio 握手后才启动设备发现，避免一个尚未连接 AI �
 | `search_traffic_previews` | `keyword`, `limit?` | 搜索请求摘要；limit 默认 50，MCP 会限制在 0 到 1000。域名、IPv4 或带端口 Host 使用精确 Host 过滤。结果包含 `trace_id`、`database_id`、method、url、status、时间、body 长度和最多 500 字符预览。 |
 | `get_captured_request` | `trace_id`: 非空字符串 | 读取完整请求 / 响应。这个参数实际可接受 search 返回的 transaction id、trace id 或 legacy database id；结果包含 `requestBodyMeta` 和 `responseBodyMeta`，区分 missing、empty、text、binary_ref、structured。 |
 | `fetch_binary_payload` | `path`: body 相对路径 | 读取完整请求或响应 body。严格安全 UTF-8 且无危险控制字符时返回文本，否则返回带 byte length 的 Base64；路径应来自已读取的请求详情。 |
+| `list_device_files` | `path?`、`offset?`、`limit?` | 枚举手机 App Group 单层目录；仅元信息，分页只裁剪 MCP 返回。 |
+| `select_mock_file` | `path`、`content_type?` | 按手机路径验证、复制导入或安全复用模拟文件；不读取电脑文件、不弹系统选择器。 |
+| `create_mock_file` | `content?`、`filename?`、`content_type?` | 在手机新建最大 2 MiB UTF-8 模拟文件，支持空内容。 |
 | `fetch_device_file` | `path`: App Group 相对路径 | 读取非数据库文件。常见文本扩展名会按文本读取，JSON 会格式化；其他内容按安全字节读取。`runtime.sqlite` 中的 ESM 包不要用此工具，应使用脚本包工具。 |
 | `execute_raw_sql` | `query`: SQLite SQL 字符串 | 在 Lemon SQLite 数据库上执行原始诊断查询。MCP 层没有完整只读 AST 防护，默认只使用 `SELECT` / `PRAGMA`，避免 `UPDATE`、`DELETE`、DDL 和长事务。 |
 
@@ -220,9 +223,9 @@ Rewrite 脚本包是存储在 iOS `runtime.sqlite` 中的版本化 ESM package�
 
 | Tool | 输入 | 能力和注意事项 |
 | --- | --- | --- |
-| `list_rewrite_rules` | 无 | 读取全部 Rewrite policies、MatchGroups 和 actions。 |
-| `upsert_rewrite_rule` | `rule_json`, `groups_json` | 创建或更新规则。`rule_json` 是 JSON 字符串，包含 `id?`、`name`、`enabled`、`priority`；`groups_json` 是 MatchGroup 数组。更新时 rule 需要带 id。 |
-| `delete_rewrite_rule` | `id`: 数字 | 删除一个 Rewrite rule。 |
+| `list_rewrite_rules` | 无 | 读取全部规则/分组/动作；更新删除请使用原始 id_text 字符串。局部核对优先窄 SQL，并将 id CAST AS TEXT。 |
+| `upsert_rewrite_rule` | `rule_json`, `groups_json` | 创建或更新规则。`rule_json` 是 JSON 字符串，包含 `id?`、`name`、`enabled`、`priority`；`groups_json` 是 MatchGroup 数组。更新时将原始 id_text 字符串放到 rule.id，移除 id_text 字段；也支持安全正整数，不安全的数字会被拒绝。 |
+| `delete_rewrite_rule` | `id`: 精确十进制 Int64 字符串或安全正整数 | 无损指定要删除的规则，见[标识符契约](../reference/rewrite-rules.md#exact-policy-identifiers)。 |
 | `get_rewrite_schema` | 无 | 返回本地 rule、MatchGroup、action 和 ESM package 提示；新能力描述滞后，创建规则时同时读取规则参考和兼容性。 |
 
 MatchGroup 的核心结构示例：
@@ -252,7 +255,7 @@ HTTP action scope 是 `request` 和 `response`。当前 App 还支持 `websocket
 
 - `header_mod`：修改 HTTP headers。
 - `body_replace`：按字面文本、正则、精确 JSON Path 或 multipart 普通字段执行正文修改；完整参数见 [规则参考](../reference/rewrite-rules.md)。
-- `mock_file`：返回本地 payload。
+- `mock_file`：返回手机本地 payload；先按[手机模拟文件工作流](../reference/device-files.md)枚举、选择或新建，再将返回的 config 字符串保存到动作。
 - `redirect`：执行 HTTP redirect。
 - `js`：调用 ESM script package，config 可以是 `{"script_id":7,"phase":"body"}` 这样的 JSON 字符串。
 
@@ -350,4 +353,4 @@ WHERE trace_id = '...';
 
 ## 独立公开版本补充
 
-此公开快照实际注册 67 个 tools、2 个 resources。新增的 6 个远程脚本工具见 [远程脚本](../reference/remote-scripts.md)。当前 App 的表达式、JSON Path、multipart 和 WebSocket 能力需要结合 [规则参考](../reference/rewrite-rules.md)、[脚本 API](../reference/script-api.zh-CN.md) 与 [兼容性](../reference/compatibility.md) 阅读，不能仅凭旧 get_rewrite_schema 文本生成规则。首次连接按 [AI 指南](../AI_GUIDE.zh-CN.md) 完成。已认证接口需要当前手机口令；客户端配置环境变量并不代替设备端权限。
+此公开快照实际注册 70 个 tools、2 个 resources。新增的 6 个远程脚本工具见 [远程脚本](../reference/remote-scripts.md)。当前 App 的表达式、JSON Path、multipart 和 WebSocket 能力需要结合 [规则参考](../reference/rewrite-rules.md)、[脚本 API](../reference/script-api.zh-CN.md) 与 [兼容性](../reference/compatibility.md) 阅读，不能仅凭旧 get_rewrite_schema 文本生成规则。首次连接按 [AI 指南](../AI_GUIDE.zh-CN.md) 完成。已认证接口需要当前手机口令；客户端配置环境变量并不代替设备端权限。
