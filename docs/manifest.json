@@ -31,6 +31,18 @@
       "checkedAt": "2026-11-14",
       "kind": "local-working-tree-ui-layout-and-focused-stack-acceptance",
       "note": "Query operation editor layout and bilingual labels only; request target action/API/MCP/skill contracts unchanged."
+    },
+    "additionalMitmReview": {
+      "checkedAt": "2026-11-14",
+      "kind": "generic-handshake-evidence-and-persisted-defaults",
+      "appGitHead": "0f92eb9aac080487c5679238448b3f953dd45061",
+      "note": "Adds qualified silent handshake closure as repeated two-minute weak evidence. Default Push/StoreKit rows are seeded once by migrations; historic reject hosts are disabled. Physical-device verification is recorded separately."
+    },
+    "additionalHttp2AuthorityReview": {
+      "checkedAt": "2026-11-14",
+      "appGitHead": "0f92eb9aac080487c5679238448b3f953dd45061",
+      "kind": "committed-fix-with-device-log-snapshot-and-host-regression",
+      "note": "Removes duplicate regular Host on HTTP/2 origin legs, including the HTTP/3 TCP fallback. Device logs were copied before device departure. User authorized an internal TestFlight release without post-fix physical-device acceptance; fresh archive/upload pending."
     }
   },
   "publicRepository": "https://github.com/lemonXGroup/lemon-mcp",
@@ -133,14 +145,14 @@
     {
       "document": "docs/manual/mitm.en-US.md",
       "origin": "lemon_web/src/manual/mitm.en-US.md",
-      "originSha256": "2e08a85a9b26d7706e2e6653e9af637f5ceaaebab6c9ce9488970e4dfd6cacb8",
+      "originSha256": "907a35b01daa327f6463d1cf77cccbb5b1b17323c9c92d7a67e49d067106d305",
       "review": "adapted-manual-with-identified-corrections",
       "deviceAcceptance": false
     },
     {
       "document": "docs/manual/mitm.zh-CN.md",
       "origin": "lemon_web/src/manual/mitm.zh-CN.md",
-      "originSha256": "e3dae61b10e31e008d634b0840b57ab5dd327b771d8db60c5268f708968817cf",
+      "originSha256": "28164df1bc2aeb5540adb7506ef0f9dcae388da94b1a6fbcdab7aef3ddab8836",
       "review": "adapted-manual-with-identified-corrections",
       "deviceAcceptance": false
     },
@@ -283,7 +295,7 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "contracts/script_editor_api_catalog.v1.json",
-      "sha256": "b42f9d32afd24b76c2b73695065998e76c7f3c4dc2cf68b94e7b1eeafc82e455"
+      "sha256": "cd9852615932b93e9b8f68c07138b5b9137452c0bcf253f3e8abd4859643c888"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -334,7 +346,7 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemon_ios/InternalModules/Shared/Config/LemonCoreRuntimeConfig.swift",
-      "sha256": "01cda229ee6da7e486076b324e22bb280c2849926bbed47fb6321c30fce851fa"
+      "sha256": "ce03e8cea6596be26eb2f13c1c9277bee6f904cd7b2e5c72d6c872a52b6e2f21"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -375,7 +387,7 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemonCore/ffi/src/settings.rs",
-      "sha256": "5e27dcfa796d0362ba01441f14ecbe6c84257226fc069c36a820f14b9c350d44"
+      "sha256": "8d47b33e583611612c3aea4d6729e567f0feca546d78db07d1ded4e2d59b97ce"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -402,7 +414,7 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemonCore/middlewares/src/http3/semantics.rs",
-      "sha256": "37f8c0e748b5def3fa8da887a9c58d44daacd8f762fc1bc694845eaaa4356d33"
+      "sha256": "c07f9f894d753ce2aee44dfb0b37a6bafc187513508e1eaf6d37fbf8a5a3f0ce"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -545,7 +557,7 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemon_ios/Lemon/Service/Module/ModuleModels.swift",
-      "sha256": "6095496a49035751cc01a64699fa6a7ca98ed0adb577cbf3394c91d8d27629c8"
+      "sha256": "514d199b1ce47ed70ed9eddf69626f97a56a1a2ffc502c6223f1fd3084010cea"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -704,7 +716,7 @@
       "path": "lemon_ios/LemonTests/RewriteWebPayloadTests.swift",
       "reviewedAt": "2026-11-12",
       "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers",
-      "sha256": "26978083f8c6b1587985155a9c2c4602c160a3f1b9c2dc301317e6ab5c8b79ba"
+      "sha256": "62edd49ef1712d5a21ad7a454a148b57f6b6641f774929a25f6ab014d5218b0e"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -772,7 +784,7 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemonCore/ffi/src/lifecycle/runtime.rs",
-      "sha256": "5670884c035870d5f6b10156b22c1228eb5cef643287a7d69cb1d33bb13c3afa",
+      "sha256": "322ed1e67443ca4e1b2a86505f65f1250807fdafd74449ea225903fbbb8b8402",
       "reviewedAt": "2026-11-14",
       "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
     },
@@ -800,16 +812,16 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemonCore/middlewares/src/http3/origin.rs",
-      "sha256": "db76c7148bca220a6041130b71e8cce70dfe2f6d5059a5f14cefed9d55c9d58e",
+      "sha256": "0ae6baa3df98ffce7af5448b56c5d041ca5ca5d5eafe46e0e522073fdcd45d34",
       "reviewedAt": "2026-11-14",
-      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+      "reviewScope": "protocol-specific-host-authority-encoding-and-local-regression; fixed-device-acceptance-pending"
     },
     {
       "scope": "app-monorepo-provenance",
       "path": "lemonCore/middlewares/src/http3/tests.rs",
-      "sha256": "88b4b2a6a03591d1c509879ed770e9591c8afcc01e8b786fef31995d33baeafc",
+      "sha256": "9225043f11aff0a56d29e9d50c5d01ff897b53bfc515ccea1ba70502a614c2a8",
       "reviewedAt": "2026-11-14",
-      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+      "reviewScope": "protocol-specific-host-authority-encoding-and-local-regression; fixed-device-acceptance-pending"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -940,9 +952,9 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemonCore/middlewares/src/http_origin.rs",
-      "sha256": "6747fef3bfbac77300d05999904c368464ebe318711c6d2f783cc6e74c6db9e4",
+      "sha256": "7f8fabe80ba431c15f68a3516b09d6cb0eb5e4697ec22743ff5015c19d59c763",
       "reviewedAt": "2026-11-14",
-      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+      "reviewScope": "protocol-specific-host-authority-encoding-and-local-regression; fixed-device-acceptance-pending"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -954,9 +966,9 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemonCore/middlewares/src/http_origin_tests.rs",
-      "sha256": "8e85b6f833d0b6dd508ee09bd96ed8584ad48ffbbb422d6dccb3b15d68e27020",
+      "sha256": "a3e05d26cd4d747def33ebc7338540f8accd334ed2aa2a36d4a669bf620957cd",
       "reviewedAt": "2026-11-14",
-      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+      "reviewScope": "protocol-specific-host-authority-encoding-and-local-regression; fixed-device-acceptance-pending"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -1147,7 +1159,7 @@
       "scope": "app-monorepo-provenance",
       "path": "lemon_ios/Lemon/Resources/en.lproj/Localizable.strings",
       "reviewScope": "query-parameter-editor-layout-labels-and-focused-stack-ui-acceptance",
-      "sha256": "ee110bfb43aff28b6b8917103548e1f0884aed393bfc50bdcc0ace4742c990f4",
+      "sha256": "79c9c09c3f2ddcedf2ad408ccc5adc73c58605f388d4fb73499cc6e163c54d06",
       "reviewedAt": "2026-11-14",
       "queryLayoutReviewedAt": "2026-11-14"
     },
@@ -1155,7 +1167,7 @@
       "scope": "app-monorepo-provenance",
       "path": "lemon_ios/Lemon/Resources/zh-Hans.lproj/Localizable.strings",
       "reviewScope": "query-parameter-editor-layout-labels-and-focused-stack-ui-acceptance",
-      "sha256": "669f39ab8c3252992ede0d6714df3b2e55148a5d095cd42320de626ac4d46c68",
+      "sha256": "8977603221ac922c1b49e0ef25aac74fc8e2dfb0569b5c2f7c6dafdb394ebfc9",
       "reviewedAt": "2026-11-14",
       "queryLayoutReviewedAt": "2026-11-14"
     },
@@ -1206,6 +1218,36 @@
       "sha256": "b41c7a5b6f3337c51d0055b9a16b9b9feb224a64d45e888ed14e1ab8e3de3e8e",
       "reviewedAt": "2026-11-14",
       "queryLayoutReviewedAt": "2026-11-14"
+    },
+    {
+      "scope": "app-monorepo-mitm-incremental-provenance",
+      "path": "lemonCore/ffi/src/lifecycle/auto_bypass.rs",
+      "sha256": "5d9ab400001f6ea10eae27a862a75517f2098d1e140684f991aa13c9ccd4f203"
+    },
+    {
+      "scope": "app-monorepo-mitm-incremental-provenance",
+      "path": "lemonCore/ffi/src/lifecycle/routing.rs",
+      "sha256": "43d1ef7b6c7826c94155986f612ee87066fd4c1d3392468b859b3e940bb15af0"
+    },
+    {
+      "scope": "app-monorepo-mitm-incremental-provenance",
+      "path": "lemonCore/middlewares/src/tls_interceptor/failure.rs",
+      "sha256": "0ebb011f2327b1cd87622d2c8ed33102e623692df8a762646d09258422c11440"
+    },
+    {
+      "scope": "app-monorepo-mitm-incremental-provenance",
+      "path": "lemonCore/middlewares/src/tls_interceptor/handshake_observation.rs",
+      "sha256": "c172f897bb98b414188149f41c13894f621c7b24a7ad282ea92145d22fa35fcf"
+    },
+    {
+      "scope": "app-monorepo-mitm-incremental-provenance",
+      "path": "lemon_ios/InternalModules/Persistence/Service/Database/RuntimeMigrations.swift",
+      "sha256": "dd2dd703e95896a6ed64ac899eb85a09b8e685aebc54abb43817d633f1ce2767"
+    },
+    {
+      "scope": "app-monorepo-mitm-incremental-provenance",
+      "path": "lemon_ios/Lemon/Service/MITM/MitmAutoBypassState.swift",
+      "sha256": "c1801beda57206e24f987640da165fccda94a937ca73e66ec89a4c2b7274008c"
     }
   ],
   "documentFiles": [
@@ -1279,11 +1321,11 @@
     },
     {
       "path": "docs/manual/mitm.en-US.md",
-      "sha256": "550bb8fa4a4fac9eb8e12d997fe0c3b39d4c727e5f3f195fb4fb522aae71dbd5"
+      "sha256": "907a35b01daa327f6463d1cf77cccbb5b1b17323c9c92d7a67e49d067106d305"
     },
     {
       "path": "docs/manual/mitm.zh-CN.md",
-      "sha256": "266ae78b3c05dddc748cf07960d87c2787c596bd44b0e025f7494564236ece59"
+      "sha256": "28164df1bc2aeb5540adb7506ef0f9dcae388da94b1a6fbcdab7aef3ddab8836"
     },
     {
       "path": "docs/manual/modules.en-US.md",
@@ -1419,7 +1461,7 @@
     },
     {
       "path": "skills/lemon/references/workflows.md",
-      "sha256": "76698c7950223f575cf7c21da81d653e3e03b0f929995215cb62fe7420cbf066"
+      "sha256": "dfd20c63f621e8c53810cf83e15b8797e7ebac1401dd3b5213832e66c92b1a3b"
     },
     {
       "path": "skills/lemon/scripts/lemon_http.py",
@@ -1605,6 +1647,38 @@
       "unrelatedChangesPreserved": true,
       "fullAppUIAcceptance": false,
       "mcpSkillContractsChanged": false
+    },
+    "http2AuthorityFix": {
+      "checkedAt": "2026-11-14",
+      "copiedDeviceEvidence": true,
+      "deviceSource": "Stack",
+      "physicalDeviceRunAfterFix": false,
+      "testFlightSubmitted": false,
+      "publicAnonymousProbe": {
+        "authorityOnly": [
+          200,
+          200
+        ],
+        "authorityPlusHost": [
+          400,
+          400
+        ]
+      },
+      "localRegression": {
+        "ffiPassed": 217,
+        "middlewaresPassed": 159,
+        "failed": 0,
+        "ffiIgnored": 1,
+        "middlewaresIgnored": 2,
+        "strictOriginPassed": 14,
+        "physicalDeviceAcceptance": false
+      },
+      "iosBuild": "Release arm64 passed; codesign deep/strict passed; iOS 15.0",
+      "coreSha256": "a8ee191cbff562ed8b39f502df735641b789ce32d94187be843cef8f2fd90e6f",
+      "coreBuild": "passed",
+      "xcodeCoreSha256": "a8ee191cbff562ed8b39f502df735641b789ce32d94187be843cef8f2fd90e6f",
+      "internalTestFlightAuthorized": true,
+      "physicalDeviceAcceptanceDeferredByUser": true
     }
   },
   "officialReferences": [
@@ -1650,7 +1724,9 @@
     "matchingReviewedAt": "2026-11-10",
     "matchingReviewScope": "Query / Host semantics, capability preflight for direct HTTP, portable and backup versions; other HTTP contracts retain the original checkedAt.",
     "requestTargetReviewedAt": "2026-11-14",
-    "requestTargetReviewScope": "redirect/url_rewrite/query_mod defaults, request_target_rewrite v1 preflight, portable6/backup7, JS request-header target output, workflows and reference links; no global installation."
+    "requestTargetReviewScope": "redirect/url_rewrite/query_mod defaults, request_target_rewrite v1 preflight, portable6/backup7, JS request-header target output, workflows and reference links; no global installation.",
+    "mitmReviewedAt": "2026-11-14",
+    "mitmReviewScope": "Stage-aware weak evidence, expiry/deletion diagnostics, persisted defaults and ordinary network-error exclusions; no new remote SQL configuration API. HTTP 400 after successful TLS must be diagnosed at the HTTP forwarding layer, including duplicate Host / :authority."
   },
   "reviewScope": "2026-11-14 incremental request-target action/forwarding/recording implementation, documentation, MCP/Skill and focused Stack traffic acceptance. Original baseline, 2026-11-10 matching and 2026-11-12 phone Mock-file reviews remain scoped in their entries. No full UI/all-tool acceptance or online publication is implied."
 }

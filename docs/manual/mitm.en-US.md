@@ -1,7 +1,3 @@
-> Evidence (2026-11-07): Adapted from the existing user manual with identified differences corrected; not every UI step or runtime path has been verified. See [provenance and limits](../verification.md).
-
-> This manual ships with LemonMCP. Start with the [AI guide](../AI_GUIDE.md); use the [rule reference](../reference/rewrite-rules.md), [script API](../reference/script-api.md), and [compatibility notes](../reference/compatibility.md) for exact contracts.
-
 # MITM
 
 MITM inspection lets Lemon decrypt and inspect HTTPS transactions using a trusted root certificate. It answers whether encrypted connection content can be seen; it does not replace Requests, Rewrite, or Replay.
@@ -44,6 +40,13 @@ Some apps pin a server certificate or public key. They can reject Lemon's certif
 
 MITM also cannot recover business fields that the client encrypts, compresses, or encodes itself. Check Content-Type, Content-Encoding, and the response status before deciding whether a body should be readable.
 
+
+## Temporary automatic bypass
+
+An explicit certificate rejection may establish a temporary bypass. A silent close qualifies only after the server certificate flight was written, or after TLS completed without application data. Three distinct connections for the same host, port, transport entry and CA within 15 seconds can establish a two-minute bypass. A successful handshake clears handshake-stage candidates. Timeouts, ordinary network failures, local issuer errors and explicit CA trust errors do not automatically become bypass rules. Silent closure does not prove certificate pinning.
+
+Bypass affects subsequent new connections and cannot recover a handshake that already failed. Visits do not renew active entries; expiry requires fresh qualifying evidence. Expired history has no routing effect. Removing an automatic host suppresses learning for ten minutes. Default Apple Push and StoreKit bypasses are seeded once through database migration, like WeChat defaults, and user removal survives restart. Check the actual App version, traces and effective records when diagnosing.
+
 ## Security boundary
 
 - Install debugging certificates only on devices and services you own or are authorized to test.
@@ -59,3 +62,5 @@ MITM also cannot recover business fields that the client encrypts, compresses, o
 | HTTPS requests are not recorded | TUN / VPN, the app's traffic path, and network permission |
 | A request exists but the body is unreadable | Content-Encoding, binary content, pinning, or protocol type |
 | Everything fails after regeneration | Whether the new profile was installed and trusted |
+
+If HTTPS is already decoded and the origin returns HTTP 400, inspect the upstream protocol, Host / :authority fields and adopted URL. An HTTP error response is not certificate rejection evidence and must not trigger automatic MITM bypass.
