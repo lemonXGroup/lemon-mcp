@@ -42,7 +42,7 @@
       "checkedAt": "2026-11-14",
       "appGitHead": "0f92eb9aac080487c5679238448b3f953dd45061",
       "kind": "committed-fix-with-device-log-snapshot-and-host-regression",
-      "note": "Removes duplicate regular Host on HTTP/2 origin legs, including the HTTP/3 TCP fallback. Device logs were copied before device departure. User authorized an internal TestFlight release without post-fix physical-device acceptance; fresh archive/upload pending."
+      "note": "Removes duplicate regular Host on HTTP/2 origin legs, including the HTTP/3 TCP fallback. Device logs were copied before device departure. User authorized release without post-fix physical-device acceptance; fresh internal TestFlight build 261114041112 is VALID / IN_BETA_TESTING."
     }
   },
   "publicRepository": "https://github.com/lemonXGroup/lemon-mcp",
@@ -1653,7 +1653,7 @@
       "copiedDeviceEvidence": true,
       "deviceSource": "Stack",
       "physicalDeviceRunAfterFix": false,
-      "testFlightSubmitted": false,
+      "testFlightSubmitted": true,
       "publicAnonymousProbe": {
         "authorityOnly": [
           200,
@@ -1678,7 +1678,17 @@
       "coreBuild": "passed",
       "xcodeCoreSha256": "a8ee191cbff562ed8b39f502df735641b789ce32d94187be843cef8f2fd90e6f",
       "internalTestFlightAuthorized": true,
-      "physicalDeviceAcceptanceDeferredByUser": true
+      "physicalDeviceAcceptanceDeferredByUser": true,
+      "testFlight": {
+        "version": "1.0.0",
+        "build": "261114041112",
+        "buildId": "fee38373-9a95-449e-8eba-0c61d5b0c2fb",
+        "processingState": "VALID",
+        "internalBuildState": "IN_BETA_TESTING",
+        "internalGroup": "dev",
+        "newArchive": true,
+        "physicalDeviceAcceptance": false
+      }
     }
   },
   "officialReferences": [
