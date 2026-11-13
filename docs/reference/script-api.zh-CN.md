@@ -92,6 +92,8 @@ type HttpPatch = {
   headers?: { [name: string]: string | null };
   body?: { text?: string };
   status?: number;
+  url?: string; // Request headers only
+  queryPolicy?: "auto" | "preserve" | "replace" | "merge" | "clear"; // Requires url
 };
 ```
 
@@ -297,3 +299,7 @@ HTTP/1、HTTP/2 使用相同 header/body 动作模型。当前 App 源码也将�
 ## 源码依据
 
 已核对 App 源码标识 `contracts/script_editor_api_catalog.v1.json`、`lemonCore/core/src/rewrite/js_engine.rs`、`lemonCore/core/src/rewrite/json_engine.rs`、`lemonCore/core/src/rewrite/mod.rs`、`lemonCore/ffi/src/settings.rs`、`lemonCore/ffi/src/lifecycle/rewrite.rs`、`lemonCore/ffi/src/lifecycle/scheduler.rs`、`lemonCore/middlewares/src/response_body.rs`、`lemonCore/middlewares/src/http_codec/response_body.rs`、`lemonCore/middlewares/src/http3/semantics.rs`、`lemonCore/middlewares/src/ws_codec/session.rs`、`lemon_ios/InternalModules/Shared/Config/LemonCoreRuntimeConfig.swift`；公开工具合约在 `src/tools.ts`、`src/rewriteScripts.ts`。这些路径仅记录核对来源，公开项目文档可独立阅读，不要求访问 App 源码树。
+
+## Request URL output (2026-11-13)
+
+Request-header output accepts {url:"/v2/items",queryPolicy:"auto"} for internal upstream rewriting, preserving method/body. Other phases reject these fields. Mutating ctx.request.url alone has no routing effect. See [URL/Query/HTTP redirect contract](request-target.md) for query policies, capabilities and limits. Use native redirect for an actual client 3xx response.

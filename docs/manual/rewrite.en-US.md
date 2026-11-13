@@ -63,7 +63,7 @@ Choose the action to run after a match. The main action types exposed by the con
 - **Header modification**: add, change, or remove a request or response header.
 - **Body replacement**: replace a request or response body with supplied text.
 - **Mock file**: use a local file as response content.
-- **Redirect**: send a request to another address.
+- **Modify URL / Modify Query / HTTP Redirect**: choose internal changes or a client redirect as explained below.
 - **JavaScript action**: use a script for more flexible request or response changes.
 
 Keep the action aligned with the stage. For example, change a request header at the request stage and replace server output at the response stage. Prefer several small rules with clear purposes over one rule that performs unrelated changes.
@@ -150,3 +150,31 @@ Rewrite is a local debugging tool. Use it only with applications and services yo
 ## Exact contracts and newer features
 
 See the [rule reference](../reference/rewrite-rules.md) for MatchGroups, expressions, JSON Path, multipart, WebSocket scopes, and MCP CRUD. Use the [script API](../reference/script-api.md) for handlers, context, and result shapes, and [compatibility](../reference/compatibility.md) for public MCP gaps.
+
+## Modify URL, Modify Query and HTTP Redirect
+
+**Modify URL** selects a new upstream internally and preserves the request method/body. It supports path, host, port and HTTP/HTTPS changes. Host, TLS, SNI and upstream ALPN follow the adopted target. **Modify Query** runs ordered set/append/remove/clear operations. **HTTP Redirect** returns a local 301/302/303/307/308 with Location, defaulting to 307. The client decides whether to follow; 307/308 preserve method/body while 301/302/303 may turn the next request into GET. A redirect to HTTP remains subject to client ATS.
+
+The three new actions run at request headers only. Targets may be absolute HTTP(S) URLs, root paths starting with /, or query-only strings starting with ? (retaining the current path). Use percent-encoded URL text. Userinfo, fragments, controls, backslashes and //host are unsupported. URLs are limited to 16 KiB.
+
+The default Query policy is Automatic: preserve original parameters for a same-origin target without a query; an explicit target query (including an empty ?) replaces them; a different scheme/host/effective port clears them. Other policies are Preserve Original Query, Use Target Query, Merge (Target Wins), and Clear Query.
+
+For https://api.example.test/a?page=1&sig=a%2fb, /b with Automatic keeps page=1&sig=a%2fb. /b?page=2 replaces the whole query; Merge retains sig=a%2fb and appends page=2. A different origin with Automatic receives no original query.
+
+Query operations take decoded, case-sensitive keys/values. Set removes all matching keys and appends one value; Append retains duplicates; Remove removes all matching keys; Clear removes everything. Unchanged items retain encoding, order, duplicates, flags and empty items. Changed items use UTF-8 form encoding (space is +). At most 128 operations are accepted. URL/query changes can invalidate an application signature; Lemon does not recalculate signatures.
+
+Request-header JavaScript can return an internal rewrite:
+
+```js
+export function onRequest(ctx) {
+  return { url: "/v2/items", queryPolicy: "auto" };
+}
+```
+
+Mutating ctx.request.url alone does not change the actual destination. url/queryPolicy are invalid in body, response and WebSocket outputs. Use the native HTTP Redirect action for a real 3xx response.
+
+New actions require portable/DRM document v6 and cloud/local recovery v7. Older clients should reject these documents. Check the phone's request_target_rewrite version 1 capability before Web/MCP writes. Matching uses the captured original URL; URL/Query actions transform the selected target in order. A real redirect resolves Location at its position, so place it after target modifications.
+
+Protected destinations, reject/bypass, DNS/Hosts and egress policies still apply. H1/H2 retain the initial origin connection and TLS negotiation used by the existing MITM architecture; a failing initial handshake can prevent rewriting. Internal rewriting and local 3xx responses submit no business request to the original origin.
+
+Action identifiers are explicit: `redirect` returns an HTTP redirect, `url_rewrite` modifies the upstream URL, and `query_mod` modifies Query parameters. Existing target-only `redirect` data uses defaults 307 / auto directly; choose Modify URL for internal forwarding.

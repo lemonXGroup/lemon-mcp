@@ -52,7 +52,7 @@ This is a public MCP implementation/documentation sync with local mocked API evi
 - App 模板实际是 **export async function**；同步 export function 也合法，宿主操作需要按其 Promise 契约 await。不是 async export function。
 - 当前 App 已支持 HTTP/1 Upgrade 后的 WebSocket 消息重写；不能继续笼统写成 observe-only。公开 MCP 仍缺两个 WS 读取工具和远程 WS handler 枚举。
 - 支持的文本压缩响应可以有界解码后执行正文规则；这不代表支持压缩请求正文或任意流式正文。
-- HTTP patch 仅支持 body.text；WS patch 另支持 body.base64、drop 与文本注入，两者不能混写。
+- HTTP patch 支持 headers/body.text，请求头阶段另支持 url/queryPolicy；WS patch 另支持 body.base64、drop 与文本注入，两者不能混写。
 - lemon:context.get() 返回执行环境元信息；当前流量位于处理函数参数 ctx.request / ctx.response / ctx.message。
 - App/FFI 当前重写超时默认 30,000 ms；核心独立的 250/500 ms 不是 App 默认值。定时任务默认 10 秒，上限 60 秒。
 - 受保护设备接口要求有效口令；环境变量缺失仍可启动进程不等于认证可选。产品权限与口令认证分别判断。
@@ -76,3 +76,19 @@ This is a public MCP implementation/documentation sync with local mocked API evi
 修改工具 schema 时重新导出工具参考；修改脚本模块或返回值时同步 API 文档与示例；修改 UI 时更新对应手册。每次更新保留来源、日期和验证范围，不能仅复制历史说明。不要把计划中的 API 写为当前可用，也不要用源码审阅替代设备运行证据。
 
 When authoring code, read the exact reference and installed tool schema first. If a guide and the current validator disagree, stop relying on the example and inspect the concrete error and version. MCP documentation resources, prompts, connection tools, and a token dialog remain implementation follow-ups. The optional Skill HTTP helper already provides user-operated terminal hidden input; this does not add a dialog or credentials to an existing MCP session.
+
+## 2026-11-14 请求目标动作 / Request target actions
+
+动作合同统一为 redirect（HTTP Redirect，真实 3xx）、url_rewrite（Modify URL，内部更换上游并保留 method/body）、query_mod（Modify Query，有序 set/append/remove/clear）。已有 redirect 直接使用新语义，缺失 status/query_policy 时默认 307/auto；不增加“旧规则”动作或动作标识迁移。auto 使用目标明确给出的 Query，否则同源保留、跨源清空。portable/DRM 导出为 schema 6，cloud/local recovery 为 schema 7，旧格式 redirect 按默认值读取。完整合同见[请求目标参考](reference/request-target.md)和[Skill 参考](../skills/lemon/references/request-target.md)。
+
+内部和公开 MCP 的静态 schema、能力 preflight、配置校验、测试已同步；设备要求 request_target_rewrite supported=true / version=1。公开 TypeScript 构建与 **55/55** 项测试通过，内部 **44/44** 项测试和 H1/H2 各 **35 cases** 合同静态校验通过；生成参考仍与 **70 tools / 2 resources** 一致。Skill 格式有效、HTTP helper **13/13** 项测试通过。本轮更新的 **16** 份文档中，**151** 个相对链接、**110** 个 raw 路径（按本地文件解析）和 **27** 个 JSON 示例静态校验通过。
+
+App 侧 core 全量 **277 passed / 2 ignored**，middlewares 全量 **156 passed / 2 ignored**（含 13 项真实 origin 测试），Stack 定向 XCTest **111 passed / 0 failures**。最新设备核心静态库 SHA-256 为 bf014c7d6671006ddd6609920e1f16bc25982b4e9848af4e7131e8e99ed8502d，aarch64-apple-ios / 52 ABI symbols / XCFramework、App 构建安装、iOS 15 元数据检查通过。
+
+Stack 本轮执行了 **5 次** synthetic POST one-shot replay，得到 **5 条受控原站观察和 6 条请求记录**（307 与客户端跟随分开记录）：H1 Query 修改、H3 HTTPS → H1 HTTP 的 URL/Query 修改、H1 HTTP → H2 HTTPS、target-only 默认 307 保留 Query 和 POST/body，以及新入口 H2 HTTPS → H1 HTTP。记录主字段保留原 host/scheme/path，adopted_url 与 upstream_protocol 单独保存，6 条 public_rewrite_applied 均为 1。普通和混合 DRM 目标来源仍隔离，未把加密规则目标贡献写成普通诊断。
+
+本轮临时规则/Hosts/fixture 与测试私钥已清理，VPN 恢复关闭，SQLite 恢复 **17 policies / 6 enabled**，用户历史未清。真实协议、Web/MIS/后端的定向范围详见私有 App provenance；没有宣称全部 35 E2E cases 或所有客户端/设备矩阵均已运行。
+
+App-side provenance (public readers do not need the private monorepo): docs/pending/rewrite_url_query_redirect_execution_plan_2026-11-13.md; docs/2.0/build-test/2026-11-14-request-target-rewrite-acceptance.md; docs/2.0/build-test/evidence/request-target-2026-11-14/{stack-traffic,cleanup,validation-summary}.json. The manifest records reviewed source hashes.
+
+This run updates local source/builds and verifies focused Stack traffic. The already connected older MCP process retains its startup-time static schema until restarted/reconnected to the updated build; device verification used its generic passthrough interface and independent origin/SQLite evidence. No credentials were copied into a new service, no global Skill installation or public repository/service release was performed. Initial origin TCP/TLS/ALPN negotiation may still precede rule execution; a local redirect sends no origin business request but does not remove that handshake dependency.

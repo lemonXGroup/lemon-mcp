@@ -165,7 +165,9 @@ Every action requires enabled, scope, action, config as a JSON string, and order
 | header_mod | operation, key, value | Set/add/remove an HTTP header |
 | body_replace | mode, find, replace, regex and mode-specific fields | Literal text, regex, exact JSON Path, or multipart ordinary-field modification |
 | mock_file | content_type, file_path | Use an existing local mock payload |
-| redirect | target | Redirect using the target URL |
+| url_rewrite | target, query_policy | Internal URL rewrite, preserving method/body |
+| query_mod | operations | Ordered query set/append/remove/clear |
+| redirect | target, query_policy, status | Local HTTP 3xx + Location, default 307 |
 | js | script_id, phase | Invoke a stored ESM script; phase is header/body for HTTP |
 
 These JSON examples show **decoded configs**. Apply JSON.stringify before placing one in action.config.
@@ -234,14 +236,10 @@ Use scope=request and action=body_replace. Confirm `GET /api/rewrite/capabilitie
 
 application/x-www-form-urlencoded uses its own text semantics; do not treat a multipart upload as arbitrary text.
 
-### Mock and redirect
+### Mock response
 
 ~~~json
 {"content_type":"application/json","file_path":"MockFiles/example.json"}
-~~~
-
-~~~json
-{"target":"https://example.com/debug"}
 ~~~
 
 Use list_device_files to enumerate a phone App Group directory, select_mock_file to validate and import/reuse a phone file, or create_mock_file to create a new file on the phone. Both return a config JSON **string** containing file_path and content_type for a mock_file action. Content is limited to 2 MiB of valid UTF-8 text. Attach new references promptly with upsert_rewrite_rule; unreferenced files may be reclaimed on app restart. Editing uses fetch_device_file → create_mock_file → update the rule reference so existing rules retain their content. These tools do not read/upload computer files or invoke the system Files/iCloud picker. See the [complete phone file workflow](device-files.md).
@@ -256,7 +254,9 @@ Use the real script id returned by publication. Choose header or body explicitly
 
 ## Portable versions and local writes
 
-Portable ordinary rules use schema_version=2; expression data needs version 3; multipart needs version 4; any non-regex host * or ? condition selects version 5, including inactive conditions. Host wildcard requirements take precedence when combined with multipart or expression data. Cloud backup and local recovery use a separate version sequence: host wildcards select version 6; ordinary/expression/multipart backups retain 3/4/5. New importers accept portable 2/3/4/5 and backup 3/4/5/6. MCP upsert arguments are a local WebControl payload, not a portable export envelope: do not add schema_version to rule_json merely because an exported rule has one.
+New URL/Query/HTTP redirect actions select portable schema_version=6 and cloud/local recovery version 7, taking precedence over older requirements. See the [complete request-target contract](request-target.md). New importers accept portable 2–6 and backup 3–7. Existing redirect data is read directly with default status=307/query_policy=auto; url_rewrite and query_mod require portable 6/backup 7.
+
+Portable ordinary rules use schema_version=2; expression data needs version 3; multipart needs version 4; any non-regex host * or ? condition selects version 5, including inactive conditions. Host wildcard requirements take precedence when combined with multipart or expression data. Cloud backup and local recovery use a separate version sequence: host wildcards select version 6; ordinary/expression/multipart backups retain 3/4/5. MCP upsert arguments are a local WebControl payload, not a portable export envelope: do not add schema_version to rule_json merely because an exported rule has one.
 
 ## Verification and recovery
 
@@ -264,6 +264,12 @@ Check endpoint acceptance, persisted readback, runtime application, and a new ob
 
 Protected packages may expose only metadata. A successful read does not imply permission to decrypt, copy, or mutate protected content. Use supported lifecycle operations and the device's authorization decisions.
 
+## URL and Query actions
+
+Read the [request-target contract](request-target.md) for capability checks, all query policies, method/body behavior, HTTP redirects and request-header JavaScript URL output.
+
 ## Contract provenance
 
 Matching and compatibility updated on 2026-11-10 against App commits 9ce70bd739139042a21fb8e9b64ffc31fa7b0126 (query conditions) and 5438ebdfed3b6ff30c6e6d726e1f1375c07b114c (host wildcards). Checked the current RewriteRouter, RewriteMatchGroup, query/host matchers, sharing/backup version selection and public MCP tool definitions. The remaining action reference retains its 2026-11-07 source review. The installed device validator remains authoritative for accepted payloads and limits.
+
+Request-target actions and schema 6/backup 7 reviewed against the local App/core/backend/MCP implementation on 2026-11-13; publication is separate.

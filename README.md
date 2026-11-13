@@ -222,9 +222,17 @@ The four non-regex Host operators accept `*` and `?`; `eq *.example.com`
 includes the root domain and every subdomain. Prefix/suffix/contains retain
 their string-position semantics. The tool checks device Host wildcard support
 before saving; disabling an existing policy remains available on older devices.
-Wildcard shares use portable schema 5 and backups use version 6. See the
+Without request-target actions, wildcard shares use portable schema 5 and backups use version 6. See the
 [matching reference](docs/reference/rewrite-rules.md#matching) for examples,
 capability requirements, and compatibility details.
+
+Request target actions use distinct identifiers: `redirect` returns an actual HTTP
+3xx response (default 307), `url_rewrite` changes the upstream URL internally,
+and `query_mod` edits query entries in order. Existing `redirect` data uses the
+new HTTP redirect behavior directly; omitted status/query policy defaults to
+307/auto. Target actions take precedence in format selection: portable/DRM
+schema 6 and backup/recovery 7. Read the [request-target contract](docs/reference/request-target.md)
+and check device `request_target_rewrite` version 1 before use.
 
 ### UI Modules
 

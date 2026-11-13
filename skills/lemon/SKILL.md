@@ -53,6 +53,8 @@ python3 <skill-directory>/scripts/lemon_http.py GET /api/requests --query limit=
 
 在线读取时获取 raw Markdown 正文，不要仅凭链接标题推测字段。相同文档在完整仓库的 docs/ 下可离线读取。链接无法访问时，明确缺少哪份契约；已有本地参考支持的工作可继续。
 
+修改 URL、Query 或返回 HTTP 重定向时，读取 [请求目标动作](references/request-target.md)，区分内部转发与客户端 3xx，先核对设备能力和参数策略。
+
 ## 执行与验证
 
 - 沿用用户已经授权的目标和范围。先读现有对象再编辑，保留不相关字段、顺序和标识。用户已明确要求的操作不重复请求确认。
@@ -66,4 +68,4 @@ python3 <skill-directory>/scripts/lemon_http.py GET /api/requests --query limit=
 - App 全局设置只有已确认的接口才能修改。证书安装与系统信任、全局 MITM/Rewrite/JS 开关、LAN Proxy 等按手册引导用户在 App/系统中操作；不要用数据库写入模拟缺少的 API。
 - 401 时核实当前口令和设备；403 capability_required 时说明设备授权要求；404 时核实版本和路径。更换口令后重新准备远程脚本候选，不复用旧凭据绑定的 token。
 
-HTTP 契约核对日期：2026-11-07，来自当前 App 路由与模型；设备版本可能不同。Skill 不改变设备授权、客户端工具权限或网络可达性。报告实际完成了哪些操作、读回和运行证据，以及尚未完成的手机端验证。
+URL/Query/重定向增量核对：2026-11-13。HTTP 契约原核对日期：2026-11-07，来自当前 App 路由与模型；设备版本可能不同。Skill 不改变设备授权、客户端工具权限或网络可达性。报告实际完成了哪些操作、读回和运行证据，以及尚未完成的手机端验证。

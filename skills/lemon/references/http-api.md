@@ -50,7 +50,7 @@ Read the complete [rules/action reference](https://raw.githubusercontent.com/lem
 | Method / path | Input |
 | --- | --- |
 | GET /api/rewrite | Bare array of policies with portable groups, except protected content |
-| GET /api/rewrite/capabilities | Read live host_wildcards and multipart request body flags, and portable_schema_versions |
+| GET /api/rewrite/capabilities | Read live request_target_rewrite, host_wildcards and multipart request body flags, and portable_schema_versions |
 | POST /api/rewrite | JSON {"rule":{name,enabled,priority},"groups":[...]} |
 | PUT /api/rewrite | Same complete payload, with existing rule.id |
 | DELETE /api/rewrite | Query id = policy's numeric ID |
@@ -225,3 +225,5 @@ File operations are App Group relative and enforce device path/managed-log restr
 These tables were checked against WebRouters/{System,Requests,Rewrite,RewriteRemote,CronScript,Replay,ReplayWorkspace,HostMapping,Module,Files,WebBrowser}Router.swift, WebControlCapabilityGate.swift, ReplaySuite/ReplayItem/ReplayResultSummary models, Script/CronScriptStore, ModuleModels and FileUploadService in the Lemon App. Source path/hash evidence is recorded in the public docs/manifest.json; App source files are not needed to use this Skill.
 
 No generic remote API is established here for certificate installation/system trust, global MITM/Rewrite/JS toggles, global DNS/TUN/LAN Proxy settings, purchasing/licensing, or the App's AI-provider setup. Use the corresponding manual and App UI. This route inventory does not imply parity with every installed MCP release.
+
+URL/Query/HTTP redirect use request_target_rewrite version 1. Read [request-target actions](request-target.md) for configs, query policies and schema6/backup7.

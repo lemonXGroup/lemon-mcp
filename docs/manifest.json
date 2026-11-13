@@ -1,6 +1,6 @@
 {
   "manifestVersion": 1,
-  "checkedAt": "2026-11-12",
+  "checkedAt": "2026-11-14",
   "package": {
     "name": "lemonmcp",
     "version": "1.0.0"
@@ -20,6 +20,12 @@
     "additionalMockFileReview": {
       "checkedAt": "2026-11-12",
       "note": "Incremental phone App Group file listing, local selection/import, new Mock files, and exact policy identifiers. No computer filesystem upload or native picker. Current working-tree hashes take precedence; focused Stack API/persistence evidence is scoped separately from UI and traffic."
+    },
+    "additionalRequestTargetReview": {
+      "checkedAt": "2026-11-14",
+      "appGitHead": "720adca7080412196f10545c82a2e6eeb573b702",
+      "kind": "local-working-tree-source-and-focused-physical-device-acceptance",
+      "note": "redirect retains its wire identifier and now emits actual HTTP 3xx; url_rewrite/query_mod are new. Missing status/query policy use shared defaults. Working-tree hashes identify this implementation; no release is implied."
     }
   },
   "publicRepository": "https://github.com/lemonXGroup/lemon-mcp",
@@ -220,16 +226,24 @@
     {
       "document": "docs/manual/rewrite.en-US.md",
       "origin": "lemon_web/src/manual/rewrite.en-US.md",
-      "originSha256": "5be8efa83f23eef14d70496c93818c1f889528360fda67f4de8e7ca4c381434a",
-      "review": "adapted-manual-with-identified-corrections; query-host-matching-reviewed-2026-11-10; other-sections-reviewed-2026-11-07",
-      "deviceAcceptance": false
+      "originSha256": "10c046fdf82eda2e59247a8f3f49e46b2c54297203d944bcc00b2e7ecd637a2e",
+      "review": "adapted-manual-with-identified-corrections; request-target-actions-reviewed-2026-11-14; matching-reviewed-2026-11-10; unrelated-sections-retain-prior-review",
+      "deviceAcceptance": false,
+      "requestTargetDeviceAcceptance": {
+        "checkedAt": "2026-11-14",
+        "scope": "synthetic H1/H2/H3 POST traffic, URL/Query transformations, 307 follow, original/adopted target recording; no full UI acceptance"
+      }
     },
     {
       "document": "docs/manual/rewrite.zh-CN.md",
       "origin": "lemon_web/src/manual/rewrite.zh-CN.md",
-      "originSha256": "657671765f7c4b303f42cd77f9f5bb2b23072a90b4844dbec4ba5877a630c929",
-      "review": "adapted-manual-with-identified-corrections; query-host-matching-reviewed-2026-11-10; other-sections-reviewed-2026-11-07",
-      "deviceAcceptance": false
+      "originSha256": "70d038e79a02369fbe9f75c023a79216148269321bd73c0ec6ede1b0a1b0b790",
+      "review": "adapted-manual-with-identified-corrections; request-target-actions-reviewed-2026-11-14; matching-reviewed-2026-11-10; unrelated-sections-retain-prior-review",
+      "deviceAcceptance": false,
+      "requestTargetDeviceAcceptance": {
+        "checkedAt": "2026-11-14",
+        "scope": "synthetic H1/H2/H3 POST traffic, URL/Query transformations, 307 follow, original/adopted target recording; no full UI acceptance"
+      }
     },
     {
       "document": "docs/manual/scripts.en-US.md",
@@ -274,16 +288,16 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemon_ios/Lemon/Views/Rewrite/RewriteRuleEditView.swift",
-      "sha256": "ae225f0f9ef7ba2badb5efeeb7554509db4befe0ebf4200c30d8cf45719f9b78",
-      "reviewedAt": "2026-11-10",
-      "reviewScope": "query-host-matching-and-tool-reference-sync"
+      "sha256": "0ec7bebb616e11c3c4851ef6ddd8c4f4c42b31ac91546ba592784e14a2100027",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
     },
     {
       "scope": "app-monorepo-provenance",
       "path": "lemon_ios/Lemon/Service/WebControl/WebRouters/RewriteRouter.swift",
-      "sha256": "985bfc1f34095165ff0cde3649d9ffe985206c5fbd29362165ff894fd5c460c9",
-      "reviewedAt": "2026-11-12",
-      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
+      "sha256": "0a8999049b302d395fde5ac27d19cb2a9a807b6b001f84c5a5ec01f02e1f2bc6",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -320,21 +334,23 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemonCore/core/src/rewrite/js_engine.rs",
-      "sha256": "ff3d3ecd43b2fb5ef38b127f22d568355dadc6806d4dc9a11c9255ce3a2fc795"
+      "sha256": "de49d412bc6c151a0ee1cc1e061b37a4b7456b6272f15451947d66714e5ebfd6",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
     },
     {
       "scope": "app-monorepo-provenance",
       "path": "lemonCore/core/src/rewrite/json_engine.rs",
-      "sha256": "962ed5afe2ca775180863b49615da4e82977bc002288993933653b0b1239f8cf",
-      "reviewedAt": "2026-11-10",
-      "reviewScope": "query-host-matching-and-tool-reference-sync"
+      "sha256": "a7f27dc5e9864453ddb46174af152399b7430e11773563260389945c3cae9ac1",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
     },
     {
       "scope": "app-monorepo-provenance",
       "path": "lemonCore/core/src/rewrite/mod.rs",
-      "sha256": "4262837358a9e267cf523b2c2f5b2b6495d4e0c6b4b8ff8187e18a25714660db",
-      "reviewedAt": "2026-11-10",
-      "reviewScope": "query-host-matching-and-tool-reference-sync"
+      "sha256": "1c778f478b8eeeac73066fc620553f70fb5b14585caf19cd54a31f4c6b6a661a",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -359,9 +375,9 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemonCore/ffi/src/lifecycle/rewrite.rs",
-      "sha256": "300ac79a77cae874054402cf95adc26e25ec4c1c2a999ac0cb8175ae5de3a38a",
-      "reviewedAt": "2026-11-10",
-      "reviewScope": "query-host-matching-and-tool-reference-sync"
+      "sha256": "7d060ea0b63b67405a65b6a9137c1060f80b63024aa33ab4d0c72aa8447c8810",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -391,9 +407,9 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "LemonMCP/src/tools.ts",
-      "sha256": "2d5b2aea2cc7deafc06755ba03f972cd7901313aab9b409837af71a062cb638c",
-      "reviewedAt": "2026-11-12",
-      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
+      "sha256": "00211f8ac9dcec5458893eadf27b8fb5bed0280c59b389b0e592871093745d39",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
     },
     {
       "scope": "public-mcp",
@@ -420,9 +436,9 @@
     {
       "scope": "public-mcp",
       "path": "src/tools.ts",
-      "sha256": "8ca45bc0b417485fd5db6ea6f7f52ebb56d75349c63f0229580064d98349a29a",
-      "reviewedAt": "2026-11-12",
-      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers"
+      "sha256": "de30cc72c1ad521785786b5a75c0a6e5b8b2812e0b95bd32d433389e7fc04f7b",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-contract-and-capability-preflight"
     },
     {
       "scope": "public-mcp",
@@ -534,30 +550,30 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemon_ios/Lemon/Service/Rewrite/Models/RewriteRule.swift",
-      "sha256": "49b4beafcd7ffc30f024acd3f811da60176e942d506c4d9462bc6ab9065741e8",
-      "reviewedAt": "2026-11-10",
-      "reviewScope": "query-host-matching-and-tool-reference-sync"
+      "sha256": "2d446e1e4cdb22c64faecbc11335740d6119a0ce274fea5e5e8daa1f9a6c2b12",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
     },
     {
       "scope": "app-monorepo-provenance",
       "path": "lemon_ios/Lemon/Service/Rewrite/RewriteRuleStore+Export.swift",
-      "sha256": "0313d6aa15ca8171529326c4b3a14c8f020e82f7b7591374fdfeae4f52c5d526",
-      "reviewedAt": "2026-11-10",
-      "reviewScope": "query-host-matching-and-tool-reference-sync"
+      "sha256": "a2e7e40df9c538408a0200503e096729cc17664edf95e216f503bc63b809a655",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
     },
     {
       "scope": "app-monorepo-provenance",
       "path": "lemon_ios/Lemon/Service/Rewrite/RewriteRuleStore+Import.swift",
-      "sha256": "7736371f02f723777ea67d3f42e450c717178223086e24482e22c64b3dad9dc3",
-      "reviewedAt": "2026-11-10",
-      "reviewScope": "query-host-matching-and-tool-reference-sync"
+      "sha256": "9e5f0621727bfa2fff1c5dd8c57fca8c0c3f621c4a64ad37b5c94867cada5575",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
     },
     {
       "scope": "app-monorepo-provenance",
       "path": "lemon_ios/Lemon/Service/Rewrite/RewriteRuleValidation.swift",
-      "sha256": "d51b3bae42d5bc5badae54eb53faf7682505aef5b5447d014a3f05dcff58a3b4",
-      "reviewedAt": "2026-11-10",
-      "reviewScope": "query-host-matching-and-tool-reference-sync"
+      "sha256": "64967e4663d1e0c1415de1853e40e6bc295a23c0aeaebc910f34f172ab6b92c2",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -688,9 +704,9 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "docs/2.0/rewrite/webcontrol-and-mcp-api.md",
-      "reviewedAt": "2026-11-12",
-      "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers",
-      "sha256": "971d2cbaed27df84c9286285f367852ead60c28957a207e4f381f62bcf90374a"
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance",
+      "sha256": "ac7cebd1dc78133378ed2869d9b8d49178426561e4aab9de7f3aed70a5149ca8"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -712,16 +728,415 @@
       "reviewedAt": "2026-11-12",
       "reviewScope": "phone-app-group-mock-file-tools-and-exact-identifiers",
       "sha256": "1cd2c8bf96974c1196224ddcf8652fcb84724c7202c0d6fde2540116cebaaad7"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/core/src/protection/mod.rs",
+      "sha256": "275cac3a468e495c993e064f75e4f38a0332ce00497517e84ead4085e2ef0a01",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/core/src/rewrite/debug.rs",
+      "sha256": "f897ad6cff2b65733f7514c4d46e024db9feecfae37819693407f5c0f0c1a411",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/core/src/rewrite/outcome.rs",
+      "sha256": "232a37d23b8b3af84fdb74c5bae70766ff6fcba4086fc62a93676c86f9385603",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/core/src/rewrite/public_effect_tests.rs",
+      "sha256": "c1afa78e595d716c52c4e261d344e4828bd4d9768d7585759b7d20128aeaf56a",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/ffi/src/lifecycle/mod.rs",
+      "sha256": "a8ea1bdffbd85beb360d7c68bae7fe4a1b2a2715fd87142a6d8390733dceb43f",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/ffi/src/lifecycle/runtime.rs",
+      "sha256": "5670884c035870d5f6b10156b22c1228eb5cef643287a7d69cb1d33bb13c3afa",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/middlewares/src/h2_codec/codec.rs",
+      "sha256": "08aae698693be750606da609476efe3109b5ed00c37c7543f673150db5f2c56b",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/middlewares/src/http3/http1.rs",
+      "sha256": "1076c8a6057b725340157eb19e0e210a8cfc4004023de1887e7f057191caa374",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/middlewares/src/http3/mod.rs",
+      "sha256": "9685f5ec584685685318af2334c880e7ef9b919b48d077e01b5e16e9b50e38a0",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/middlewares/src/http3/origin.rs",
+      "sha256": "db76c7148bca220a6041130b71e8cce70dfe2f6d5059a5f14cefed9d55c9d58e",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/middlewares/src/http3/tests.rs",
+      "sha256": "88b4b2a6a03591d1c509879ed770e9591c8afcc01e8b786fef31995d33baeafc",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/middlewares/src/http_codec/codec.rs",
+      "sha256": "0dc09bd3dfb40611e0f668a935f7ee10bbf93fd480eb1a0129297f5cdf81dac2",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/middlewares/src/lib.rs",
+      "sha256": "d91880255d12cdd229912649a175009c7823eb4fba9caa7e1b88155f29fc8650",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_backend/src/api/routes/client/rules.rs",
+      "sha256": "da95609f594863021cfe5a6f349c9f86c1da410135f29eaa9fed953d54b529ca",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/Rewrite/Models/RewriteActionParameters.swift",
+      "sha256": "8fbb1b4a79a5d21c37b066f5e64f1369fc7ad7270002d53a62b51aaa4745e5ed",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/Rewrite/RewriteRuleStore.swift",
+      "sha256": "3a103761e88412b045a355c6d57a6b5f3eb0f80aa0f0d4905fb4d66ad7459010",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/LemonTests/RewriteActionParametersTests.swift",
+      "sha256": "4a998c1502923026ed5effcbb9beca09738ad32afa92f8f1fa243c7763659215",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/LemonTests/RewriteRuleSharingExportTests.swift",
+      "sha256": "ecfd963a4b85b39704a4bc8aa59a2c6c146c996491bc11d5e951cd4443fb7127",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/LemonTests/RewriteRuleStoreValidationTests.swift",
+      "sha256": "abcd8cbd0cbe46ce99e0be68ef9493b2bcb49dfc65f47ed91d36bef551987526",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/LemonTests/RewriteRuleValidationTests.swift",
+      "sha256": "d950eb04ec1d912e6a6ee5a713314f6ad894ae3792bb2f13ae75b12d37a5f1e7",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_mis/src/utils/rewriteArtifact.test.js",
+      "sha256": "37fd24b413227036d78494429865f474f0bc5fc21597c0ed388b6e582c294bfb",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_rule_security/src/lib.rs",
+      "sha256": "540e70d1d8456c19279edd09e1680ffee1faf782afe68ed9de0db0c28d042ed3",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_webctrl/src/i18n/index.js",
+      "sha256": "479eb345ee90928aedff05646f631474c894d15a83e14fb789558cbe5f78a833",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "tests/rewrite_e2e/config/case-index.json",
+      "sha256": "651285da32bfe62b5af890f330915d45bbedf45c1524740b59657980ad1ad1ee",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "tests/rewrite_e2e/runner/case-schema.json",
+      "sha256": "c6e64a1bf42b329b4091efd0287ac5e21699da27e3f2e11a5b7e9025ef97b7d6",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "tests/rewrite_e2e_h2/config/case-index.json",
+      "sha256": "651285da32bfe62b5af890f330915d45bbedf45c1524740b59657980ad1ad1ee",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "LemonMCP/src/requestTarget.ts",
+      "sha256": "268d6e06a46c45485bedcdf465b73f47da4e2cbfc42f507da9ec07f3d62a7b8a",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/core/src/rewrite/request_target.rs",
+      "sha256": "c218a7fcee87ce86fb73d8a46cde26f0b265d343b07ddbd55dcae26c344411d8",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/ffi/src/lifecycle/http_origin.rs",
+      "sha256": "44a96a3dcc4c8f6d6c1c673cc4ccc075bf82b2b5b3c2d91d616442027c26143c",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/middlewares/src/http_origin.rs",
+      "sha256": "6747fef3bfbac77300d05999904c368464ebe318711c6d2f783cc6e74c6db9e4",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/middlewares/src/http_origin_info.rs",
+      "sha256": "1f78417ae1ec1cad0ded4493dc6217179ec895a4ae03b497dc032528e846dc83",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/middlewares/src/http_origin_tests.rs",
+      "sha256": "8e85b6f833d0b6dd508ee09bd96ed8584ad48ffbbb422d6dccb3b15d68e27020",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Service/Rewrite/Models/RewriteRequestTargetParameters.swift",
+      "sha256": "334b29fcc03bc9452aa3afbafe9746ec238a28cc9dc514f1ed6d300500fcd9c6",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Views/Rewrite/RewriteQueryOperationsView.swift",
+      "sha256": "6d8e9292c977d3a2592b2c9eda4988b3eb548660b180da96ecd8004c16d55132",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/LemonTests/RewriteRequestTargetTests.swift",
+      "sha256": "5e92d6250b5d8a1ae0871937e0d436da0b4e1043e29c26e0af601a5cd1e2227a",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_rule_security/src/request_target.rs",
+      "sha256": "f73cc8530eda609d0915100bf7a84277e513ae32d6e0303519fffe4130f8a247",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_webctrl/src/utils/requestTarget.js",
+      "sha256": "a56bc48b05e1c8fae8d63eec4d029bcefc7ad5670c9b656772d26df59e4b222f",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_webctrl/tests/requestTarget.test.js",
+      "sha256": "16d5f8392aae9a51b25afb21907ca92bc89117cb14dbf30d77ecdaca24d86f7b",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "tests/rewrite_e2e/cases/native/http-redirect.json",
+      "sha256": "f3a93d9281b8de47b338a4a1ab5aca61dc9129f1b05aafe2c68e8110f5cc9d15",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "tests/rewrite_e2e/cases/native/query-mod.json",
+      "sha256": "4a900ac1e9230f4d0c505b1f2864d884c6c55e812d1585ecfc8349e06394108f",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "tests/rewrite_e2e/cases/native/url-rewrite.json",
+      "sha256": "c047c371b79fe9e61d9274fff4170957bb1fb88f556a5ca94897e0f4cd12530b",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "tests/rewrite_e2e/fixtures/request-target-server.mjs",
+      "sha256": "12c0c4cf040cc8af4cc884f35ccdca5534eb9f8b8c6cfc502b910d19c24b4ad1",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "tests/rewrite_e2e_h2/cases/native/http-redirect.json",
+      "sha256": "7574e6286d605d864d35259731997da8392c097fea74b6100ecba7b1c4d60293",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "tests/rewrite_e2e_h2/cases/native/query-mod.json",
+      "sha256": "5ee76db61dcf1107274335d8b049f7f82ab09399be2ca71903eabafeb60fe093",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "tests/rewrite_e2e_h2/cases/native/url-rewrite.json",
+      "sha256": "5cbd946d885a30a2eabb9793f9214d1477bf0f1d8192e9d0da04893ff6629cf4",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/pending/rewrite_url_query_redirect_execution_plan_2026-11-13.md",
+      "sha256": "3128fc52b68d6e79ccae5129b6932f5014f419df60c6ab63893faa3919539cf6",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/2.0/rewrite/rule-model.md",
+      "sha256": "eb2bba3b8f4502a465c5be00c8098b067558f8407ea51abab64c02f29aeabd35",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/2.0/rewrite/script-execution-flow.md",
+      "sha256": "3ceb4ce1977e011a86200f60b8548a60927e01d863437eb1ade124d880ded0f8",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/2.0/build-test/2026-11-14-request-target-rewrite-acceptance.md",
+      "sha256": "292ebb089190ffa7cef115102d0596e34203e805b4c26e8ef3dee8aa01dafd92",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/2.0/build-test/evidence/request-target-2026-11-14/stack-traffic.json",
+      "sha256": "faec99b85ceb05b9dab846e908dc885ad773526d35239ca8599bc9c6ee472791",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/2.0/build-test/evidence/request-target-2026-11-14/cleanup.json",
+      "sha256": "933870fc849b0e28e8cbe18357daf221e18bd63529132ad2639042e8804d5729",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/2.0/build-test/evidence/request-target-2026-11-14/validation-summary.json",
+      "sha256": "6865c3d7a4f2f256b253e00621b3cdb3c4379e98edd9d4cc25ec3ab1464f3e3d",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemonCore/docs/adr/ADR-004-rewrite-semantics.md",
+      "sha256": "cb2b1271b949eb69cb5ebf9b4dc7d7a930e79ecca6eedad2f7211c0656cc3dce",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_web/src/manual/rewrite.en-US.md",
+      "sha256": "10c046fdf82eda2e59247a8f3f49e46b2c54297203d944bcc00b2e7ecd637a2e",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_web/src/manual/rewrite.zh-CN.md",
+      "sha256": "70d038e79a02369fbe9f75c023a79216148269321bd73c0ec6ede1b0a1b0b790",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "src/requestTarget.ts",
+      "sha256": "268d6e06a46c45485bedcdf465b73f47da4e2cbfc42f507da9ec07f3d62a7b8a",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-contract-and-capability-preflight"
+    },
+    {
+      "scope": "public-mcp",
+      "path": "test/requestTarget.test.cjs",
+      "sha256": "5ed4a105354cdfb9d97479764abaac132f610ceec0fc9cbcc8a78e3fd904fd5a",
+      "reviewedAt": "2026-11-14",
+      "reviewScope": "request-target-contract-and-capability-preflight"
     }
   ],
   "documentFiles": [
     {
       "path": "README.md",
-      "sha256": "c2e65d42b8f4be2162b6836fd17664a25621572607080a5eea11822d26c11536"
+      "sha256": "41b486fc83652d271b8515bc2330893a39a5680ed7823b4a502c7a040886afd0"
     },
     {
       "path": "README.zh-CN.md",
-      "sha256": "8918e151d91cc98419343d8a4cb40bff4539ba6f6c20e81c1d4a788d8a899308"
+      "sha256": "a7e6391a472da38c9d05d7228b83d8717924099f78b03915418002ace5d529a7"
     },
     {
       "path": "docs/AI_GUIDE.md",
@@ -733,7 +1148,7 @@
     },
     {
       "path": "docs/README.md",
-      "sha256": "041446081f380edb27590c3c3fbfcac69550c9b6fb43a45cb65eecb80b03cf79"
+      "sha256": "9b80e4390f311cdf1cc4f27224ab27904d32b095e8259db74af91773f4c0922c"
     },
     {
       "path": "docs/manual/ai-helper.en-US.md",
@@ -841,11 +1256,11 @@
     },
     {
       "path": "docs/manual/rewrite.en-US.md",
-      "sha256": "3a6d136d5faf55debb5c3d7ef219f274fe35b31e55d697edbbba11c20d4833cf"
+      "sha256": "10d24394b75b53d506ce39cdea029717018267f99aad855bdc8fb1050ce417bb"
     },
     {
       "path": "docs/manual/rewrite.zh-CN.md",
-      "sha256": "7e50f11a710fdcd3abba13ff8588463f4c8781a1a8477324610270f56d32cfee"
+      "sha256": "bfa1e8d1d32d64ad7ad79f1bdd0a4b00d3732e81f6b9028d3fbc4079ac67c22f"
     },
     {
       "path": "docs/manual/scripts.en-US.md",
@@ -865,7 +1280,7 @@
     },
     {
       "path": "docs/reference/compatibility.md",
-      "sha256": "1f2298846be9cbf7b5a82cc8418a62100cac37fd46769a163c0e5367718c6bcb"
+      "sha256": "a7f2fd87279d00eda17e6d628ff96cd16b2ac31e476c27e7cd5e51acd9d57d00"
     },
     {
       "path": "docs/reference/remote-scripts.md",
@@ -873,15 +1288,15 @@
     },
     {
       "path": "docs/reference/rewrite-rules.md",
-      "sha256": "c1e2551d3cb6470e9915ddadd16df308f80482377f1148eda6ba9aecc653e213"
+      "sha256": "b36cf707b78d843c7e4dd51694a784f8c8071bdf80803c7bdc93a54f19879171"
     },
     {
       "path": "docs/reference/script-api.md",
-      "sha256": "6ee6b0d70d0216a60d89e7103d94ca43f7baf5897bdd63167318da63febe5fc7"
+      "sha256": "e43bd77f4be793a31ccbcd8feaf313a81a3ab462301c62fa2cf07d87f3173c3f"
     },
     {
       "path": "docs/reference/script-api.zh-CN.md",
-      "sha256": "a57774fbafb460f7c0a40b444df7583d6c2cca9c7ad4b291d3c00f1ec5af6684"
+      "sha256": "4112e9d5c3d0ea14e6acc1cc4036884c5198d5462a0750cfb7d67e5407d78aa6"
     },
     {
       "path": "docs/reference/tools.md",
@@ -893,15 +1308,15 @@
     },
     {
       "path": "docs/verification.md",
-      "sha256": "c88f2357fd6bf6a62b4caed24b8624fecc63c7e574f30f60696cc907296dce36"
+      "sha256": "111057197e0746405d91ee4a4f3fbb4d785512974f2f97faf42b58ac6e26885c"
     },
     {
       "path": "llms.txt",
-      "sha256": "c75c03fef82f332836f6511ca215634800de5562d31f24c1afe2da85d553897c"
+      "sha256": "6a2f832e20eb1479e76e9e252dc635c7c2383803564ef2c681a98185488afc65"
     },
     {
       "path": "skills/lemon/SKILL.md",
-      "sha256": "daab63e54bec87586b071166249cf5eb8255450b93edf4c71c78d54e5e50e405"
+      "sha256": "b48091988a1a38fd75459c3ec858c6627c4f691ee962bdba93b858945473d1bb"
     },
     {
       "path": "skills/lemon/agents/openai.yaml",
@@ -917,7 +1332,7 @@
     },
     {
       "path": "skills/lemon/references/http-api.md",
-      "sha256": "e195928046ecdd49f30ae9d93735482a176d400fe3c1d5aa304016d9e14583be"
+      "sha256": "0a9408e56223e60e80de8fe5b979547ad54c0e11f2749eee07585f90da6c0a77"
     },
     {
       "path": "skills/lemon/references/replay-workspace.md",
@@ -925,7 +1340,7 @@
     },
     {
       "path": "skills/lemon/references/workflows.md",
-      "sha256": "3f0cd32dda99edc4e6b15005630dc02440562364cbc070a0b77c99bdc8a502d3"
+      "sha256": "76698c7950223f575cf7c21da81d653e3e03b0f929995215cb62fe7420cbf066"
     },
     {
       "path": "skills/lemon/scripts/lemon_http.py",
@@ -938,16 +1353,24 @@
     {
       "path": "docs/reference/device-files.md",
       "sha256": "fc08d6517a5a57cdde55eb22bb9910c61bf6238fe0c2ad81fb9b4f1372e349da"
+    },
+    {
+      "path": "docs/reference/request-target.md",
+      "sha256": "cb7788ede6f58b46a7db21ba390b50e6f00185bfda8bb45bfe3e59c61cbebdd0"
+    },
+    {
+      "path": "skills/lemon/references/request-target.md",
+      "sha256": "237a877bbf597642d664ba14ff1a07de0631f7602a34cc2d08ab191303d8d109"
     }
   ],
   "validation": {
     "standaloneTypeScriptBuild": "passed",
     "deterministicUnitTests": {
-      "passed": 53,
+      "passed": 55,
       "failed": 0,
       "nodeVersion": "24.1.0",
       "includesSubtests": 5,
-      "checkedAt": "2026-11-12",
+      "checkedAt": "2026-11-14",
       "environment": "current-public-checkout"
     },
     "toolSchemaMatchesRegisteredPublicTools": true,
@@ -1028,7 +1451,53 @@
       ],
       "deviceExecution": false
     },
-    "deviceRunScopeNote": "The global deviceRun=false is not an all-tools acceptance claim; focused phone file/policy acceptance is recorded in phoneMockFileTools.physicalDeviceRun."
+    "deviceRunScopeNote": "The global deviceRun=false is not an all-tools acceptance claim. Focused phone file/policy acceptance is in phoneMockFileTools; requestTarget records 2026-11-14 synthetic Stack H1/H2/H3 traffic and recording acceptance. UI and all-tool/device matrices remain separate.",
+    "requestTarget": {
+      "checkedAt": "2026-11-14",
+      "internalTestsPassed": 44,
+      "publicTestsPassed": 55,
+      "corePassed": 277,
+      "coreIgnored": 2,
+      "middlewaresPassed": 156,
+      "middlewaresIgnored": 2,
+      "realOriginTestsPassed": 13,
+      "stackXCTestPassed": 111,
+      "stackXCTestFailed": 0,
+      "h1ContractCases": 35,
+      "h2ContractCases": 35,
+      "full35CaseDeviceMatrix": false,
+      "physicalDeviceRun": true,
+      "physicalDevice": "Stack",
+      "oneShotReplayRequests": 5,
+      "originObservations": 5,
+      "recordedTransactions": 6,
+      "downstreamProtocols": [
+        "HTTP/1.1",
+        "HTTP/2.0",
+        "HTTP/3"
+      ],
+      "upstreamProtocols": [
+        "HTTP/1.1",
+        "HTTP/2.0"
+      ],
+      "deviceStaticlibSha256": "bf014c7d6671006ddd6609920e1f16bc25982b4e9848af4e7131e8e99ed8502d",
+      "sourceAwareTargetMetadata": true,
+      "temporaryResourcesCleaned": true,
+      "beforeAfterPolicies": 17,
+      "beforeAfterEnabledPolicies": 6,
+      "vpnRestoredToStopped": true,
+      "alreadyConnectedMcpProcessSchemaRefreshed": false,
+      "globallyInstalledSkill": false,
+      "publicContentPublished": false
+    },
+    "requestTargetDocumentationStaticChecks": {
+      "checkedAt": "2026-11-14",
+      "documents": 16,
+      "relativeLinks": 151,
+      "rawLinksResolvedLocally": 110,
+      "jsonExamples": 27,
+      "errors": []
+    }
   },
   "officialReferences": [
     {
@@ -1071,7 +1540,9 @@
     ],
     "publication": "versioned-repository-content; verify-origin-main-for-online-availability",
     "matchingReviewedAt": "2026-11-10",
-    "matchingReviewScope": "Query / Host semantics, capability preflight for direct HTTP, portable and backup versions; other HTTP contracts retain the original checkedAt."
+    "matchingReviewScope": "Query / Host semantics, capability preflight for direct HTTP, portable and backup versions; other HTTP contracts retain the original checkedAt.",
+    "requestTargetReviewedAt": "2026-11-14",
+    "requestTargetReviewScope": "redirect/url_rewrite/query_mod defaults, request_target_rewrite v1 preflight, portable6/backup7, JS request-header target output, workflows and reference links; no global installation."
   },
-  "reviewScope": "Incremental phone App Group Mock file tools and exact policy identifier handling (2026-11-12), including focused Stack phone API/persistence acceptance. UI interaction and actual rewritten traffic remain outside this run. Matching retains the 2026-11-10 review; unrelated content retains the 2026-11-07 review. Publication is separate."
+  "reviewScope": "2026-11-14 incremental request-target action/forwarding/recording implementation, documentation, MCP/Skill and focused Stack traffic acceptance. Original baseline, 2026-11-10 matching and 2026-11-12 phone Mock-file reviews remain scoped in their entries. No full UI/all-tool acceptance or online publication is implied."
 }

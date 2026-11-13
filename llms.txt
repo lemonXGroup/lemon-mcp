@@ -26,12 +26,15 @@ The Skill can use direct WebControl HTTP with Python 3.10+ and no MCP installati
 
 - [Current tools](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/tools.md)
 - [Full tool input schemas](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/tools.schema.json)
+- [Modify URL, Query and HTTP redirects](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/request-target.md)
 - [Rewrite rules and action configs](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/rewrite-rules.md)
 - [Script API](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/script-api.md)
 - [脚本 API](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/script-api.zh-CN.md)
 - [Remote script lifecycle](https://raw.githubusercontent.com/lemonXGroup/lemon-mcp/main/docs/reference/remote-scripts.md)
 
-For Rewrite matching, read the rule reference before generating conditions. Query matches the raw query without the leading ?. Host eq/prefix/suffix/contains support * and ?; eq *.example.com includes the root and all subdomains. The other operators retain string-position semantics. Public MCP upsert verifies device host_wildcards support before saving; direct HTTP callers must check capabilities themselves. Wildcard shares use schema 5 and backups use version 6; query adds no portable version and older clients reject the field.
+For Rewrite matching, read the rule reference before generating conditions. Query matches the raw query without the leading ?. Host eq/prefix/suffix/contains support * and ?; eq *.example.com includes the root and all subdomains. The other operators retain string-position semantics. Public MCP upsert verifies device host_wildcards support before saving; direct HTTP callers must check capabilities themselves. Without request-target actions, wildcard shares use schema 5 and backups use version 6; query adds no portable version and older clients reject the field.
+
+For target changes, read request-target.md: redirect is actual HTTP 3xx (default 307), url_rewrite is internal upstream modification, and query_mod edits ordered entries. Existing redirect uses the same identifier and missing-field defaults, with no migration action. Target actions use portable/DRM schema 6 and backup/recovery 7; check request_target_rewrite version 1.
 
 ## All user manual chapters
 

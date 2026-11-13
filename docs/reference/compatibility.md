@@ -56,3 +56,7 @@ The 2026-11-10 matching sync built and ran 34 deterministic tests (including fiv
 ## Optional Skill without MCP
 
 The [Lemon Skill](../../skills/lemon/SKILL.md) provides source-checked direct HTTP routes and a Python standard-library helper. It can use current App HTTP capabilities that the public MCP has not exposed, including WS queries, scheduled run history and Replay Workspace. This does not synchronize the MCP tool surface. The local terminal helper supports hidden token input; the MCP server still uses its environment token and has no token dialog. A Skill cannot make a cloud-only client reach a private phone LAN.
+
+## Request-target actions (2026-11-13)
+
+Updated sources expose native url_rewrite, query_mod and redirect, with request_target_rewrite version 1 device gating. This is a source capability and does not establish online publication or installed device support. Portable/DRM schema6 and backup7 are required. redirect now means an actual local HTTP 3xx response. Existing target-only redirect data uses status 307 and Query auto without migration; internal changes use url_rewrite. Request-header JS url/queryPolicy selects an internal target. See [request-target contract](request-target.md).

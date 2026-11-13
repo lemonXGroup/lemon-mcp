@@ -1,3 +1,4 @@
+import { normalizeRequestTarget, requestTargetActions, supportsRequestTarget } from "./requestTarget.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { lemonApi } from "./apiClient";
@@ -1022,6 +1023,16 @@ export function registerTools(server: McpServer) {
       const rule = JSON.parse(rule_json);
       validateRewritePolicyID(rule);
       const groups = JSON.parse(groups_json);
+      const targetActions = Array.isArray(groups) ? groups.flatMap((group: any) => group.actions || [])
+        .filter((action: any) => requestTargetActions.includes(action.action)) : [];
+      for (const action of targetActions) {
+        action.config = JSON.stringify(normalizeRequestTarget(action.action, JSON.parse(action.config), action.scope));
+      }
+      if (targetActions.length) {
+        const capabilities = await lemonApi.get<any>("/api/rewrite/capabilities");
+        if (!supportsRequestTarget(capabilities)) throw new Error("The device needs an update for URL/Query/HTTP redirect actions.");
+      }
+
       const disablingExistingPolicy = rule.id !== undefined && rule.enabled === false;
       if (!disablingExistingPolicy && hasHostWildcardConditions(groups)) {
         let capabilities: unknown;
@@ -1070,8 +1081,12 @@ export function registerTools(server: McpServer) {
   server.registerTool("get_rewrite_schema", {
     description: "Returns the exact JSON schema and accepted enum values for creating or updating Rewrite Rules and Actions.",
   }, async () => {
+    let targetCapability = "Device support unknown (capability request unavailable).";
+    try { const capabilities = await lemonApi.get<any>("/api/rewrite/capabilities"); targetCapability = supportsRequestTarget(capabilities) ? "Device URL/Query/HTTP redirect support: version 1." : "Device needs an update for URL/Query/HTTP redirect actions."; } catch {}
     const schema = `
 # Lemon Rewrite Configuration Schema
+
+${targetCapability}
 
 When calling \`upsert_rewrite_rule\`, you need to provide \`rule_json\` and \`groups_json\`.
 
@@ -1111,10 +1126,15 @@ Default-mode condition fields are "host", "path", "query" and "method"; operator
 - "header_mod": Modifies HTTP Headers.
 - "body_replace": Replaces text, regex matches, an exact JSON path, or ordinary multipart request fields.
 - "mock_file": Reads an existing UTF-8 text file on the operated iPhone, directly inside its App Group MockFiles directory (maximum 2 MiB). Use list_device_files to find a phone file and select_mock_file to validate/import/reuse it, or create_mock_file to create a new phone file. Use the returned action config JSON string containing content_type and file_path. The iPhone validates and reads that path; no computer file upload is involved.
-- "redirect": HTTP Redirection.
+- "url_rewrite": Internal URL change, preserves method/body. Request headers only. Config {"target":"/v2/path","query_policy":"auto"}.
+- "query_mod": Request headers only. Config {"operations":[{"op":"set","key":"page","value":"2"},{"op":"append","key":"tag","value":"a"},{"op":"remove","key":"debug"},{"op":"clear"}]}. Operations run in order; set/remove affect all same-name keys, append retains duplicates. key/value are decoded text.
+- "redirect": Local HTTP redirect, config {"target":"/v2/path","status":307,"query_policy":"auto"}. Supported statuses 301/302/303/307/308; default 307 preserves method/body on client follow. No origin business request is sent.
+
+Query policies: auto uses explicit target query; otherwise preserves original only for same-origin targets and clears across origins. preserve uses original query, replace uses only target query, merge keeps nonconflicting original keys then target keys (target wins), clear removes query. Unmodified query encoding/order/duplicates are retained. Targets are encoded HTTP(S) URLs, root paths or query-only targets; no userinfo/fragments/network-path URLs. Limits: 16 KiB URL, 128 Query operations. New actions require device request_target_rewrite version 1; query /api/rewrite/capabilities before use. Portable sharing uses schema 6; cloud/local recovery uses schema 7. JS request-header output supports {url:"/v2",queryPolicy:"auto"}; other phases reject url.
+
 - "js": Invokes an ESM script package by id. Its config is a JSON string such as {"script_id":7,"phase":"body"}.
 
-Multipart request fields use config JSON strings with mode="multipart", scope="request", and portable schema_version=4. Example config: {"mode":"multipart","operation":"set","field":"role","occurrence":{"kind":"all"},"find":"","replace":"admin","regex":false}. Operations are set, replace, delete, append. Replace requires nonempty find and supports regex captures; delete requires empty find/replace and regex=false. Append omits occurrence. Other operations require occurrence {"kind":"all"} or {"kind":"index","index":0} (zero-based, 0..1023). Exact field names include whitespace, exclude _charset_, and cannot contain CR/LF/NUL. Files are preserved; multipart response/compressed/large streaming edits are unsupported. GET /api/rewrite/capabilities reports device support; 404 or a missing capability requires upgrading. Rules with host wildcards export schema 5; otherwise rules without multipart continue to export schema 2/3. Normal text/regex remains suitable for application/x-www-form-urlencoded; never use raw text replacement for a multipart upload.
+Multipart request fields use config JSON strings with mode="multipart", scope="request", and portable schema_version=4. Example config: {"mode":"multipart","operation":"set","field":"role","occurrence":{"kind":"all"},"find":"","replace":"admin","regex":false}. Operations are set, replace, delete, append. Replace requires nonempty find and supports regex captures; delete requires empty find/replace and regex=false. Append omits occurrence. Other operations require occurrence {"kind":"all"} or {"kind":"index","index":0} (zero-based, 0..1023). Exact field names include whitespace, exclude _charset_, and cannot contain CR/LF/NUL. Files are preserved; multipart response/compressed/large streaming edits are unsupported. GET /api/rewrite/capabilities reports device support; 404 or a missing capability requires upgrading. When request-target actions are absent, rules with host wildcards export schema 5; remaining rules without multipart continue to export schema 2/3. Normal text/regex remains suitable for application/x-www-form-urlencoded; never use raw text replacement for a multipart upload.
 
 upsert_rewrite_rule checks GET /api/rewrite/capabilities before saving host wildcards, including inactive conditions. Missing support is an error; an existing policy can still be disabled with id and enabled=false. This gate does not add a portable schema_version to local rule metadata. Ordinary shares keep versions 2/3/4; host wildcard shares use 5 and their backups use 6.
 

@@ -11,8 +11,9 @@ This collection ships in the independent public repository: 16 chapters in Chine
 3. [当前全部 70 个工具](reference/tools.md) / [完整输入 JSON schema](reference/tools.schema.json)
 4. [手机文件与模拟文件工作流](reference/device-files.md)
 5. [规则 CRUD、Query / Host 通配匹配、JSON Path、multipart 与动作参数](reference/rewrite-rules.md)
-6. [脚本 API（中文）](reference/script-api.zh-CN.md) / [Script API](reference/script-api.md)
-7. [远程脚本的准备、发布、更新与回滚](reference/remote-scripts.md)
+6. [修改 URL、Query 与 HTTP 重定向](reference/request-target.md)
+7. [脚本 API（中文）](reference/script-api.zh-CN.md) / [Script API](reference/script-api.md)
+8. [远程脚本的准备、发布、更新与回滚](reference/remote-scripts.md)
 
 ## 不安装 MCP 的 AI / AI clients without MCP
 
@@ -57,6 +58,6 @@ Install the whole skills/lemon folder in a compatible client, or read the public
 
 ## 版本、来源与验证 / Version and evidence
 
-Rewrite 匹配、能力检查与工具参考于 2026-11-10 按 Query / Host 通配提交同步；其余内容保留 2026-11-07 的核对范围。2026-11-12 新增手机文件枚举、路径选择与新建模拟文件；公开版当前 70 tools / 2 resources，内部 MCP 72 tools。精确工具输入来自公开代码生成的 schema，可用 `npm run docs:generate` 重建，`npm run docs:check` 校验。脚本 API、默认模板、HTTP/WS 返回值和 Rewrite 参数按所列 App/core 源码核对。其他用户操作章节整理自现有双语用户手册；本次未逐页执行真机 UI 验收。
+Rewrite 匹配、能力检查与工具参考于 2026-11-10 按 Query / Host 通配提交同步；其余内容保留 2026-11-07 的核对范围。2026-11-12 新增手机文件枚举、路径选择与新建模拟文件；2026-11-14 同步 URL/Query/HTTP 重定向的统一标识、默认值、设备能力与分享/备份版本，并完成定向 Stack 流量验收；公开版当前 70 tools / 2 resources，内部 MCP 72 tools。精确工具输入来自公开代码生成的 schema，可用 `npm run docs:generate` 重建，`npm run docs:check` 校验。脚本 API、默认模板、HTTP/WS 返回值和 Rewrite 参数按所列 App/core 源码核对。其他用户操作章节整理自现有双语用户手册；本次未逐页执行真机 UI 验收。
 
 源码事实、当前工具是否接入、设备版本/权限及本次是否运行验证是不同问题。先读兼容性；不要把 App 能力当作已经暴露的 MCP 工具，也不要把示例语法通过当作运行验收。验证深度与已纠正差异见 [来源与验证范围](verification.md)，完整来源清单见 [文档 manifest](manifest.json)。

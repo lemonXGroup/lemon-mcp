@@ -197,8 +197,14 @@ validate_rewrite_script_package，发布后分别检查持久化结果和 runtim
 的原始参数串，保留编码、大小写和参数顺序。Host 的四种非正则模式支持
 `*`、`?`，其中 `eq *.example.com` 包含根域和各级子域；前缀、后缀、包含
 仍保留字符串位置语义。工具保存通配规则前会检查设备能力，旧设备仍可停用
-已有规则。含 Host 通配条件的分享使用 schema 5，备份使用版本 6。
+已有规则。未含请求目标动作时，Host 通配条件的分享使用 schema 5，备份使用版本 6。
 示例、能力要求与兼容边界见[匹配参考](docs/reference/rewrite-rules.md#matching)。
+
+请求目标动作使用明确的标识：`redirect` 返回真正的 HTTP 3xx（默认 307），
+`url_rewrite` 在内部修改上游 URL，`query_mod` 按序修改 Query。
+已有 redirect 直接使用 HTTP 重定向语义；缺失状态码/策略分别默认 307/auto。
+目标动作的格式要求优先：分享/DRM schema 6，备份/恢复版本 7。
+使用前检查设备 request_target_rewrite version 1，完整参数见[请求目标合同](docs/reference/request-target.md)。
 
 ### UI Modules
 

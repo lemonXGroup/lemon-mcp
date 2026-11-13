@@ -63,7 +63,7 @@ Host 的等于、前缀、后缀、包含模式支持 `*` 匹配任意长度，`
 - **Header modification**：添加、修改或删除请求头 / 响应头。
 - **Body replacement**：用指定文本替换请求体或响应体。
 - **Mock file**：使用本地文件作为响应内容。
-- **Redirect**：将请求导向另一个地址。
+- **修改 URL / 修改 Query / HTTP 重定向**：按下文选择内部修改或客户端跳转。
 - **JavaScript action**：使用脚本对匹配到的请求或响应做更灵活的处理。
 
 动作参数要和规则阶段保持一致。例如修改请求头应放在请求阶段，替换服务端返回内容应放在响应阶段。一个规则尽量只负责一个清晰的调试目的，多个目的可以拆成多条规则，排查时更容易定位。
@@ -150,3 +150,40 @@ export async function onRequest(ctx) {
 ## 精确规则与新能力
 
 完整 MatchGroup、表达式、JSON Path、multipart、WebSocket scope 和 MCP 增删查改格式见 [规则参考](../reference/rewrite-rules.md)。脚本入口、上下文和返回值见 [脚本 API](../reference/script-api.zh-CN.md)。当前公开 MCP 的接入差异见 [兼容性](../reference/compatibility.md)。
+
+## 修改 URL、修改 Query 与 HTTP 重定向
+
+- **修改 URL**：在 Lemon 内部更换上游地址，保留原请求方法和请求体。可修改路径、域名、端口和 HTTP/HTTPS；Host、TLS、SNI、上游协议随目标地址同步。
+- **修改 Query**：按顺序设置、追加、删除参数或清空全部参数，适合只调整一两个参数。
+- **HTTP 重定向**：向客户端返回 301/302/303/307/308 和 Location，默认 307。由客户端决定是否跟随；307/308 保留方法和请求体，301/302/303 可能使后续请求变为 GET。目标为 HTTP 时仍可能受客户端 ATS 限制。
+
+三个新动作只用于请求头阶段。目标支持完整 HTTP(S) URL、/ 开头的路径以及 ? 开头的参数；? 目标保留当前路径。URL 中的中文等字符需要百分号编码，不支持用户信息、片段 #、控制字符或 //host，长度上限 16 KiB。
+
+Query 策略默认“自动”：同源且目标没有 Query 时保留原参数；目标带 Query 时使用目标参数，末尾空 ? 也视为显式替换；跨源默认清空原参数。同源按协议、主机和有效端口判断。也可以选择“保留原参数”“使用目标参数”“合并（目标同名键优先）”或“清空”。
+
+例如，原请求为 https://api.example.test/a?page=1&sig=a%2fb：
+
+| 目标与策略 | 结果 |
+| --- | --- |
+| /b，自动 | /b?page=1&sig=a%2fb |
+| /b?page=2，自动 | /b?page=2 |
+| /b?page=2，合并 | /b?sig=a%2fb&page=2 |
+| https://other.example.test/b，自动 | 新目标不带原 Query |
+
+修改 Query 时填写解码后的键和值。设置会替换全部同名参数并追加新值，追加保留重复键，删除移除全部同名键；键区分大小写。未修改项保留原始编码、顺序、重复键和无等号标记。修改项采用 UTF-8 表单编码，空格编码为 +；最多 128 个操作。修改 URL/Query 后原请求签名可能失效，Lemon 不会自动重签业务签名。
+
+请求头 JavaScript 可以返回内部 URL 修改：
+
+```js
+export function onRequest(ctx) {
+  return { url: "/v2/items", queryPolicy: "auto" };
+}
+```
+
+仅修改 ctx.request.url 不会改变实际目标；url/queryPolicy 不用于请求体、响应或 WebSocket 阶段。需要真正 3xx 时选择原生 HTTP 重定向。
+
+新动作分享/DRM 文档使用 v6，云备份和本地恢复使用 v7；旧客户端应拒绝新文档。Web/MCP 使用前检查设备的 request_target_rewrite version 1 能力。规则仍按原始捕获 URL 匹配，URL/Query 动作按顺序修改目标。真实重定向在动作所在位置确定 Location，建议放在目标修改之后。
+
+目标改写继续受保护域名、拒绝、MITM 绕过、DNS/Hosts 和上游代理规则约束。H1/H2 沿用现有 MITM 初始原站连接与 TLS 协商，原站握手失败仍可能阻止进入重写；内部改写或本地 3xx 不向原站提交业务请求。
+
+动作标识与界面一致区分：`redirect` 为 HTTP 重定向，`url_rewrite` 为修改 URL，`query_mod` 为修改 Query。已有 `redirect` 规则缺少状态码或 Query 策略时直接使用 307 / auto，无需转换；需要内部转发时选择“修改 URL”。
