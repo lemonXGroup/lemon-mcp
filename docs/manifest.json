@@ -26,6 +26,11 @@
       "appGitHead": "720adca7080412196f10545c82a2e6eeb573b702",
       "kind": "local-working-tree-source-and-focused-physical-device-acceptance",
       "note": "redirect retains its wire identifier and now emits actual HTTP 3xx; url_rewrite/query_mod are new. Missing status/query policy use shared defaults. Working-tree hashes identify this implementation; no release is implied."
+    },
+    "additionalQueryLayoutReview": {
+      "checkedAt": "2026-11-14",
+      "kind": "local-working-tree-ui-layout-and-focused-stack-acceptance",
+      "note": "Query operation editor layout and bilingual labels only; request target action/API/MCP/skill contracts unchanged."
     }
   },
   "publicRepository": "https://github.com/lemonXGroup/lemon-mcp",
@@ -963,9 +968,10 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "lemon_ios/Lemon/Views/Rewrite/RewriteQueryOperationsView.swift",
-      "sha256": "6d8e9292c977d3a2592b2c9eda4988b3eb548660b180da96ecd8004c16d55132",
+      "sha256": "184d8b513098a6d2f7faa54ef9446842f847a54d0c22ead676ad6b4ef7666c04",
       "reviewedAt": "2026-11-14",
-      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance",
+      "queryLayoutReviewedAt": "2026-11-14"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -1047,7 +1053,7 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "docs/pending/rewrite_url_query_redirect_execution_plan_2026-11-13.md",
-      "sha256": "3128fc52b68d6e79ccae5129b6932f5014f419df60c6ab63893faa3919539cf6",
+      "sha256": "2511bc1a6283ef4c027ca70adfb9395e7f3f226606153920c074de4220edce3e",
       "reviewedAt": "2026-11-14",
       "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
     },
@@ -1068,9 +1074,10 @@
     {
       "scope": "app-monorepo-provenance",
       "path": "docs/2.0/build-test/2026-11-14-request-target-rewrite-acceptance.md",
-      "sha256": "292ebb089190ffa7cef115102d0596e34203e805b4c26e8ef3dee8aa01dafd92",
+      "sha256": "0f88b5979c2ded6b82804fd0ad87d2668ada5ac01a8c068ed5a47347848c902b",
       "reviewedAt": "2026-11-14",
-      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance"
+      "reviewScope": "request-target-actions-defaults-protocol-routing-recording-and-focused-stack-acceptance",
+      "queryLayoutReviewedAt": "2026-11-14"
     },
     {
       "scope": "app-monorepo-provenance",
@@ -1127,6 +1134,78 @@
       "sha256": "5ed4a105354cdfb9d97479764abaac132f610ceec0fc9cbcc8a78e3fd904fd5a",
       "reviewedAt": "2026-11-14",
       "reviewScope": "request-target-contract-and-capability-preflight"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Views/Rewrite/RewriteQueryOperationRow.swift",
+      "reviewScope": "query-parameter-editor-layout-labels-and-focused-stack-ui-acceptance",
+      "sha256": "e622bc33aaf54d852ca84b767fb313df6bc9bcbfe318f10c281cf27322e53b1e",
+      "reviewedAt": "2026-11-14",
+      "queryLayoutReviewedAt": "2026-11-14"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Resources/en.lproj/Localizable.strings",
+      "reviewScope": "query-parameter-editor-layout-labels-and-focused-stack-ui-acceptance",
+      "sha256": "ee110bfb43aff28b6b8917103548e1f0884aed393bfc50bdcc0ace4742c990f4",
+      "reviewedAt": "2026-11-14",
+      "queryLayoutReviewedAt": "2026-11-14"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "lemon_ios/Lemon/Resources/zh-Hans.lproj/Localizable.strings",
+      "reviewScope": "query-parameter-editor-layout-labels-and-focused-stack-ui-acceptance",
+      "sha256": "669f39ab8c3252992ede0d6714df3b2e55148a5d095cd42320de626ac4d46c68",
+      "reviewedAt": "2026-11-14",
+      "queryLayoutReviewedAt": "2026-11-14"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/2.0/build-test/evidence/request-target-2026-11-14/query-layout/summary.json",
+      "reviewScope": "query-parameter-editor-layout-labels-and-focused-stack-ui-acceptance",
+      "sha256": "3df5c243e431bd19db42eb71df91a7b3501cd7906cffab1763b783976a705329",
+      "reviewedAt": "2026-11-14",
+      "queryLayoutReviewedAt": "2026-11-14"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/2.0/build-test/evidence/request-target-2026-11-14/query-layout/query-layout-accessibility-text.png",
+      "reviewScope": "query-parameter-editor-layout-labels-and-focused-stack-ui-acceptance",
+      "sha256": "32683bfb1a5477ed097e0e39207dea1e509dbfddccc2d28abeeb80a8b93869c5",
+      "reviewedAt": "2026-11-14",
+      "queryLayoutReviewedAt": "2026-11-14"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/2.0/build-test/evidence/request-target-2026-11-14/query-layout/query-layout-remove-clear-footer.png",
+      "reviewScope": "query-parameter-editor-layout-labels-and-focused-stack-ui-acceptance",
+      "sha256": "2103eb3e081e6dc2d6195458e4b1d82be57d10fd8450e749e9cb49619a6b3d7d",
+      "reviewedAt": "2026-11-14",
+      "queryLayoutReviewedAt": "2026-11-14"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/2.0/build-test/evidence/request-target-2026-11-14/query-layout/query-layout-clear-operation.png",
+      "reviewScope": "query-parameter-editor-layout-labels-and-focused-stack-ui-acceptance",
+      "sha256": "47e375cf92244b7c9320820d5965eb2896713e0aa0dcf83ccba128648d4eff2c",
+      "reviewedAt": "2026-11-14",
+      "queryLayoutReviewedAt": "2026-11-14"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/2.0/build-test/evidence/request-target-2026-11-14/query-layout/query-layout-operation-menu.png",
+      "reviewScope": "query-parameter-editor-layout-labels-and-focused-stack-ui-acceptance",
+      "sha256": "c1847b58a38bb50554e689159ee8c24cda37a2de2d1b4a574d6e5cbb49d9047e",
+      "reviewedAt": "2026-11-14",
+      "queryLayoutReviewedAt": "2026-11-14"
+    },
+    {
+      "scope": "app-monorepo-provenance",
+      "path": "docs/2.0/build-test/evidence/request-target-2026-11-14/query-layout/query-layout-numbered-parameters.png",
+      "reviewScope": "query-parameter-editor-layout-labels-and-focused-stack-ui-acceptance",
+      "sha256": "b41c7a5b6f3337c51d0055b9a16b9b9feb224a64d45e888ed14e1ab8e3de3e8e",
+      "reviewedAt": "2026-11-14",
+      "queryLayoutReviewedAt": "2026-11-14"
     }
   ],
   "documentFiles": [
@@ -1497,6 +1576,35 @@
       "rawLinksResolvedLocally": 110,
       "jsonExamples": 27,
       "errors": []
+    },
+    "requestTargetUI": {
+      "checkedAt": "2026-11-14",
+      "physicalDevice": "Stack",
+      "testsPassed": 1,
+      "testsFailed": 0,
+      "scope": [
+        "query-operation-layout",
+        "persistent-key-value-labels",
+        "long-input-expand-controls-visible",
+        "menu-clear-and-set-selection-values",
+        "conditional-remove-clear-fields",
+        "add-and-remove-fifth-operation",
+        "44pt-operation-and-delete-targets",
+        "full-width-add-button",
+        "accessibility-XXXL-operation-header-reflow"
+      ],
+      "screenshotsVisuallyReviewed": 5,
+      "sourceUITestRestored": true,
+      "temporaryPolicyRemoved": true,
+      "coreRuntimeStateAfterReview": "unavailable",
+      "beforePolicies": 17,
+      "beforeEnabledPolicies": 6,
+      "afterPolicies": 18,
+      "afterEnabledPolicies": 7,
+      "unrelatedPolicyAddedDuringReview": true,
+      "unrelatedChangesPreserved": true,
+      "fullAppUIAcceptance": false,
+      "mcpSkillContractsChanged": false
     }
   },
   "officialReferences": [
